@@ -38,19 +38,23 @@ const HeroSection = () => {
   return (
     <div className="bg-estore-gradient text-white">
       <div className="max-w-7xl mx-auto px-8 py-12">
-        {/* Hero Content */}
-        <div className="mb-8">
-          <h1 className="text-5xl md:text-6xl font-playfair font-bold mb-4 leading-tight tracking-wide">
-            Your One-Stop<br />Shop for Everything.
-          </h1>
-          <p className="text-xl text-gray-200 mb-8 max-w-md leading-relaxed">
-            Find everything you need in one place—great deals, top quality, and
-            ultimate convenience. Shop anytime, anywhere, hassle-free!
-          </p>
-          <button className="inline-flex items-center bg-estore-light-gray text-estore-dark rounded-full px-7 py-3 text-lg font-medium hover:bg-estore-medium-gray transition-colors duration-200 shadow-lg">
-            Try product
-            <ArrowRight className="ml-3 w-5 h-5" />
-          </button>
+        {/* Hero Content - Horizontal Layout */}
+        <div className="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+          <div className="flex-1">
+            <h1 className="text-5xl md:text-6xl font-playfair font-bold mb-4 leading-tight tracking-wide">
+              Your One-Stop Shop for Everything.
+            </h1>
+          </div>
+          <div className="flex-1 lg:max-w-md">
+            <p className="text-xl text-gray-200 mb-8 leading-relaxed">
+              Find everything you need in one place—great deals, top quality, and
+              ultimate convenience. Shop anytime, anywhere, hassle-free!
+            </p>
+            <button className="inline-flex items-center bg-estore-light-gray text-estore-dark rounded-full px-7 py-3 text-lg font-medium hover:bg-estore-medium-gray transition-colors duration-200 shadow-lg">
+              Try product
+              <ArrowRight className="ml-3 w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Product Carousel */}
