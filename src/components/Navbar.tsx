@@ -7,6 +7,16 @@ const Navbar = () => {
 
   const navLinks = ['Home', 'Collection', 'Featured', 'Blog', 'Contact'];
 
+  const handleNavClick = (link: string) => {
+    setActiveLink(link);
+    if (link === 'Contact') {
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-8 flex items-center justify-between h-16">
@@ -20,7 +30,7 @@ const Navbar = () => {
           {navLinks.map((link) => (
             <button
               key={link}
-              onClick={() => setActiveLink(link)}
+              onClick={() => handleNavClick(link)}
               className={`text-lg font-medium transition-all duration-200 ${
                 activeLink === link
                   ? 'text-estore-dark font-bold opacity-100'
