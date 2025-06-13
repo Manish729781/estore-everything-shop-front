@@ -1,5 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 
 const NewInSection = () => {
+  const navigate = useNavigate();
+  
   const products = [
     {
       id: 1,
@@ -31,15 +34,19 @@ const NewInSection = () => {
     {
       id: 4,
       image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
-      title: 'Gentle Body Care Cleanser',
-      price: '$49.00',
-      oldPrice: '$69.00',
+      title: 'Gold Dipped U Shaped Earrings',
+      price: '$80.00',
+      oldPrice: '$100.00',
       tag: 'Handbag',
       colors: ['#b6a07a', '#c2b59b']
     }
   ];
 
   const categories = ['All', 'Wardrobe wear', 'Footwear', 'Skincare', 'Handbag'];
+
+  const handleViewMore = (productId: number) => {
+    navigate(`/product/${productId}`);
+  };
 
   return (
     <section id="new-in-section" className="bg-white">
@@ -110,7 +117,10 @@ const NewInSection = () => {
                     </div>
                   )}
                   <div className="flex gap-2">
-                    <button className="bg-gray-100 text-estore-dark px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors">
+                    <button 
+                      onClick={() => handleViewMore(product.id)}
+                      className="bg-gray-100 text-estore-dark px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors"
+                    >
                       View more
                     </button>
                     <button className="bg-gray-100 text-estore-dark px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors">
