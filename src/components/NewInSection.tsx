@@ -1,55 +1,51 @@
 
-import { useState } from 'react';
-
 const NewInSection = () => {
-  const [activeFilter, setActiveFilter] = useState('All');
-  
-  const filters = ['All', 'Wardrobe wear', 'Footwear', 'Skincare', 'Handbag'];
-
   const products = [
     {
       id: 1,
       image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
       title: 'Minimalism Shirts',
-      price: 49.00,
-      oldPrice: 69.00,
+      price: '$49.00',
+      oldPrice: '$69.00',
       tag: 'Wardrobe wear',
-      colors: ['#b6a07a', '#e5e5e5', '#c2b59b'],
+      colors: ['#b6a07a', '#e5e5e5', '#c2b59b']
     },
     {
       id: 2,
       image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
       title: 'Quicker Sneakers',
-      price: 49.00,
-      oldPrice: 69.00,
+      price: '$49.00',
+      oldPrice: '$69.00',
       tag: 'Footwear',
-      colors: ['#fff', '#e5e5e5', '#1a223a'],
+      colors: ['#fff', '#e5e5e5', '#1a223a']
     },
     {
       id: 3,
       image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
       title: 'Gentle Body Care Cleanser',
-      price: 49.00,
-      oldPrice: 69.00,
+      price: '$49.00',
+      oldPrice: '$69.00',
       tag: 'Fragrance',
-      colors: [],
+      colors: []
     },
     {
       id: 4,
       image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
       title: 'Gentle Body Care Cleanser',
-      price: 49.00,
-      oldPrice: 69.00,
+      price: '$49.00',
+      oldPrice: '$69.00',
       tag: 'Handbag',
-      colors: ['#b6a07a', '#c2b59b'],
-    },
+      colors: ['#b6a07a', '#c2b59b']
+    }
   ];
 
+  const categories = ['All', 'Wardrobe wear', 'Footwear', 'Skincare', 'Handbag'];
+
   return (
-    <div className="bg-white">
+    <section id="new-in-section" className="bg-white">
       {/* Header */}
-      <div className="text-center pt-12 pb-0">
-        <h2 className="text-5xl font-playfair font-bold text-estore-navy mb-3">
+      <div className="text-center py-12">
+        <h2 className="text-4xl md:text-5xl font-playfair font-bold text-estore-dark mb-4">
           New in
         </h2>
         <p className="text-lg text-estore-dark max-w-2xl mx-auto">
@@ -57,26 +53,25 @@ const NewInSection = () => {
         </p>
       </div>
 
-      {/* Banner with Filter Bar */}
-      <div className="flex justify-center bg-white py-0">
-        <div className="relative w-[95vw] max-w-7xl mx-auto rounded-2xl overflow-hidden">
+      {/* Banner with Filter */}
+      <div className="flex justify-center mb-8">
+        <div className="relative w-full max-w-6xl mx-8 rounded-2xl overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80"
             alt="Fashion Banner"
-            className="w-full h-64 object-cover rounded-2xl"
+            className="w-full h-64 object-cover"
           />
-          <div className="absolute left-1/2 bottom-6 transform -translate-x-1/2 bg-white rounded-full shadow-lg flex gap-2 px-5 py-2 z-10">
-            {filters.map((filter) => (
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-full shadow-lg flex gap-2 p-2">
+            {categories.map((category, index) => (
               <button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                className={`px-6 py-2 rounded-full text-base font-medium transition-all duration-200 ${
-                  activeFilter === filter
-                    ? 'bg-gray-200 text-estore-dark font-bold'
-                    : 'bg-transparent text-estore-dark hover:bg-gray-200 hover:font-bold'
+                key={category}
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
+                  index === 0
+                    ? 'bg-estore-light-gray text-estore-dark'
+                    : 'text-estore-dark hover:bg-estore-light-gray'
                 }`}
               >
-                {filter}
+                {category}
               </button>
             ))}
           </div>
@@ -85,46 +80,40 @@ const NewInSection = () => {
 
       {/* Product Grid */}
       <div className="bg-gray-50 py-8">
-        <div className="max-w-7xl mx-auto px-8">
+        <div className="max-w-6xl mx-auto px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {products.map((product) => (
-              <div key={product.id} className="bg-white rounded-2xl shadow-sm overflow-hidden pb-4 relative">
-                <span className="absolute top-4 left-4 bg-gray-100 text-estore-dark text-sm rounded-xl px-4 py-1 font-medium z-10 shadow-sm">
+              <div key={product.id} className="bg-white rounded-2xl shadow-sm overflow-hidden relative">
+                <span className="absolute top-4 left-4 bg-gray-100 text-estore-dark text-sm px-3 py-1 rounded-xl font-medium z-10">
                   {product.tag}
                 </span>
                 <img
                   src={product.image}
                   alt={product.title}
-                  className="w-full h-48 object-cover rounded-t-2xl"
+                  className="w-full h-48 object-cover"
                 />
-                <div className="p-5 pt-4 flex flex-col gap-2">
-                  <h3 className="text-lg font-semibold text-estore-dark">
-                    {product.title}
-                  </h3>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-base text-estore-dark">
-                      ${product.price.toFixed(2)}
-                    </span>
-                    <span className="text-sm text-estore-text-light line-through">
-                      ${product.oldPrice.toFixed(2)}
-                    </span>
+                <div className="p-4">
+                  <h3 className="font-semibold text-estore-dark mb-2">{product.title}</h3>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="font-bold text-estore-dark">{product.price}</span>
+                    <span className="text-gray-500 line-through text-sm">{product.oldPrice}</span>
                   </div>
                   {product.colors.length > 0 && (
-                    <div className="flex gap-2 mb-3">
+                    <div className="flex gap-2 mb-4">
                       {product.colors.map((color, index) => (
-                        <span
+                        <div
                           key={index}
                           className="w-4 h-4 rounded-full border-2 border-gray-200"
                           style={{ backgroundColor: color }}
-                        ></span>
+                        />
                       ))}
                     </div>
                   )}
                   <div className="flex gap-2">
-                    <button className="bg-gray-100 border border-gray-300 text-estore-dark rounded-full px-5 py-2 text-sm font-medium hover:bg-gray-200 hover:border-estore-dark transition-all duration-200">
+                    <button className="bg-gray-100 text-estore-dark px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors">
                       View more
                     </button>
-                    <button className="bg-gray-100 border border-gray-300 text-estore-dark rounded-full px-5 py-2 text-sm font-medium hover:bg-gray-200 hover:border-estore-dark transition-all duration-200">
+                    <button className="bg-gray-100 text-estore-dark px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors">
                       Add to Cart
                     </button>
                   </div>
@@ -134,7 +123,7 @@ const NewInSection = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

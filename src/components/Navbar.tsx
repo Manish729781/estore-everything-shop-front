@@ -9,10 +9,26 @@ const Navbar = () => {
 
   const handleNavClick = (link: string) => {
     setActiveLink(link);
-    if (link === 'Contact') {
-      const contactSection = document.getElementById('contact');
-      if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth' });
+    
+    // Scroll to top for Home
+    if (link === 'Home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    
+    // Scroll to specific sections
+    const sectionMap: { [key: string]: string } = {
+      'Collection': 'new-in-section',
+      'Featured': 'featured-categories',
+      'Blog': 'blog-section',
+      'Contact': 'contact'
+    };
+    
+    const sectionId = sectionMap[link];
+    if (sectionId) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
       }
     }
   };
