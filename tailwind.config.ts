@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'playfair': ['Playfair Display', 'serif'],
+				'inter': ['Inter', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -61,7 +66,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				'estore-navy': '#181c2b',
+				'estore-beige': '#f6e7d8',
+				'estore-dark': '#23243a',
+				'estore-light-gray': '#f5f5f5',
+				'estore-medium-gray': '#e0e0e0',
+				'estore-text-light': '#888',
+			},
+			backgroundImage: {
+				'estore-gradient': 'linear-gradient(90deg, #181c2b 0%, #f6e7d8 100%)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
