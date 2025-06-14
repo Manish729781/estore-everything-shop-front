@@ -36,7 +36,7 @@ const HeroSection = () => {
   ];
 
   return (
-    <div className="relative bg-estore-gradient text-white overflow-hidden">
+    <div className="relative bg-gray-900 text-white overflow-hidden">
       {/* Background Color Overlays */}
       {/* Top Left Corner */}
       <div 
