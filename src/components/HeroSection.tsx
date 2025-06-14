@@ -36,8 +36,27 @@ const HeroSection = () => {
   ];
 
   return (
-    <div className="bg-estore-gradient text-white">
-      <div className="max-w-7xl mx-auto px-8 py-12">
+    <div className="relative bg-estore-gradient text-white overflow-hidden">
+      {/* Background Color Overlays */}
+      {/* Top Left Corner */}
+      <div 
+        className="absolute top-0 left-0 w-64 h-64 rounded-br-full opacity-80"
+        style={{ backgroundColor: '#272A31' }}
+      ></div>
+      
+      {/* Top Right Corner */}
+      <div 
+        className="absolute top-0 right-0 w-64 h-64 rounded-bl-full opacity-80"
+        style={{ backgroundColor: '#272A31' }}
+      ></div>
+      
+      {/* Bottom Left Area */}
+      <div 
+        className="absolute bottom-0 left-0 w-80 h-40 rounded-tr-full opacity-70"
+        style={{ backgroundColor: '#6C5146' }}
+      ></div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-8 py-12">
         {/* Hero Content - Horizontal Layout */}
         <div className="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-8">
           <div className="flex-1">
