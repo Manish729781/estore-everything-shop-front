@@ -48,6 +48,10 @@ const NewInSection = () => {
   const handleViewMore = (productId: number) => {
     navigate(`/product/${productId}`);
   };
+  
+  const handleGoToCheckout = () => {
+    navigate('/checkout');
+  };
 
   return (
     <section id="new-in-section" className="bg-white">
@@ -124,13 +128,26 @@ const NewInSection = () => {
                     >
                       View more
                     </button>
-                    <button className="bg-gray-100 text-estore-dark px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors">
+                    <button 
+                      onClick={handleGoToCheckout}
+                      className="bg-gray-100 text-estore-dark px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors"
+                    >
                       Add to Cart
                     </button>
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+          
+          {/* Checkout Button */}
+          <div className="mt-8 text-center">
+            <button
+              onClick={handleGoToCheckout}
+              className="bg-estore-dark text-white px-8 py-3 rounded-full font-medium hover:bg-estore-dark/90 transition-colors"
+            >
+              Go to Checkout
+            </button>
           </div>
         </div>
       </div>

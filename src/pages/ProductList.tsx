@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, ShoppingCart } from 'lucide-react';
 
 const ProductList = () => {
   const navigate = useNavigate();
@@ -114,6 +114,17 @@ const ProductList = () => {
           <p className="text-lg text-estore-text-light max-w-2xl mx-auto">
             Discover our complete collection of premium products across all categories
           </p>
+        </div>
+
+        {/* Checkout Button */}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={() => navigate('/checkout')}
+            className="flex items-center gap-2 bg-estore-dark text-white px-4 py-2 rounded-full hover:bg-estore-dark/90 transition-colors"
+          >
+            <ShoppingCart size={16} />
+            Go to Checkout
+          </button>
         </div>
 
         {/* Search and Filter Section */}
