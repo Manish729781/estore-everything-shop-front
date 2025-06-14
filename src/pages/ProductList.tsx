@@ -17,8 +17,8 @@ const ProductList = () => {
       id: 1,
       image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
       title: 'Minimalism Shirts',
-      price: '$49.00',
-      oldPrice: '$69.00',
+      price: '₹4,067',
+      oldPrice: '₹5,727',
       category: 'Wardrobe wear',
       colors: ['#b6a07a', '#e5e5e5', '#c2b59b']
     },
@@ -26,8 +26,8 @@ const ProductList = () => {
       id: 2,
       image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
       title: 'Quicker Sneakers',
-      price: '$49.00',
-      oldPrice: '$69.00',
+      price: '₹4,067',
+      oldPrice: '₹5,727',
       category: 'Footwear',
       colors: ['#fff', '#e5e5e5', '#1a223a']
     },
@@ -35,8 +35,8 @@ const ProductList = () => {
       id: 3,
       image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
       title: 'Gentle Body Care Cleanser',
-      price: '$49.00',
-      oldPrice: '$69.00',
+      price: '₹4,067',
+      oldPrice: '₹5,727',
       category: 'Skincare',
       colors: []
     },
@@ -44,8 +44,8 @@ const ProductList = () => {
       id: 4,
       image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80',
       title: 'Gold Dipped U Shaped Earrings',
-      price: '$80.00',
-      oldPrice: '$100.00',
+      price: '₹6,640',
+      oldPrice: '₹8,300',
       category: 'Handbag',
       colors: ['#b6a07a', '#c2b59b']
     },
@@ -53,8 +53,8 @@ const ProductList = () => {
       id: 5,
       image: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=400&q=80',
       title: 'Classic Denim Jacket',
-      price: '$89.00',
-      oldPrice: '$120.00',
+      price: '₹7,387',
+      oldPrice: '₹9,960',
       category: 'Wardrobe wear',
       colors: ['#4a5568', '#2d3748']
     },
@@ -62,8 +62,8 @@ const ProductList = () => {
       id: 6,
       image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=400&q=80',
       title: 'Running Sneakers',
-      price: '$75.00',
-      oldPrice: '$95.00',
+      price: '₹6,225',
+      oldPrice: '₹7,885',
       category: 'Footwear',
       colors: ['#000', '#fff', '#e53e3e']
     },
@@ -71,8 +71,8 @@ const ProductList = () => {
       id: 7,
       image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=400&q=80',
       title: 'Vitamin C Serum',
-      price: '$35.00',
-      oldPrice: '$45.00',
+      price: '₹2,905',
+      oldPrice: '₹3,735',
       category: 'Skincare',
       colors: []
     },
@@ -80,8 +80,8 @@ const ProductList = () => {
       id: 8,
       image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=400&q=80',
       title: 'Leather Handbag',
-      price: '$120.00',
-      oldPrice: '$150.00',
+      price: '₹9,960',
+      oldPrice: '₹12,450',
       category: 'Handbag',
       colors: ['#8b4513', '#000', '#654321']
     }

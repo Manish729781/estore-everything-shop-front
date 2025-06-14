@@ -1,3 +1,4 @@
+
 import { useNavigate } from 'react-router-dom';
 
 const NewInSection = () => {
@@ -8,8 +9,8 @@ const NewInSection = () => {
       id: 1,
       image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
       title: 'Minimalism Shirts',
-      price: '$49.00',
-      oldPrice: '$69.00',
+      price: '₹4,067',
+      oldPrice: '₹5,727',
       tag: 'Wardrobe wear',
       colors: ['#b6a07a', '#e5e5e5', '#c2b59b']
     },
@@ -17,8 +18,8 @@ const NewInSection = () => {
       id: 2,
       image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
       title: 'Quicker Sneakers',
-      price: '$49.00',
-      oldPrice: '$69.00',
+      price: '₹4,067',
+      oldPrice: '₹5,727',
       tag: 'Footwear',
       colors: ['#fff', '#e5e5e5', '#1a223a']
     },
@@ -26,8 +27,8 @@ const NewInSection = () => {
       id: 3,
       image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
       title: 'Gentle Body Care Cleanser',
-      price: '$49.00',
-      oldPrice: '$69.00',
+      price: '₹4,067',
+      oldPrice: '₹5,727',
       tag: 'Fragrance',
       colors: []
     },
@@ -35,8 +36,8 @@ const NewInSection = () => {
       id: 4,
       image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
       title: 'Gold Dipped U Shaped Earrings',
-      price: '$80.00',
-      oldPrice: '$100.00',
+      price: '₹6,640',
+      oldPrice: '₹8,300',
       tag: 'Handbag',
       colors: ['#b6a07a', '#c2b59b']
     }

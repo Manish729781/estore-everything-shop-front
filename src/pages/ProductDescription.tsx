@@ -92,8 +92,8 @@ const ProductDescription = () => {
 
             {/* Price */}
             <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold text-estore-dark">$80.00</span>
-              <span className="text-xl text-gray-500 line-through">$100.00</span>
+              <span className="text-3xl font-bold text-estore-dark">₹6,640</span>
+              <span className="text-xl text-gray-500 line-through">₹8,300</span>
               <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
                 ✓ 12 In Stock
               </span>
