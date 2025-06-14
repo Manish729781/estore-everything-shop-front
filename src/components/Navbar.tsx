@@ -136,6 +136,11 @@ const Navbar = () => {
     navigate('/wishlist');
   };
 
+  const handleCartClick = () => {
+    console.log('Cart clicked');
+    navigate('/cart');
+  };
+
   return (
     <header className="w-full bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-18">
@@ -232,7 +237,10 @@ const Navbar = () => {
                 </span>
               )}
             </button>
-            <button className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 relative">
+            <button 
+              onClick={handleCartClick}
+              className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 relative"
+            >
               <ShoppingCart className="w-5 h-5 text-blue-600" />
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-estore-dark text-white text-xs rounded-full flex items-center justify-center">2</span>
             </button>
@@ -260,7 +268,10 @@ const Navbar = () => {
           </button>
           
           {/* Mobile Cart */}
-          <button className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center relative">
+          <button 
+            onClick={handleCartClick}
+            className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center relative"
+          >
             <ShoppingCart className="w-5 h-5 text-blue-600" />
             <span className="absolute -top-1 -right-1 w-4 h-4 bg-estore-dark text-white text-xs rounded-full flex items-center justify-center">2</span>
           </button>
