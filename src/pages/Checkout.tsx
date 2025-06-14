@@ -1,6 +1,5 @@
-
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Input } from '@/components/ui/input';
@@ -10,25 +9,65 @@ import { useToast } from '@/hooks/use-toast';
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   
-  // Mock cart items - in a real app these would come from a cart context or state
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      title: 'Minimalism Shirts',
-      image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
-      price: '₹4,067',
-      quantity: 1
-    },
-    {
-      id: 3,
-      title: 'Gentle Body Care Cleanser',
-      image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-      price: '₹4,067',
-      quantity: 1
+  // Get product data from navigation state
+  const productData = location.state?.productData;
+  const fromBuyNow = location.state?.fromBuyNow;
+  
+  // Initialize cart items based on whether we have product data
+  const [cartItems, setCartItems] = useState(() => {
+    if (productData) {
+      return [{
+        id: productData.id,
+        title: productData.title,
+        image: productData.image,
+        price: productData.price,
+        originalPrice: productData.originalPrice,
+        quantity: productData.quantity,
+        selectedColor: productData.selectedColor,
+        selectedSize: productData.selectedSize,
+        specifications: productData.specifications
+      }];
     }
-  ]);
+    
+    // Default mock cart items if no product data is passed
+    return [
+      {
+        id: 1,
+        title: 'Minimalism Shirts',
+        image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
+        price: '₹4,067',
+        quantity: 1
+      },
+      {
+        id: 3,
+        title: 'Gentle Body Care Cleanser',
+        image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
+        price: '₹4,067',
+        quantity: 1
+      }
+    ];
+  });
+  
+  // Mock cart items - in a real app these would come from a cart context or state
+  // const [cartItems, setCartItems] = useState([
+  //   {
+  //     id: 1,
+  //     title: 'Minimalism Shirts',
+  //     image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
+  //     price: '₹4,067',
+  //     quantity: 1
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'Gentle Body Care Cleanser',
+  //     image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
+  //     price: '₹4,067',
+  //     quantity: 1
+  //   }
+  // ]);
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -72,10 +111,17 @@ const Checkout = () => {
     setTimeout(() => navigate('/'), 2000);
   };
 
-  // Calculate subtotal and total
-  const subtotal = '₹8,134';
-  const shipping = '₹150';
-  const total = '₹8,284';
+  // Calculate subtotal and total dynamically
+  const calculateSubtotal = () => {
+    return cartItems.reduce((total, item) => {
+      const price = parseFloat(item.price.replace('₹', '').replace(',', ''));
+      return total + (price * item.quantity);
+    }, 0);
+  };
+
+  const subtotal = calculateSubtotal();
+  const shipping = 150;
+  const total = subtotal + shipping;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -85,6 +131,15 @@ const Checkout = () => {
         <h1 className="text-4xl md:text-5xl font-playfair font-bold text-estore-dark mb-8 text-center">
           Checkout
         </h1>
+        
+        {/* Show message if came from Buy Now */}
+        {fromBuyNow && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+            <p className="text-green-800 text-center">
+              🛍️ Product added for checkout! Complete your purchase below.
+            </p>
+          </div>
+        )}
         
         {cartItems.length === 0 ? (
           <div className="text-center py-16">
@@ -105,18 +160,42 @@ const Checkout = () => {
               
               <div className="space-y-4">
                 {cartItems.map(item => (
-                  <div key={item.id} className="flex items-center gap-4 border-b pb-4">
-                    <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded-md" />
-                    <div className="flex-1">
-                      <h3 className="font-medium text-estore-dark">{item.title}</h3>
-                      <div className="flex justify-between mt-1">
-                        <span className="text-gray-600">Quantity: {item.quantity}</span>
-                        <span className="font-semibold">{item.price}</span>
+                  <div key={item.id} className="border-b pb-4">
+                    <div className="flex items-center gap-4">
+                      <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded-md" />
+                      <div className="flex-1">
+                        <h3 className="font-medium text-estore-dark">{item.title}</h3>
+                        <div className="text-sm text-gray-600 mt-1">
+                          <div>Quantity: {item.quantity}</div>
+                          {item.selectedColor && <div>Color: {item.selectedColor}</div>}
+                          {item.selectedSize && <div>Size: {item.selectedSize}</div>}
+                        </div>
+                        <div className="flex justify-between mt-2">
+                          <span className="font-semibold">{item.price}</span>
+                          {item.originalPrice && (
+                            <span className="text-gray-500 line-through text-sm">{item.originalPrice}</span>
+                          )}
+                        </div>
                       </div>
                     </div>
+                    
+                    {/* Show product specifications if available */}
+                    {item.specifications && (
+                      <div className="mt-3 p-2 bg-gray-50 rounded text-xs">
+                        <div className="grid grid-cols-2 gap-1">
+                          {item.specifications.map((spec, index) => (
+                            <div key={index}>
+                              <span className="text-gray-500">{spec.label}:</span>
+                              <span className="ml-1">{spec.value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
                     <button 
                       onClick={() => removeItem(item.id)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-red-500 hover:text-red-700 text-sm mt-2"
                     >
                       Remove
                     </button>
@@ -127,16 +206,16 @@ const Checkout = () => {
               <div className="mt-6 space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-semibold">{subtotal}</span>
+                  <span className="font-semibold">₹{subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
-                  <span className="font-semibold">{shipping}</span>
+                  <span className="font-semibold">₹{shipping}</span>
                 </div>
                 <div className="border-t pt-2 mt-2">
                   <div className="flex justify-between">
                     <span className="text-lg font-bold text-estore-dark">Total</span>
-                    <span className="text-lg font-bold text-estore-dark">{total}</span>
+                    <span className="text-lg font-bold text-estore-dark">₹{total.toLocaleString()}</span>
                   </div>
                 </div>
               </div>

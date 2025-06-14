@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Minus, Plus, Heart, Share2 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const ProductDescription = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState('gold');
@@ -33,6 +36,40 @@ const ProductDescription = () => {
     { label: 'Weight', value: 'Gross 1,422 G' },
     { label: 'Purity', value: '14 KT' }
   ];
+
+  // Product data to capture
+  const productData = {
+    id: parseInt(id || '1'),
+    title: 'Gold Dipped U Shaped Earrings',
+    image: productImages[selectedImage],
+    price: '₹6,640',
+    originalPrice: '₹8,300',
+    quantity: quantity,
+    selectedColor: selectedColor,
+    selectedSize: selectedSize,
+    specifications: specifications
+  };
+
+  const handleBuyNow = () => {
+    // Navigate to checkout with product data
+    navigate('/checkout', { 
+      state: { 
+        productData,
+        fromBuyNow: true 
+      } 
+    });
+  };
+
+  const handleAddToCart = () => {
+    // For now, navigate to checkout with product data
+    // In a real app, you'd add to cart state/context
+    navigate('/checkout', { 
+      state: { 
+        productData,
+        fromAddToCart: true 
+      } 
+    });
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -80,7 +117,7 @@ const ProductDescription = () => {
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl md:text-4xl font-playfair font-bold text-estore-dark mb-4">
-                Gold Dipped U Shaped Earrings
+                {productData.title}
               </h1>
               <p className="text-gray-600 text-lg leading-relaxed">
                 Your new go-to modern hoop. The custom U-Unit shape and endless 
@@ -92,8 +129,8 @@ const ProductDescription = () => {
 
             {/* Price */}
             <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold text-estore-dark">₹6,640</span>
-              <span className="text-xl text-gray-500 line-through">₹8,300</span>
+              <span className="text-3xl font-bold text-estore-dark">{productData.price}</span>
+              <span className="text-xl text-gray-500 line-through">{productData.originalPrice}</span>
               <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
                 ✓ 12 In Stock
               </span>
@@ -172,10 +209,17 @@ const ProductDescription = () => {
 
             {/* Action Buttons */}
             <div className="space-y-4">
-              <Button className="w-full bg-estore-dark text-white py-4 text-lg font-medium rounded-xl hover:bg-estore-dark/90">
+              <Button 
+                onClick={handleBuyNow}
+                className="w-full bg-estore-dark text-white py-4 text-lg font-medium rounded-xl hover:bg-estore-dark/90"
+              >
                 Buy Now
               </Button>
-              <Button variant="outline" className="w-full py-4 text-lg font-medium rounded-xl border-estore-dark text-estore-dark hover:bg-estore-dark hover:text-white">
+              <Button 
+                onClick={handleAddToCart}
+                variant="outline" 
+                className="w-full py-4 text-lg font-medium rounded-xl border-estore-dark text-estore-dark hover:bg-estore-dark hover:text-white"
+              >
                 Add to Cart
               </Button>
             </div>
@@ -193,7 +237,6 @@ const ProductDescription = () => {
               </div>
             </div>
 
-            {/* Features */}
             <div className="space-y-3 pt-6 border-t border-gray-200">
               <div className="flex items-center gap-3">
                 <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
