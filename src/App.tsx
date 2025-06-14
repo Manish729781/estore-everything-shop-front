@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import ProductDescription from "./pages/ProductDescription";
 import ProductList from "./pages/ProductList";
 import Wishlist from "./pages/Wishlist";
+import Cart from "./pages/Cart";
 import Address from "./pages/Address";
 import Payment from "./pages/Payment";
 import Checkout from "./pages/Checkout";
