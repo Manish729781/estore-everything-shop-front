@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { CreditCard, Wallet } from 'lucide-react';
+import { CreditCard, Wallet, Smartphone, Building2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Payment = () => {
@@ -79,6 +79,82 @@ const Payment = () => {
             <h2 className="text-xl font-semibold text-estore-dark mb-6">Payment Method</h2>
             
             <div className="space-y-4 mb-8">
+              {/* UPI Payment */}
+              <div className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
+                paymentMethod === 'upi' ? 'border-estore-dark bg-blue-50' : 'border-gray-200'
+              }`} onClick={() => setPaymentMethod('upi')}>
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="radio" 
+                    name="payment" 
+                    value="upi" 
+                    checked={paymentMethod === 'upi'}
+                    onChange={() => setPaymentMethod('upi')}
+                    className="w-4 h-4"
+                  />
+                  <Smartphone className="w-5 h-5 text-estore-dark" />
+                  <span className="font-medium">UPI Payment</span>
+                </div>
+                {paymentMethod === 'upi' && (
+                  <div className="mt-4 space-y-3">
+                    <input 
+                      type="text" 
+                      placeholder="Enter UPI ID (e.g., yourname@paytm)" 
+                      className="w-full p-3 border border-gray-300 rounded-lg"
+                    />
+                    <div className="text-sm text-gray-600">
+                      <p className="font-medium mb-2">Popular UPI Apps:</p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <span>• PhonePe</span>
+                        <span>• Google Pay</span>
+                        <span>• Paytm</span>
+                        <span>• Amazon Pay</span>
+                        <span>• BHIM</span>
+                        <span>• WhatsApp Pay</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Digital Wallets */}
+              <div className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
+                paymentMethod === 'wallet' ? 'border-estore-dark bg-blue-50' : 'border-gray-200'
+              }`} onClick={() => setPaymentMethod('wallet')}>
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="radio" 
+                    name="payment" 
+                    value="wallet" 
+                    checked={paymentMethod === 'wallet'}
+                    onChange={() => setPaymentMethod('wallet')}
+                    className="w-4 h-4"
+                  />
+                  <Wallet className="w-5 h-5 text-estore-dark" />
+                  <span className="font-medium">Digital Wallets</span>
+                </div>
+                {paymentMethod === 'wallet' && (
+                  <div className="mt-4 grid grid-cols-2 gap-3">
+                    <button className="p-3 border border-gray-300 rounded-lg text-left hover:bg-gray-50">
+                      <div className="font-medium">Paytm Wallet</div>
+                      <div className="text-sm text-gray-600">Pay with Paytm balance</div>
+                    </button>
+                    <button className="p-3 border border-gray-300 rounded-lg text-left hover:bg-gray-50">
+                      <div className="font-medium">Amazon Pay</div>
+                      <div className="text-sm text-gray-600">Use Amazon Pay balance</div>
+                    </button>
+                    <button className="p-3 border border-gray-300 rounded-lg text-left hover:bg-gray-50">
+                      <div className="font-medium">MobiKwik</div>
+                      <div className="text-sm text-gray-600">Pay with MobiKwik wallet</div>
+                    </button>
+                    <button className="p-3 border border-gray-300 rounded-lg text-left hover:bg-gray-50">
+                      <div className="font-medium">Ola Money</div>
+                      <div className="text-sm text-gray-600">Use Ola Money wallet</div>
+                    </button>
+                  </div>
+                )}
+              </div>
+              
               {/* Credit/Debit Card */}
               <div className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
                 paymentMethod === 'card' ? 'border-estore-dark bg-blue-50' : 'border-gray-200'
@@ -119,33 +195,44 @@ const Payment = () => {
                       placeholder="Cardholder Name" 
                       className="w-full p-3 border border-gray-300 rounded-lg"
                     />
+                    <div className="text-sm text-gray-600">
+                      We accept Visa, MasterCard, RuPay, American Express
+                    </div>
                   </div>
                 )}
               </div>
-              
-              {/* UPI Payment */}
+
+              {/* Net Banking */}
               <div className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
-                paymentMethod === 'upi' ? 'border-estore-dark bg-blue-50' : 'border-gray-200'
-              }`} onClick={() => setPaymentMethod('upi')}>
+                paymentMethod === 'netbanking' ? 'border-estore-dark bg-blue-50' : 'border-gray-200'
+              }`} onClick={() => setPaymentMethod('netbanking')}>
                 <div className="flex items-center gap-3">
                   <input 
                     type="radio" 
                     name="payment" 
-                    value="upi" 
-                    checked={paymentMethod === 'upi'}
-                    onChange={() => setPaymentMethod('upi')}
+                    value="netbanking" 
+                    checked={paymentMethod === 'netbanking'}
+                    onChange={() => setPaymentMethod('netbanking')}
                     className="w-4 h-4"
                   />
-                  <Wallet className="w-5 h-5 text-estore-dark" />
-                  <span className="font-medium">UPI Payment</span>
+                  <Building2 className="w-5 h-5 text-estore-dark" />
+                  <span className="font-medium">Net Banking</span>
                 </div>
-                {paymentMethod === 'upi' && (
+                {paymentMethod === 'netbanking' && (
                   <div className="mt-4">
-                    <input 
-                      type="text" 
-                      placeholder="Enter UPI ID" 
-                      className="w-full p-3 border border-gray-300 rounded-lg"
-                    />
+                    <select className="w-full p-3 border border-gray-300 rounded-lg">
+                      <option value="">Select your bank</option>
+                      <option value="sbi">State Bank of India</option>
+                      <option value="hdfc">HDFC Bank</option>
+                      <option value="icici">ICICI Bank</option>
+                      <option value="axis">Axis Bank</option>
+                      <option value="kotak">Kotak Mahindra Bank</option>
+                      <option value="pnb">Punjab National Bank</option>
+                      <option value="bob">Bank of Baroda</option>
+                      <option value="canara">Canara Bank</option>
+                      <option value="union">Union Bank of India</option>
+                      <option value="other">Other Banks</option>
+                    </select>
                   </div>
                 )}
               </div>
@@ -167,7 +254,7 @@ const Payment = () => {
                 </div>
                 {paymentMethod === 'cod' && (
                   <p className="mt-2 text-sm text-gray-600">
-                    Pay when your order is delivered. Additional charges may apply.
+                    Pay when your order is delivered. Additional charges of ₹50 may apply.
                   </p>
                 )}
               </div>
@@ -185,9 +272,15 @@ const Payment = () => {
                   <span>Shipping</span>
                   <span>₹150</span>
                 </div>
+                {paymentMethod === 'cod' && (
+                  <div className="flex justify-between">
+                    <span>COD Charges</span>
+                    <span>₹50</span>
+                  </div>
+                )}
                 <div className="flex justify-between font-semibold text-lg border-t pt-2">
                   <span>Total</span>
-                  <span>₹3,523</span>
+                  <span>₹{paymentMethod === 'cod' ? '3,573' : '3,523'}</span>
                 </div>
               </div>
             </div>
