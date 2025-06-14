@@ -173,35 +173,37 @@ const ProductDescription = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-500 mb-8">
+        <nav className="text-sm text-gray-500 mb-4 sm:mb-8 px-2">
           <span>{t('nav.home')}</span> / <span>{t('nav.collection')}</span> / <span>{currentProduct.category}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Image Gallery */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4 order-1">
             {/* Main Image */}
-            <div className="aspect-square bg-gray-100 rounded-2xl overflow-hidden">
+            <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg">
               <img
                 src={currentProduct.images[selectedImage]}
                 alt={`${currentProduct.title} - Angle ${selectedImage + 1}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>
             
             {/* Thumbnail Images - Different Angles */}
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-2 sm:gap-4 px-2 sm:px-0">
               {currentProduct.images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 transition-colors ${
-                    selectedImage === index ? 'border-estore-dark' : 'border-transparent'
+                  className={`aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg sm:rounded-xl overflow-hidden border-2 transition-all duration-200 ${
+                    selectedImage === index 
+                      ? 'border-estore-dark shadow-lg scale-105' 
+                      : 'border-transparent hover:border-gray-300 hover:shadow-md'
                   }`}
                   title={`View angle ${index + 1}`}
                 >
@@ -215,52 +217,58 @@ const ProductDescription = () => {
             </div>
             
             {/* Image Counter */}
-            <div className="text-center text-sm text-gray-500">
+            <div className="text-center text-sm text-gray-500 font-medium">
               {selectedImage + 1} / {currentProduct.images.length} {t('product.views')}
             </div>
           </div>
 
           {/* Product Details */}
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-playfair font-bold text-estore-dark mb-4">
+          <div className="space-y-4 sm:space-y-6 order-2 px-2 sm:px-0">
+            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-playfair font-bold text-estore-dark mb-3 sm:mb-4 leading-tight">
                 {currentProduct.title}
               </h1>
-              <p className="text-gray-600 text-lg leading-relaxed">
+              <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
                 {currentProduct.description}
               </p>
             </div>
 
             {/* Price */}
-            <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold text-estore-dark">{currentProduct.price}</span>
-              <span className="text-xl text-gray-500 line-through">{currentProduct.originalPrice}</span>
-              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                ✓ {currentProduct.inStock ? t('product.inStock') : t('product.outOfStock')}
-              </span>
+            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                <span className="text-2xl sm:text-3xl font-bold text-estore-dark">{currentProduct.price}</span>
+                <span className="text-lg sm:text-xl text-gray-500 line-through">{currentProduct.originalPrice}</span>
+                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap">
+                  ✓ {currentProduct.inStock ? t('product.inStock') : t('product.outOfStock')}
+                </span>
+              </div>
             </div>
 
             {/* Specifications */}
-            <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-xl">
-              {currentProduct.specifications.map((spec, index) => (
-                <div key={index} className="text-sm">
-                  <span className="text-gray-500">{spec.label}:</span>
-                  <span className="ml-2 font-medium text-estore-dark">{spec.value}</span>
-                </div>
-              ))}
+            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                {currentProduct.specifications.map((spec, index) => (
+                  <div key={index} className="text-sm border-b border-gray-100 pb-2 last:border-b-0">
+                    <span className="text-gray-500 block sm:inline">{spec.label}:</span>
+                    <span className="ml-0 sm:ml-2 font-medium text-estore-dark block sm:inline">{spec.value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Color Selection */}
             {currentProduct.colors.length > 0 && (
-              <div>
+              <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
                 <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.chooseColor')}</h3>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                   {currentProduct.colors.map((color) => (
                     <button
                       key={color.name}
                       onClick={() => setSelectedColor(color.name)}
-                      className={`w-8 h-8 rounded-full border-2 transition-all ${
-                        selectedColor === color.name ? 'border-estore-dark scale-110' : 'border-gray-300'
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 transition-all duration-200 ${
+                        selectedColor === color.name 
+                          ? 'border-estore-dark scale-110 shadow-lg' 
+                          : 'border-gray-300 hover:border-estore-dark hover:scale-105'
                       }`}
                       style={{ backgroundColor: color.color }}
                       title={color.name}
@@ -271,17 +279,17 @@ const ProductDescription = () => {
             )}
 
             {/* Size Selection */}
-            <div>
+            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
               <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.selectSize')}</h3>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 {currentProduct.sizes.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 rounded-lg border-2 font-medium transition-colors ${
+                    className={`px-4 py-2 sm:px-5 sm:py-3 rounded-xl border-2 font-medium transition-all duration-200 min-w-[50px] ${
                       selectedSize === size 
-                        ? 'border-estore-dark bg-estore-dark text-white' 
-                        : 'border-gray-300 text-estore-dark hover:border-estore-dark'
+                        ? 'border-estore-dark bg-estore-dark text-white shadow-lg' 
+                        : 'border-gray-300 text-estore-dark hover:border-estore-dark hover:shadow-md'
                     }`}
                   >
                     {size}
@@ -291,34 +299,34 @@ const ProductDescription = () => {
             </div>
 
             {/* Quantity */}
-            <div>
+            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
               <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.quantity')}</h3>
               <div className="flex items-center gap-4">
-                <div className="flex items-center border border-gray-300 rounded-lg">
+                <div className="flex items-center border-2 border-gray-300 rounded-xl overflow-hidden">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-2 hover:bg-gray-100 rounded-l-lg"
+                    className="p-3 sm:p-4 hover:bg-gray-100 transition-colors"
                   >
-                    <Minus className="w-4 h-4" />
+                    <Minus className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
-                  <span className="px-4 py-2 border-x border-gray-300 min-w-[60px] text-center">
+                  <span className="px-4 sm:px-6 py-3 sm:py-4 border-x-2 border-gray-300 min-w-[60px] sm:min-w-[80px] text-center font-medium">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="p-2 hover:bg-gray-100 rounded-r-lg"
+                    className="p-3 sm:p-4 hover:bg-gray-100 transition-colors"
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4 sticky bottom-4 sm:static">
               <Button 
                 onClick={handleBuyNow}
-                className="w-full bg-estore-dark text-white py-4 text-lg font-medium rounded-xl hover:bg-estore-dark/90"
+                className="w-full bg-gradient-to-r from-estore-dark to-estore-navy text-white py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
                 disabled={!currentProduct.inStock}
               >
                 {currentProduct.inStock ? t('product.buyNow') : t('product.outOfStock')}
@@ -326,44 +334,46 @@ const ProductDescription = () => {
               <Button 
                 onClick={handleAddToCart}
                 variant="outline" 
-                className="w-full py-4 text-lg font-medium rounded-xl border-estore-dark text-estore-dark hover:bg-estore-dark hover:text-white"
+                className="w-full py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-xl border-2 border-estore-dark text-estore-dark hover:bg-estore-dark hover:text-white transform hover:scale-[1.02] transition-all duration-200"
                 disabled={!currentProduct.inStock}
               >
                 {t('product.addToCart')}
               </Button>
             </div>
 
-            {/* Share */}
-            <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-              <span className="text-sm font-medium text-estore-dark">{t('product.share')}</span>
-              <div className="flex gap-3">
-                <button className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
-                  <Share2 className="w-4 h-4" />
-                </button>
-                <button className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
-                  <Heart className="w-4 h-4" />
-                </button>
+            {/* Share & Features */}
+            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
+              <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+                <span className="text-sm font-medium text-estore-dark">{t('product.share')}</span>
+                <div className="flex gap-3">
+                  <button className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
+                    <Share2 className="w-4 h-4" />
+                  </button>
+                  <button className="w-10 h-10 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
+                    <Heart className="w-4 h-4 text-red-600" />
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div className="space-y-3 pt-6 border-t border-gray-200">
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                  <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center">
+                    <div className="w-3 h-3 bg-green-600 rounded-full"></div>
+                  </div>
+                  <span className="text-sm text-gray-600 font-medium">{t('product.securePayment')}</span>
                 </div>
-                <span className="text-sm text-gray-600">{t('product.securePayment')}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
+                    <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+                  </div>
+                  <span className="text-sm text-gray-600 font-medium">{t('product.freeShipping')}</span>
                 </div>
-                <span className="text-sm text-gray-600">{t('product.freeShipping')}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center">
+                    <div className="w-3 h-3 bg-purple-600 rounded-full"></div>
+                  </div>
+                  <span className="text-sm text-gray-600 font-medium">{t('product.delivery')}</span>
                 </div>
-                <span className="text-sm text-gray-600">{t('product.delivery')}</span>
               </div>
             </div>
           </div>

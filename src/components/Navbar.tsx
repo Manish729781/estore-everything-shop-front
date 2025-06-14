@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Search, User, Heart, ShoppingCart, ChevronDown } from 'lucide-react';
+import { Search, User, Heart, ShoppingCart, ChevronDown, Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
@@ -16,6 +16,7 @@ const Navbar = () => {
   const { selectedLanguage, setSelectedLanguage, t } = useLanguage();
   const [activeLink, setActiveLink] = useState('Home');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
     { key: 'Home', label: t('nav.home') },
@@ -130,51 +131,54 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-8 flex items-center justify-between h-16">
+    <header className="w-full bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-18">
         {/* Logo */}
         <div 
-          className="text-2xl font-playfair font-bold text-estore-dark tracking-wide cursor-pointer"
+          className="text-xl sm:text-2xl font-playfair font-bold text-estore-dark tracking-wide cursor-pointer flex-shrink-0"
           onClick={() => handleNavClick('Home')}
         >
           Estore
         </div>
 
-        {/* Navigation Links */}
-        <nav className="hidden md:flex gap-6">
+        {/* Desktop Navigation Links */}
+        <nav className="hidden lg:flex gap-6 xl:gap-8">
           {navLinks.map((link) => (
             <button
               key={link.key}
               onClick={() => handleNavClick(link.key)}
-              className={`text-lg font-medium transition-all duration-200 ${
+              className={`text-base xl:text-lg font-medium transition-all duration-200 relative ${
                 activeLink === link.key
-                  ? 'text-estore-dark font-bold opacity-100'
+                  ? 'text-estore-dark font-bold'
                   : 'text-estore-dark opacity-80 hover:opacity-100 hover:font-bold'
               }`}
             >
               {link.label}
+              {activeLink === link.key && (
+                <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-estore-dark rounded-full"></div>
+              )}
             </button>
           ))}
         </nav>
 
-        {/* Actions */}
-        <div className="flex items-center gap-5">
+        {/* Desktop Actions */}
+        <div className="hidden lg:flex items-center gap-4 xl:gap-6">
           {/* Enhanced Search Box */}
-          <form onSubmit={handleSearchSubmit} className="hidden sm:flex items-center gap-2 bg-estore-light-gray rounded-full px-4 py-2 border border-gray-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100">
-            <Search className="w-5 h-5 text-estore-text-light cursor-pointer" onClick={handleSearchSubmit} />
+          <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 bg-gradient-to-r from-gray-50 to-gray-100 rounded-full px-4 py-2.5 border border-gray-200 focus-within:border-estore-dark focus-within:ring-2 focus-within:ring-estore-dark/20 transition-all duration-200 min-w-[200px]">
+            <Search className="w-4 h-4 text-gray-500 cursor-pointer" onClick={handleSearchSubmit} />
             <input
               type="text"
               value={searchQuery}
               onChange={handleSearchInputChange}
               onKeyPress={handleSearchKeyPress}
               placeholder={t('search.placeholder')}
-              className="bg-transparent border-none outline-none text-estore-dark text-base w-32 lg:w-40 placeholder:text-gray-400"
+              className="bg-transparent border-none outline-none text-estore-dark text-sm flex-1 placeholder:text-gray-400"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="text-gray-400 hover:text-gray-600 ml-1"
+                className="text-gray-400 hover:text-gray-600 ml-1 text-lg leading-none"
               >
                 ×
               </button>
@@ -182,40 +186,123 @@ const Navbar = () => {
           </form>
 
           {/* Enhanced Language & Country Dropdown */}
-          <div className="hidden lg:flex">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 hover:bg-gray-50 transition-colors">
-                  <span className="text-sm font-medium text-estore-dark">{selectedLanguage.flag} {selectedLanguage.language}</span>
-                  <ChevronDown className="w-4 h-4 text-estore-text-light" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 max-h-80 overflow-y-auto bg-white border border-gray-200 shadow-lg">
-                {languageOptions.map((option) => (
-                  <DropdownMenuItem
-                    key={`${option.flag}-${option.code}`}
-                    onClick={() => handleLanguageSelect(option)}
-                    className="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                  >
-                    <span className="text-lg">{option.flag}</span>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium text-estore-dark">{option.language}</span>
-                      <span className="text-xs text-gray-500">{option.code}</span>
-                    </div>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-2 bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-full px-3 py-2 hover:shadow-md transition-all duration-200">
+                <span className="text-sm font-medium text-estore-dark">{selectedLanguage.flag} {selectedLanguage.language}</span>
+                <ChevronDown className="w-4 h-4 text-gray-500" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 max-h-80 overflow-y-auto bg-white/95 backdrop-blur-md border border-gray-200 shadow-xl rounded-xl">
+              {languageOptions.map((option) => (
+                <DropdownMenuItem
+                  key={`${option.flag}-${option.code}`}
+                  onClick={() => handleLanguageSelect(option)}
+                  className="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 cursor-pointer rounded-lg mx-1"
+                >
+                  <span className="text-lg">{option.flag}</span>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium text-estore-dark">{option.language}</span>
+                    <span className="text-xs text-gray-500">{option.code}</span>
+                  </div>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* Icon Actions */}
-          <div className="flex items-center gap-4">
-            <User className="w-6 h-6 text-estore-dark opacity-80 hover:opacity-100 cursor-pointer transition-opacity" />
-            <Heart className="w-6 h-6 text-estore-dark opacity-80 hover:opacity-100 cursor-pointer transition-opacity" />
-            <ShoppingCart className="w-6 h-6 text-estore-dark opacity-80 hover:opacity-100 cursor-pointer transition-opacity" />
+          <div className="flex items-center gap-3">
+            <button className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
+              <User className="w-5 h-5 text-estore-dark" />
+            </button>
+            <button className="w-10 h-10 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
+              <Heart className="w-5 h-5 text-red-600" />
+            </button>
+            <button className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 relative">
+              <ShoppingCart className="w-5 h-5 text-blue-600" />
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-estore-dark text-white text-xs rounded-full flex items-center justify-center">2</span>
+            </button>
           </div>
         </div>
+
+        {/* Mobile Actions */}
+        <div className="flex lg:hidden items-center gap-3">
+          {/* Mobile Search */}
+          <button className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
+            <Search className="w-5 h-5 text-estore-dark" />
+          </button>
+          
+          {/* Mobile Cart */}
+          <button className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center relative">
+            <ShoppingCart className="w-5 h-5 text-blue-600" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-estore-dark text-white text-xs rounded-full flex items-center justify-center">2</span>
+          </button>
+
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="w-10 h-10 bg-gradient-to-br from-estore-dark to-estore-navy rounded-full flex items-center justify-center"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-5 h-5 text-white" />
+            ) : (
+              <Menu className="w-5 h-5 text-white" />
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-lg">
+          <div className="px-4 py-4 space-y-3">
+            {/* Mobile Search Bar */}
+            <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 bg-gradient-to-r from-gray-50 to-gray-100 rounded-full px-4 py-3 border border-gray-200">
+              <Search className="w-4 h-4 text-gray-500" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                onKeyPress={handleSearchKeyPress}
+                placeholder={t('search.placeholder')}
+                className="bg-transparent border-none outline-none text-estore-dark text-base flex-1 placeholder:text-gray-400"
+              />
+            </form>
+
+            {/* Mobile Navigation Links */}
+            <div className="space-y-2">
+              {navLinks.map((link) => (
+                <button
+                  key={link.key}
+                  onClick={() => {
+                    handleNavClick(link.key);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 ${
+                    activeLink === link.key
+                      ? 'bg-gradient-to-r from-estore-dark to-estore-navy text-white font-bold'
+                      : 'text-estore-dark hover:bg-gray-100 font-medium'
+                  }`}
+                >
+                  {link.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile User Actions */}
+            <div className="flex items-center gap-3 pt-3 border-t border-gray-200">
+              <button className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl py-3">
+                <User className="w-5 h-5 text-estore-dark" />
+                <span className="text-sm font-medium text-estore-dark">Profile</span>
+              </button>
+              <button className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-br from-red-100 to-red-200 rounded-xl py-3">
+                <Heart className="w-5 h-5 text-red-600" />
+                <span className="text-sm font-medium text-red-600">Wishlist</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
