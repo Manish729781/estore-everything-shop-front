@@ -1,11 +1,13 @@
 
 import { useState } from 'react';
 import { Search, User, Heart, ShoppingCart, ChevronDown } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeLink, setActiveLink] = useState('Home');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const navLinks = ['Home', 'Products', 'Collection', 'Featured', 'Blog'];
 
@@ -52,6 +54,18 @@ const Navbar = () => {
     }
   };
 
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Navigate to products page with search query
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-8 flex items-center justify-between h-16">
@@ -83,14 +97,16 @@ const Navbar = () => {
         {/* Actions */}
         <div className="flex items-center gap-5">
           {/* Search Box */}
-          <div className="hidden sm:flex items-center gap-2 bg-estore-light-gray rounded-full px-4 py-2">
+          <form onSubmit={handleSearchSubmit} className="hidden sm:flex items-center gap-2 bg-estore-light-gray rounded-full px-4 py-2">
             <Search className="w-5 h-5 text-estore-text-light" />
             <input
               type="text"
+              value={searchQuery}
+              onChange={handleSearchInputChange}
               placeholder="Search product"
               className="bg-transparent border-none outline-none text-estore-dark text-base w-32 lg:w-40"
             />
-          </div>
+          </form>
 
           {/* Country & Language */}
           <div className="hidden lg:flex items-center gap-1 bg-white border border-gray-200 rounded-lg px-2 py-1">

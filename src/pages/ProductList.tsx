@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Search, Filter, ShoppingCart, ChevronDown, Grid3X3, List, Check } from 'lucide-react';
@@ -15,14 +15,23 @@ import {
 
 const ProductList = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeFilter, setActiveFilter] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [viewMode, setViewMode] = useState('grid');
   const [sortBy, setSortBy] = useState('relevance');
   const [availabilityFilter, setAvailabilityFilter] = useState(['In Stock']);
-  const [productTypeFilter, setProductTypeFilter] = useState(['Wardrobe wear', 'Home Decore', 'Fragrance', 'Jewellery']);
+  const [productTypeFilter, setProductTypeFilter] = useState(['Wardrobe wear', 'Home Decore', 'Fragrance', 'Jewellery', 'Footwear', 'Handbag', 'Skincare']);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
+
+  // Update search query when URL params change
+  useEffect(() => {
+    const urlSearch = searchParams.get('search');
+    if (urlSearch && urlSearch !== searchQuery) {
+      setSearchQuery(urlSearch);
+    }
+  }, [searchParams]);
 
   const categories = [
     { name: 'Handbags', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=300&q=80' },
@@ -235,10 +244,18 @@ const ProductList = () => {
     }
   ];
 
+  // Enhanced filtering logic
   const filteredProducts = allProducts.filter(product => {
-    const matchesAvailability = availabilityFilter.includes('In Stock') ? product.inStock : !availabilityFilter.includes('Out Of Stock');
-    const matchesProductType = productTypeFilter.includes(product.category);
-    const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesAvailability = availabilityFilter.length === 0 || 
+      (availabilityFilter.includes('In Stock') && product.inStock) ||
+      (availabilityFilter.includes('Out Of Stock') && !product.inStock);
+    
+    const matchesProductType = productTypeFilter.length === 0 || productTypeFilter.includes(product.category);
+    
+    const matchesSearch = searchQuery.trim() === '' || 
+      product.title.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
+      product.category.toLowerCase().includes(searchQuery.toLowerCase().trim());
+    
     return matchesAvailability && matchesProductType && matchesSearch;
   });
 
@@ -270,6 +287,30 @@ const ProductList = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuery = e.target.value;
+    setSearchQuery(newQuery);
+    setCurrentPage(1); // Reset to first page when search changes
+    
+    // Update URL params
+    if (newQuery.trim()) {
+      setSearchParams({ search: newQuery });
+    } else {
+      setSearchParams({});
+    }
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setCurrentPage(1);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    setSearchParams({});
+    setCurrentPage(1);
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
@@ -285,6 +326,36 @@ const ProductList = () => {
           <h1 className="text-4xl font-playfair font-bold text-estore-dark mb-6">
             All Product
           </h1>
+
+          {/* Enhanced Search Bar */}
+          <div className="mb-6">
+            <form onSubmit={handleSearchSubmit} className="relative max-w-md">
+              <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3 border border-gray-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
+                <Search className="w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  placeholder="Search products..."
+                  className="bg-transparent border-none outline-none text-gray-700 flex-1 placeholder:text-gray-400"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={clearSearch}
+                    className="text-gray-400 hover:text-gray-600 p-1"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+            </form>
+            {searchQuery && (
+              <p className="text-sm text-gray-600 mt-2">
+                Searching for "{searchQuery}" - {filteredProducts.length} results found
+              </p>
+            )}
+          </div>
 
           {/* Category Tiles */}
           <div className="grid grid-cols-5 gap-4 mb-8">
@@ -349,12 +420,28 @@ const ProductList = () => {
 
               {/* Filter Tags */}
               <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">In Stock</span>
-                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">Shirt</span>
-                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">Serum</span>
-                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">Body care</span>
-                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">₹2402-₹9900</span>
-                <button className="text-sm text-blue-600 hover:underline">Clear All</button>
+                {searchQuery && (
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                    Search: {searchQuery}
+                  </span>
+                )}
+                {availabilityFilter.map(filter => (
+                  <span key={filter} className="px-3 py-1 bg-gray-100 rounded-full text-sm">
+                    {filter}
+                  </span>
+                ))}
+                {(searchQuery || availabilityFilter.length > 0) && (
+                  <button 
+                    onClick={() => {
+                      clearSearch();
+                      setAvailabilityFilter(['In Stock']);
+                      setProductTypeFilter(['Wardrobe wear', 'Home Decore', 'Fragrance', 'Jewellery', 'Footwear', 'Handbag', 'Skincare']);
+                    }}
+                    className="text-sm text-blue-600 hover:underline"
+                  >
+                    Clear All
+                  </button>
+                )}
               </div>
 
               {/* Availability Filter */}
@@ -418,87 +505,109 @@ const ProductList = () => {
 
           {/* Products Grid */}
           <div className="flex-1">
-            <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-              {currentProducts.map((product) => (
-                <div 
-                  key={product.id} 
-                  className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer group"
-                  onClick={() => handleProductClick(product.id)}
-                >
-                  <div className="relative">
-                    <span className="absolute top-4 left-4 bg-gray-100 text-estore-dark text-xs px-2 py-1 rounded-lg font-medium z-10">
-                      {product.category}
-                    </span>
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-200"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-estore-dark mb-2 line-clamp-2">{product.title}</h3>
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="font-bold text-estore-dark">{product.price}</span>
-                      <span className="text-gray-500 line-through text-sm">{product.oldPrice}</span>
-                    </div>
-                    {product.colors.length > 0 && (
-                      <div className="flex gap-2 mb-4">
-                        {product.colors.map((color, index) => (
-                          <div
-                            key={index}
-                            className="w-4 h-4 rounded-full border-2 border-gray-200"
-                            style={{ backgroundColor: color }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="mt-8 flex justify-center">
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious 
-                        href="#" 
-                        onClick={(e) => {
-                          e.preventDefault();
-                          if (currentPage > 1) handlePageChange(currentPage - 1);
-                        }}
-                        className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
-                      />
-                    </PaginationItem>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                      <PaginationItem key={page}>
-                        <PaginationLink
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handlePageChange(page);
-                          }}
-                          isActive={currentPage === page}
-                        >
-                          {page}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
-                    <PaginationItem>
-                      <PaginationNext 
-                        href="#" 
-                        onClick={(e) => {
-                          e.preventDefault();
-                          if (currentPage < totalPages) handlePageChange(currentPage + 1);
-                        }}
-                        className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
+            {/* No Results Message */}
+            {filteredProducts.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-500 text-lg">No products found</p>
+                {searchQuery && (
+                  <p className="text-gray-400 mt-2">
+                    Try adjusting your search or filters
+                  </p>
+                )}
               </div>
+            )}
+
+            {/* Products Grid */}
+            {filteredProducts.length > 0 && (
+              <>
+                <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+                  {currentProducts.map((product) => (
+                    <div 
+                      key={product.id} 
+                      className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer group"
+                      onClick={() => handleProductClick(product.id)}
+                    >
+                      <div className="relative">
+                        <span className="absolute top-4 left-4 bg-gray-100 text-estore-dark text-xs px-2 py-1 rounded-lg font-medium z-10">
+                          {product.category}
+                        </span>
+                        {!product.inStock && (
+                          <span className="absolute top-4 right-4 bg-red-500 text-white text-xs px-2 py-1 rounded-lg font-medium z-10">
+                            Out of Stock
+                          </span>
+                        )}
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-200"
+                        />
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-semibold text-estore-dark mb-2 line-clamp-2">{product.title}</h3>
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="font-bold text-estore-dark">{product.price}</span>
+                          <span className="text-gray-500 line-through text-sm">{product.oldPrice}</span>
+                        </div>
+                        {product.colors.length > 0 && (
+                          <div className="flex gap-2 mb-4">
+                            {product.colors.map((color, index) => (
+                              <div
+                                key={index}
+                                className="w-4 h-4 rounded-full border-2 border-gray-200"
+                                style={{ backgroundColor: color }}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="mt-8 flex justify-center">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious 
+                            href="#" 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              if (currentPage > 1) handlePageChange(currentPage - 1);
+                            }}
+                            className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+                          />
+                        </PaginationItem>
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                          <PaginationItem key={page}>
+                            <PaginationLink
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handlePageChange(page);
+                              }}
+                              isActive={currentPage === page}
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        ))}
+                        <PaginationItem>
+                          <PaginationNext 
+                            href="#" 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              if (currentPage < totalPages) handlePageChange(currentPage + 1);
+                            }}
+                            className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
