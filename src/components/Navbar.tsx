@@ -1,15 +1,40 @@
-
 import { useState, useEffect } from 'react';
 import { Search, User, Heart, ShoppingCart, ChevronDown } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeLink, setActiveLink] = useState('Home');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState('🇮🇳 Hindi');
 
   const navLinks = ['Home', 'Products', 'Collection', 'Featured', 'Blog'];
+
+  // Language and country options
+  const languageOptions = [
+    { flag: '🇮🇳', language: 'Hindi', code: 'HI' },
+    { flag: '🇮🇳', language: 'English', code: 'EN' },
+    { flag: '🇺🇸', language: 'English (US)', code: 'EN-US' },
+    { flag: '🇬🇧', language: 'English (UK)', code: 'EN-GB' },
+    { flag: '🇪🇸', language: 'Español', code: 'ES' },
+    { flag: '🇫🇷', language: 'Français', code: 'FR' },
+    { flag: '🇩🇪', language: 'Deutsch', code: 'DE' },
+    { flag: '🇮🇹', language: 'Italiano', code: 'IT' },
+    { flag: '🇵🇹', language: 'Português', code: 'PT' },
+    { flag: '🇧🇷', language: 'Português (BR)', code: 'PT-BR' },
+    { flag: '🇷🇺', language: 'Русский', code: 'RU' },
+    { flag: '🇨🇳', language: '中文', code: 'ZH' },
+    { flag: '🇯🇵', language: '日本語', code: 'JA' },
+    { flag: '🇰🇷', language: '한국어', code: 'KO' },
+    { flag: '🇸🇦', language: 'العربية', code: 'AR' },
+  ];
 
   // Clear search when navigating away from products page
   useEffect(() => {
@@ -59,6 +84,11 @@ const Navbar = () => {
         }
       }
     }
+  };
+
+  const handleLanguageSelect = (option: typeof languageOptions[0]) => {
+    setSelectedLanguage(`${option.flag} ${option.language}`);
+    console.log('Language changed to:', option.language, option.code);
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -143,11 +173,31 @@ const Navbar = () => {
             )}
           </form>
 
-          {/* Country & Language */}
-          <div className="hidden lg:flex items-center gap-1 bg-white border border-gray-200 rounded-lg px-2 py-1">
-            <span className="text-xl">🇮🇳</span>
-            <ChevronDown className="w-3 h-3 text-estore-text-light" />
-            <span className="text-estore-dark font-medium ml-1">EN</span>
+          {/* Enhanced Language & Country Dropdown */}
+          <div className="hidden lg:flex">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 hover:bg-gray-50 transition-colors">
+                  <span className="text-sm font-medium text-estore-dark">{selectedLanguage}</span>
+                  <ChevronDown className="w-4 h-4 text-estore-text-light" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 max-h-80 overflow-y-auto bg-white border border-gray-200 shadow-lg">
+                {languageOptions.map((option) => (
+                  <DropdownMenuItem
+                    key={`${option.flag}-${option.code}`}
+                    onClick={() => handleLanguageSelect(option)}
+                    className="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    <span className="text-lg">{option.flag}</span>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium text-estore-dark">{option.language}</span>
+                      <span className="text-xs text-gray-500">{option.code}</span>
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* Icon Actions */}
