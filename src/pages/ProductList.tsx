@@ -1,10 +1,17 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Search, Filter, ShoppingCart, ChevronDown, Grid3X3, List, Check } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 
 const ProductList = () => {
   const navigate = useNavigate();
@@ -14,6 +21,8 @@ const ProductList = () => {
   const [sortBy, setSortBy] = useState('relevance');
   const [availabilityFilter, setAvailabilityFilter] = useState(['In Stock']);
   const [productTypeFilter, setProductTypeFilter] = useState(['Wardrobe wear', 'Home Decore', 'Fragrance', 'Jewellery']);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12;
 
   const categories = [
     { name: 'Handbags', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=300&q=80' },
@@ -233,6 +242,12 @@ const ProductList = () => {
     return matchesAvailability && matchesProductType && matchesSearch;
   });
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const endIndex = startIndex + productsPerPage;
+  const currentProducts = filteredProducts.slice(startIndex, endIndex);
+
   const handleProductClick = (productId: number) => {
     navigate(`/product/${productId}`);
   };
@@ -247,6 +262,12 @@ const ProductList = () => {
         checked ? [...prev, value] : prev.filter(item => item !== value)
       );
     }
+    setCurrentPage(1); // Reset to first page when filters change
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -290,6 +311,9 @@ const ProductList = () => {
               <div>
                 <p className="text-sm text-gray-600">
                   {filteredProducts.length} of {allProducts.length} results
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Page {currentPage} of {totalPages}
                 </p>
               </div>
 
@@ -395,7 +419,7 @@ const ProductList = () => {
           {/* Products Grid */}
           <div className="flex-1">
             <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-              {filteredProducts.map((product) => (
+              {currentProducts.map((product) => (
                 <div 
                   key={product.id} 
                   className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer group"
@@ -432,6 +456,50 @@ const ProductList = () => {
                 </div>
               ))}
             </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-8 flex justify-center">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        href="#" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (currentPage > 1) handlePageChange(currentPage - 1);
+                        }}
+                        className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+                      />
+                    </PaginationItem>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(page);
+                          }}
+                          isActive={currentPage === page}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    <PaginationItem>
+                      <PaginationNext 
+                        href="#" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (currentPage < totalPages) handlePageChange(currentPage + 1);
+                        }}
+                        className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
           </div>
         </div>
       </div>
