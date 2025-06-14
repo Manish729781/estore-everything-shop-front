@@ -10,14 +10,14 @@ const Cart = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Mock cart data - in a real app, this would come from context/state management
+  // Mock cart data with proper image URLs
   const cartItems = [
     {
       id: "1",
       name: "Premium Wireless Headphones",
       price: 2499,
       quantity: 1,
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
       color: "Black",
       size: "One Size"
     },
@@ -26,7 +26,7 @@ const Cart = () => {
       name: "Smart Fitness Watch",
       price: 3999,
       quantity: 2,
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
       color: "Silver",
       size: "42mm"
     }
@@ -50,6 +50,11 @@ const Cart = () => {
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const shipping = 99;
   const total = subtotal + shipping;
+
+  const handleProceedToCheckout = () => {
+    // Navigate to address page first, then to checkout
+    navigate('/address');
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -124,6 +129,10 @@ const Cart = () => {
                       src={item.image}
                       alt={item.name}
                       className="w-full h-full object-cover"
+                      onError={(e) => {
+                        // Fallback to placeholder if image fails to load
+                        e.currentTarget.src = "/placeholder.svg";
+                      }}
                     />
                   </div>
 
@@ -208,7 +217,7 @@ const Cart = () => {
 
               <div className="space-y-3">
                 <Button
-                  onClick={() => navigate('/checkout')}
+                  onClick={handleProceedToCheckout}
                   className="w-full bg-gradient-to-r from-estore-dark to-estore-navy text-white py-3 rounded-xl hover:shadow-lg transition-all duration-200"
                 >
                   Proceed to Checkout
