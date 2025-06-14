@@ -83,6 +83,146 @@ const ProductList = () => {
       category: 'Footwear',
       colors: ['#000', '#fff', '#e53e3e'],
       inStock: true
+    },
+    {
+      id: 7,
+      image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=400&q=80',
+      title: 'Luxury Leather Handbag',
+      price: '₹8,999',
+      oldPrice: '₹12,000',
+      category: 'Handbag',
+      colors: ['#8B4513', '#000', '#654321'],
+      inStock: true
+    },
+    {
+      id: 8,
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+      title: 'Modern Table Lamp',
+      price: '₹4,500',
+      oldPrice: '₹6,000',
+      category: 'Home Decore',
+      colors: ['#FFD700', '#C0C0C0'],
+      inStock: true
+    },
+    {
+      id: 9,
+      image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400&q=80',
+      title: 'Elegant Perfume Collection',
+      price: '₹7,200',
+      oldPrice: '₹9,500',
+      category: 'Fragrance',
+      colors: [],
+      inStock: true
+    },
+    {
+      id: 10,
+      image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=400&q=80',
+      title: 'Diamond Necklace Set',
+      price: '₹15,999',
+      oldPrice: '₹20,000',
+      category: 'Jewellery',
+      colors: ['#C0C0C0', '#FFD700'],
+      inStock: true
+    },
+    {
+      id: 11,
+      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=80',
+      title: 'Cotton Casual T-Shirt',
+      price: '₹1,299',
+      oldPrice: '₹1,899',
+      category: 'Wardrobe wear',
+      colors: ['#fff', '#000', '#808080'],
+      inStock: true
+    },
+    {
+      id: 12,
+      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80',
+      title: 'Sports Running Shoes',
+      price: '₹4,999',
+      oldPrice: '₹6,999',
+      category: 'Footwear',
+      colors: ['#FF0000', '#fff', '#000'],
+      inStock: true
+    },
+    {
+      id: 13,
+      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80',
+      title: 'Premium Face Serum',
+      price: '₹2,800',
+      oldPrice: '₹3,500',
+      category: 'Skincare',
+      colors: [],
+      inStock: true
+    },
+    {
+      id: 14,
+      image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80',
+      title: 'Designer Crossbody Bag',
+      price: '₹5,499',
+      oldPrice: '₹7,299',
+      category: 'Handbag',
+      colors: ['#8B4513', '#000'],
+      inStock: false
+    },
+    {
+      id: 15,
+      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80',
+      title: 'Decorative Cushion Set',
+      price: '₹2,199',
+      oldPrice: '₹2,999',
+      category: 'Home Decore',
+      colors: ['#FF69B4', '#FFD700', '#87CEEB'],
+      inStock: true
+    },
+    {
+      id: 16,
+      image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=400&q=80',
+      title: 'Floral Perfume Spray',
+      price: '₹3,899',
+      oldPrice: '₹4,999',
+      category: 'Fragrance',
+      colors: [],
+      inStock: true
+    },
+    {
+      id: 17,
+      image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=400&q=80',
+      title: 'Silver Chain Bracelet',
+      price: '₹4,299',
+      oldPrice: '₹5,599',
+      category: 'Jewellery',
+      colors: ['#C0C0C0'],
+      inStock: true
+    },
+    {
+      id: 18,
+      image: 'https://images.unsplash.com/photo-1503341338985-b171bc1fdf83?auto=format&fit=crop&w=400&q=80',
+      title: 'Formal Business Shirt',
+      price: '₹2,499',
+      oldPrice: '₹3,299',
+      category: 'Wardrobe wear',
+      colors: ['#fff', '#87CEEB', '#FFB6C1'],
+      inStock: true
+    },
+    {
+      id: 19,
+      image: 'https://images.unsplash.com/photo-1605348532760-6753d2c43329?auto=format&fit=crop&w=400&q=80',
+      title: 'Casual Loafers',
+      price: '₹3,799',
+      oldPrice: '₹4,999',
+      category: 'Footwear',
+      colors: ['#8B4513', '#000'],
+      inStock: true
+    },
+    {
+      id: 20,
+      image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=400&q=80',
+      title: 'Anti-Aging Night Cream',
+      price: '₹3,299',
+      oldPrice: '₹4,199',
+      category: 'Skincare',
+      colors: [],
+      inStock: false
     }
   ];
 
@@ -149,7 +289,7 @@ const ProductList = () => {
               {/* Results Count */}
               <div>
                 <p className="text-sm text-gray-600">
-                  {filteredProducts.length} of 30 results
+                  {filteredProducts.length} of {allProducts.length} results
                 </p>
               </div>
 
@@ -228,7 +368,7 @@ const ProductList = () => {
                   <ChevronDown size={16} />
                 </div>
                 <div className="space-y-2">
-                  {['Wardrobe wear', 'Home Decore', 'Footwear', 'Skincare', 'Fragrance', 'Jewellery'].map((type) => (
+                  {['Wardrobe wear', 'Home Decore', 'Footwear', 'Skincare', 'Fragrance', 'Jewellery', 'Handbag'].map((type) => (
                     <label key={type} className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
