@@ -1,22 +1,31 @@
 
 import { useState } from 'react';
 import { Search, User, Heart, ShoppingCart, ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState('Home');
 
-  const navLinks = ['Home', 'Collection', 'Featured', 'Blog'];
+  const navLinks = ['Home', 'Products', 'Collection', 'Featured', 'Blog'];
 
   const handleNavClick = (link: string) => {
     setActiveLink(link);
     
+    // Navigate to products page
+    if (link === 'Products') {
+      navigate('/products');
+      return;
+    }
+    
     // Scroll to top for Home
     if (link === 'Home') {
+      navigate('/');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     
-    // Scroll to specific sections
+    // Scroll to specific sections (only works on home page)
     const sectionMap: { [key: string]: string } = {
       'Collection': 'new-in-section',
       'Featured': 'featured-categories',
@@ -25,9 +34,20 @@ const Navbar = () => {
     
     const sectionId = sectionMap[link];
     if (sectionId) {
-      const section = document.getElementById(sectionId);
-      if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
+      // If not on home page, navigate to home first
+      if (window.location.pathname !== '/') {
+        navigate('/');
+        setTimeout(() => {
+          const section = document.getElementById(sectionId);
+          if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+      } else {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth' });
+        }
       }
     }
   };
@@ -36,7 +56,10 @@ const Navbar = () => {
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-8 flex items-center justify-between h-16">
         {/* Logo */}
-        <div className="text-2xl font-playfair font-bold text-estore-dark tracking-wide">
+        <div 
+          className="text-2xl font-playfair font-bold text-estore-dark tracking-wide cursor-pointer"
+          onClick={() => handleNavClick('Home')}
+        >
           Estore
         </div>
 
