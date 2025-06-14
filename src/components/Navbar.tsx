@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, User, Heart, ShoppingCart, ChevronDown } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -10,6 +10,13 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const navLinks = ['Home', 'Products', 'Collection', 'Featured', 'Blog'];
+
+  // Clear search when navigating away from products page
+  useEffect(() => {
+    if (location.pathname !== '/products') {
+      setSearchQuery('');
+    }
+  }, [location.pathname]);
 
   const handleNavClick = (link: string) => {
     setActiveLink(link);
@@ -56,14 +63,32 @@ const Navbar = () => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
+    const trimmedQuery = searchQuery.trim();
+    
+    console.log('Search submitted:', trimmedQuery);
+    
+    if (trimmedQuery) {
       // Navigate to products page with search query
-      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      const searchUrl = `/products?search=${encodeURIComponent(trimmedQuery)}`;
+      console.log('Navigating to:', searchUrl);
+      navigate(searchUrl);
+    } else {
+      // If empty search, just go to products page
+      navigate('/products');
     }
   };
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+    const value = e.target.value;
+    setSearchQuery(value);
+    console.log('Search input changed:', value);
+  };
+
+  const handleSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSearchSubmit(e as any);
+    }
   };
 
   return (
@@ -96,16 +121,26 @@ const Navbar = () => {
 
         {/* Actions */}
         <div className="flex items-center gap-5">
-          {/* Search Box */}
-          <form onSubmit={handleSearchSubmit} className="hidden sm:flex items-center gap-2 bg-estore-light-gray rounded-full px-4 py-2">
-            <Search className="w-5 h-5 text-estore-text-light" />
+          {/* Enhanced Search Box */}
+          <form onSubmit={handleSearchSubmit} className="hidden sm:flex items-center gap-2 bg-estore-light-gray rounded-full px-4 py-2 border border-gray-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100">
+            <Search className="w-5 h-5 text-estore-text-light cursor-pointer" onClick={handleSearchSubmit} />
             <input
               type="text"
               value={searchQuery}
               onChange={handleSearchInputChange}
-              placeholder="Search product"
-              className="bg-transparent border-none outline-none text-estore-dark text-base w-32 lg:w-40"
+              onKeyPress={handleSearchKeyPress}
+              placeholder="Search products..."
+              className="bg-transparent border-none outline-none text-estore-dark text-base w-32 lg:w-40 placeholder:text-gray-400"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="text-gray-400 hover:text-gray-600 ml-1"
+              >
+                ×
+              </button>
+            )}
           </form>
 
           {/* Country & Language */}
