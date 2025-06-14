@@ -7,11 +7,15 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useWishlist } from '@/contexts/WishlistContext';
+import { useToast } from '@/hooks/use-toast';
 
 const ProductDescription = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { t } = useLanguage();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { toast } = useToast();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState('gold');
@@ -137,6 +141,33 @@ const ProductDescription = () => {
       setSelectedSize(currentProduct.sizes[0]);
     }
   });
+
+  // Check if product is in wishlist
+  const isProductInWishlist = isInWishlist(currentProduct.id.toString());
+
+  // Handle wishlist toggle
+  const handleWishlistToggle = () => {
+    const wishlistItem = {
+      id: currentProduct.id.toString(),
+      name: currentProduct.title,
+      image: currentProduct.images[0],
+      price: parseFloat(currentProduct.price.replace('₹', '').replace(',', ''))
+    };
+
+    if (isProductInWishlist) {
+      removeFromWishlist(currentProduct.id.toString());
+      toast({
+        title: "Removed from wishlist",
+        description: `${currentProduct.title} has been removed from your wishlist.`,
+      });
+    } else {
+      addToWishlist(wishlistItem);
+      toast({
+        title: "Added to wishlist",
+        description: `${currentProduct.title} has been added to your wishlist.`,
+      });
+    }
+  };
 
   // Product data to capture
   const productData = {
@@ -349,8 +380,15 @@ const ProductDescription = () => {
                   <button className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
                     <Share2 className="w-4 h-4" />
                   </button>
-                  <button className="w-10 h-10 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
-                    <Heart className="w-4 h-4 text-red-600" />
+                  <button 
+                    onClick={handleWishlistToggle}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 ${
+                      isProductInWishlist 
+                        ? 'bg-gradient-to-br from-red-500 to-red-600 text-white' 
+                        : 'bg-gradient-to-br from-red-100 to-red-200 text-red-600'
+                    }`}
+                  >
+                    <Heart className={`w-4 h-4 ${isProductInWishlist ? 'fill-current' : ''}`} />
                   </button>
                 </div>
               </div>

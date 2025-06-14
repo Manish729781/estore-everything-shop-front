@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Search, Filter, ShoppingCart, ChevronDown, Grid3X3, List, Check } from 'lucide-react';
+import { Search, Filter, ShoppingCart, ChevronDown, Grid3X3, List, Check, Heart } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Pagination,
@@ -14,10 +13,14 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useWishlist } from '@/contexts/WishlistContext';
+import { useToast } from '@/hooks/use-toast';
 
 const ProductList = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
@@ -269,6 +272,33 @@ const ProductList = () => {
 
   const handleProductClick = (productId: number) => {
     navigate(`/product/${productId}`);
+  };
+
+  const handleWishlistToggle = (e: React.MouseEvent, product: any) => {
+    e.stopPropagation(); // Prevent navigation to product page
+    
+    const wishlistItem = {
+      id: product.id.toString(),
+      name: product.title,
+      image: product.image,
+      price: parseFloat(product.price.replace('₹', '').replace(',', ''))
+    };
+
+    const isProductInWishlist = isInWishlist(product.id.toString());
+
+    if (isProductInWishlist) {
+      removeFromWishlist(product.id.toString());
+      toast({
+        title: "Removed from wishlist",
+        description: `${product.title} has been removed from your wishlist.`,
+      });
+    } else {
+      addToWishlist(wishlistItem);
+      toast({
+        title: "Added to wishlist",
+        description: `${product.title} has been added to your wishlist.`,
+      });
+    }
   };
 
   const handleFilterChange = (filterType: string, value: string, checked: boolean) => {
@@ -525,7 +555,7 @@ const ProductList = () => {
                   {currentProducts.map((product) => (
                     <div 
                       key={product.id} 
-                      className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer group"
+                      className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer group relative"
                       onClick={() => handleProductClick(product.id)}
                     >
                       <div className="relative">
@@ -537,6 +567,18 @@ const ProductList = () => {
                             {t('products.outOfStock')}
                           </span>
                         )}
+                        <button
+                          onClick={(e) => handleWishlistToggle(e, product)}
+                          className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 z-20 ${
+                            !product.inStock ? 'top-12' : ''
+                          } ${
+                            isInWishlist(product.id.toString())
+                              ? 'bg-red-500 text-white' 
+                              : 'bg-white/80 text-gray-600 hover:bg-red-100 hover:text-red-600'
+                          }`}
+                        >
+                          <Heart className={`w-4 h-4 ${isInWishlist(product.id.toString()) ? 'fill-current' : ''}`} />
+                        </button>
                         <img
                           src={product.image}
                           alt={product.title}
