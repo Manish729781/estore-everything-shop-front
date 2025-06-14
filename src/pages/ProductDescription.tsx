@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Minus, Plus, Heart, Share2 } from 'lucide-react';
@@ -6,10 +5,12 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ProductDescription = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { t } = useLanguage();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState('gold');
@@ -177,7 +178,7 @@ const ProductDescription = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-500 mb-8">
-          <span>Home</span> / <span>Collection</span> / <span>{currentProduct.category}</span>
+          <span>{t('nav.home')}</span> / <span>{t('nav.collection')}</span> / <span>{currentProduct.category}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -228,7 +229,7 @@ const ProductDescription = () => {
               <span className="text-3xl font-bold text-estore-dark">{currentProduct.price}</span>
               <span className="text-xl text-gray-500 line-through">{currentProduct.originalPrice}</span>
               <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                ✓ {currentProduct.inStock ? '12 In Stock' : 'Out of Stock'}
+                ✓ {currentProduct.inStock ? t('product.inStock') : t('product.outOfStock')}
               </span>
             </div>
 
@@ -245,7 +246,7 @@ const ProductDescription = () => {
             {/* Color Selection */}
             {currentProduct.colors.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold text-estore-dark mb-3">Choose Colour</h3>
+                <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.chooseColor')}</h3>
                 <div className="flex gap-3">
                   {currentProduct.colors.map((color) => (
                     <button
@@ -263,7 +264,7 @@ const ProductDescription = () => {
 
             {/* Size Selection */}
             <div>
-              <h3 className="text-lg font-semibold text-estore-dark mb-3">Select Size</h3>
+              <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.selectSize')}</h3>
               <div className="flex gap-2">
                 {currentProduct.sizes.map((size) => (
                   <button
@@ -283,7 +284,7 @@ const ProductDescription = () => {
 
             {/* Quantity */}
             <div>
-              <h3 className="text-lg font-semibold text-estore-dark mb-3">Quantity</h3>
+              <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.quantity')}</h3>
               <div className="flex items-center gap-4">
                 <div className="flex items-center border border-gray-300 rounded-lg">
                   <button
@@ -312,7 +313,7 @@ const ProductDescription = () => {
                 className="w-full bg-estore-dark text-white py-4 text-lg font-medium rounded-xl hover:bg-estore-dark/90"
                 disabled={!currentProduct.inStock}
               >
-                {currentProduct.inStock ? 'Buy Now' : 'Out of Stock'}
+                {currentProduct.inStock ? t('product.buyNow') : t('product.outOfStock')}
               </Button>
               <Button 
                 onClick={handleAddToCart}
@@ -320,13 +321,13 @@ const ProductDescription = () => {
                 className="w-full py-4 text-lg font-medium rounded-xl border-estore-dark text-estore-dark hover:bg-estore-dark hover:text-white"
                 disabled={!currentProduct.inStock}
               >
-                Add to Cart
+                {t('product.addToCart')}
               </Button>
             </div>
 
             {/* Share */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-              <span className="text-sm font-medium text-estore-dark">Share</span>
+              <span className="text-sm font-medium text-estore-dark">{t('product.share')}</span>
               <div className="flex gap-3">
                 <button className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
                   <Share2 className="w-4 h-4" />
@@ -342,19 +343,19 @@ const ProductDescription = () => {
                 <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
                   <div className="w-2 h-2 bg-green-600 rounded-full"></div>
                 </div>
-                <span className="text-sm text-gray-600">Secure payment</span>
+                <span className="text-sm text-gray-600">{t('product.securePayment')}</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
                   <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                 </div>
-                <span className="text-sm text-gray-600">Free Express Shipping*</span>
+                <span className="text-sm text-gray-600">{t('product.freeShipping')}</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">
                   <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
                 </div>
-                <span className="text-sm text-gray-600">Delivery 2-5 days</span>
+                <span className="text-sm text-gray-600">{t('product.delivery')}</span>
               </div>
             </div>
           </div>

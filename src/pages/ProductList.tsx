@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -12,9 +13,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ProductList = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
@@ -259,7 +262,6 @@ const ProductList = () => {
     return matchesAvailability && matchesProductType && matchesSearch;
   });
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const startIndex = (currentPage - 1) * productsPerPage;
   const endIndex = startIndex + productsPerPage;
@@ -279,7 +281,7 @@ const ProductList = () => {
         checked ? [...prev, value] : prev.filter(item => item !== value)
       );
     }
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   };
 
   const handlePageChange = (page: number) => {
@@ -290,9 +292,8 @@ const ProductList = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = e.target.value;
     setSearchQuery(newQuery);
-    setCurrentPage(1); // Reset to first page when search changes
+    setCurrentPage(1);
     
-    // Update URL params
     if (newQuery.trim()) {
       setSearchParams({ search: newQuery });
     } else {
@@ -318,13 +319,13 @@ const ProductList = () => {
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Breadcrumb */}
         <div className="mb-6">
-          <p className="text-sm text-gray-600">Home / Collection</p>
+          <p className="text-sm text-gray-600">{t('nav.home')} / {t('nav.collection')}</p>
         </div>
 
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-playfair font-bold text-estore-dark mb-6">
-            All Product
+            {t('products.allProducts')}
           </h1>
 
           {/* Enhanced Search Bar */}
@@ -336,7 +337,7 @@ const ProductList = () => {
                   type="text"
                   value={searchQuery}
                   onChange={handleSearchChange}
-                  placeholder="Search products..."
+                  placeholder={t('search.placeholder')}
                   className="bg-transparent border-none outline-none text-gray-700 flex-1 placeholder:text-gray-400"
                 />
                 {searchQuery && (
@@ -352,7 +353,7 @@ const ProductList = () => {
             </form>
             {searchQuery && (
               <p className="text-sm text-gray-600 mt-2">
-                Searching for "{searchQuery}" - {filteredProducts.length} results found
+                {t('search.searchingFor')} "{searchQuery}" - {filteredProducts.length} {t('search.resultsFound')}
               </p>
             )}
           </div>
@@ -381,25 +382,25 @@ const ProductList = () => {
               {/* Results Count */}
               <div>
                 <p className="text-sm text-gray-600">
-                  {filteredProducts.length} of {allProducts.length} results
+                  {filteredProducts.length} {t('products.of')} {allProducts.length} {t('products.results')}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  Page {currentPage} of {totalPages}
+                  {t('products.page')} {currentPage} {t('products.of')} {totalPages}
                 </p>
               </div>
 
               {/* Sort By */}
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">Sort By</span>
+                <span className="text-sm font-medium">{t('products.sortBy')}</span>
                 <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="relevance">Relevance</SelectItem>
-                    <SelectItem value="price-low">Price: Low to High</SelectItem>
-                    <SelectItem value="price-high">Price: High to Low</SelectItem>
-                    <SelectItem value="newest">Newest First</SelectItem>
+                    <SelectItem value="relevance">{t('products.relevance')}</SelectItem>
+                    <SelectItem value="price-low">{t('products.priceLowToHigh')}</SelectItem>
+                    <SelectItem value="price-high">{t('products.priceHighToLow')}</SelectItem>
+                    <SelectItem value="newest">{t('products.newestFirst')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <div className="flex gap-1 ml-auto">
@@ -422,7 +423,7 @@ const ProductList = () => {
               <div className="flex flex-wrap gap-2">
                 {searchQuery && (
                   <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                    Search: {searchQuery}
+                    {t('search.search')}: {searchQuery}
                   </span>
                 )}
                 {availabilityFilter.map(filter => (
@@ -439,7 +440,7 @@ const ProductList = () => {
                     }}
                     className="text-sm text-blue-600 hover:underline"
                   >
-                    Clear All
+                    {t('products.clearAll')}
                   </button>
                 )}
               </div>
@@ -447,7 +448,7 @@ const ProductList = () => {
               {/* Availability Filter */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-medium">Availability</h3>
+                  <h3 className="font-medium">{t('products.availability')}</h3>
                   <ChevronDown size={16} />
                 </div>
                 <div className="space-y-2">
@@ -458,7 +459,7 @@ const ProductList = () => {
                       onChange={(e) => handleFilterChange('availability', 'In Stock', e.target.checked)}
                       className="rounded"
                     />
-                    <span className="text-sm">In Stock</span>
+                    <span className="text-sm">{t('products.inStock')}</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -467,7 +468,7 @@ const ProductList = () => {
                       onChange={(e) => handleFilterChange('availability', 'Out Of Stock', e.target.checked)}
                       className="rounded"
                     />
-                    <span className="text-sm">Out Of Stock</span>
+                    <span className="text-sm">{t('products.outOfStock')}</span>
                   </label>
                 </div>
               </div>
@@ -475,7 +476,7 @@ const ProductList = () => {
               {/* Product Type Filter */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-medium">Product type</h3>
+                  <h3 className="font-medium">{t('products.productType')}</h3>
                   <ChevronDown size={16} />
                 </div>
                 <div className="space-y-2">
@@ -496,7 +497,7 @@ const ProductList = () => {
               {/* Size Filter */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-medium">Size</h3>
+                  <h3 className="font-medium">{t('products.size')}</h3>
                   <ChevronDown size={16} />
                 </div>
               </div>
@@ -508,10 +509,10 @@ const ProductList = () => {
             {/* No Results Message */}
             {filteredProducts.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">No products found</p>
+                <p className="text-gray-500 text-lg">{t('products.noProducts')}</p>
                 {searchQuery && (
                   <p className="text-gray-400 mt-2">
-                    Try adjusting your search or filters
+                    {t('products.tryAdjusting')}
                   </p>
                 )}
               </div>
@@ -533,7 +534,7 @@ const ProductList = () => {
                         </span>
                         {!product.inStock && (
                           <span className="absolute top-4 right-4 bg-red-500 text-white text-xs px-2 py-1 rounded-lg font-medium z-10">
-                            Out of Stock
+                            {t('products.outOfStock')}
                           </span>
                         )}
                         <img
