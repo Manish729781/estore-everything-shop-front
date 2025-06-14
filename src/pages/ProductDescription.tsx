@@ -189,12 +189,12 @@ const ProductDescription = () => {
             <div className="aspect-square bg-gray-100 rounded-2xl overflow-hidden">
               <img
                 src={currentProduct.images[selectedImage]}
-                alt="Product"
+                alt={`${currentProduct.title} - Angle ${selectedImage + 1}`}
                 className="w-full h-full object-cover"
               />
             </div>
             
-            {/* Thumbnail Images */}
+            {/* Thumbnail Images - Different Angles */}
             <div className="grid grid-cols-4 gap-4">
               {currentProduct.images.map((image, index) => (
                 <button
@@ -203,14 +203,20 @@ const ProductDescription = () => {
                   className={`aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 transition-colors ${
                     selectedImage === index ? 'border-estore-dark' : 'border-transparent'
                   }`}
+                  title={`View angle ${index + 1}`}
                 >
                   <img
                     src={image}
-                    alt={`Product ${index + 1}`}
+                    alt={`${currentProduct.title} - Angle ${index + 1}`}
                     className="w-full h-full object-cover"
                   />
                 </button>
               ))}
+            </div>
+            
+            {/* Image Counter */}
+            <div className="text-center text-sm text-gray-500">
+              {selectedImage + 1} / {currentProduct.images.length} {t('product.views')}
             </div>
           </div>
 
@@ -257,6 +263,7 @@ const ProductDescription = () => {
                         selectedColor === color.name ? 'border-estore-dark scale-110' : 'border-gray-300'
                       }`}
                       style={{ backgroundColor: color.color }}
+                      title={color.name}
                     />
                   ))}
                 </div>
