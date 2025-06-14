@@ -150,8 +150,8 @@ const ProductDescription = () => {
   };
 
   const handleBuyNow = () => {
-    // Navigate to checkout with product data
-    navigate('/checkout', { 
+    // Navigate to address page with product data
+    navigate('/address', { 
       state: { 
         productData,
         fromBuyNow: true 
@@ -160,9 +160,9 @@ const ProductDescription = () => {
   };
 
   const handleAddToCart = () => {
-    // For now, navigate to checkout with product data
+    // For now, navigate to address page with product data
     // In a real app, you'd add to cart state/context
-    navigate('/checkout', { 
+    navigate('/address', { 
       state: { 
         productData,
         fromAddToCart: true 
