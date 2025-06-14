@@ -268,9 +268,9 @@ const translations: Record<string, Record<string, string>> = {
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageOption>({
-    flag: '🇮🇳',
-    language: 'Hindi',
-    code: 'HI'
+    flag: '🇺🇸',
+    language: 'English',
+    code: 'EN'
   });
 
   const t = (key: string): string => {
