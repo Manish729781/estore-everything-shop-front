@@ -1,6 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { Search, User, Heart, ShoppingCart, ChevronDown } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,11 +13,17 @@ import {
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { selectedLanguage, setSelectedLanguage, t } = useLanguage();
   const [activeLink, setActiveLink] = useState('Home');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState('🇮🇳 Hindi');
 
-  const navLinks = ['Home', 'Products', 'Collection', 'Featured', 'Blog'];
+  const navLinks = [
+    { key: 'Home', label: t('nav.home') },
+    { key: 'Products', label: t('nav.products') },
+    { key: 'Collection', label: t('nav.collection') },
+    { key: 'Featured', label: t('nav.featured') },
+    { key: 'Blog', label: t('nav.blog') }
+  ];
 
   // Language and country options
   const languageOptions = [
@@ -87,7 +95,7 @@ const Navbar = () => {
   };
 
   const handleLanguageSelect = (option: typeof languageOptions[0]) => {
-    setSelectedLanguage(`${option.flag} ${option.language}`);
+    setSelectedLanguage(option);
     console.log('Language changed to:', option.language, option.code);
   };
 
@@ -136,15 +144,15 @@ const Navbar = () => {
         <nav className="hidden md:flex gap-6">
           {navLinks.map((link) => (
             <button
-              key={link}
-              onClick={() => handleNavClick(link)}
+              key={link.key}
+              onClick={() => handleNavClick(link.key)}
               className={`text-lg font-medium transition-all duration-200 ${
-                activeLink === link
+                activeLink === link.key
                   ? 'text-estore-dark font-bold opacity-100'
                   : 'text-estore-dark opacity-80 hover:opacity-100 hover:font-bold'
               }`}
             >
-              {link}
+              {link.label}
             </button>
           ))}
         </nav>
@@ -159,7 +167,7 @@ const Navbar = () => {
               value={searchQuery}
               onChange={handleSearchInputChange}
               onKeyPress={handleSearchKeyPress}
-              placeholder="Search products..."
+              placeholder={t('search.placeholder')}
               className="bg-transparent border-none outline-none text-estore-dark text-base w-32 lg:w-40 placeholder:text-gray-400"
             />
             {searchQuery && (
@@ -178,7 +186,7 @@ const Navbar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 hover:bg-gray-50 transition-colors">
-                  <span className="text-sm font-medium text-estore-dark">{selectedLanguage}</span>
+                  <span className="text-sm font-medium text-estore-dark">{selectedLanguage.flag} {selectedLanguage.language}</span>
                   <ChevronDown className="w-4 h-4 text-estore-text-light" />
                 </button>
               </DropdownMenuTrigger>
