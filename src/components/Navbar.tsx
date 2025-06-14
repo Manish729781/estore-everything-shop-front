@@ -133,8 +133,7 @@ const Navbar = () => {
 
   const handleWishlistClick = () => {
     console.log('Wishlist clicked, items:', wishlistCount);
-    // You can navigate to a wishlist page here if needed
-    // navigate('/wishlist');
+    navigate('/wishlist');
   };
 
   return (

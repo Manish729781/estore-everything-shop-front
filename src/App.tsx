@@ -9,6 +9,7 @@ import { WishlistProvider } from "./contexts/WishlistContext";
 import Index from "./pages/Index";
 import ProductDescription from "./pages/ProductDescription";
 import ProductList from "./pages/ProductList";
+import Wishlist from "./pages/Wishlist";
 import Address from "./pages/Address";
 import Payment from "./pages/Payment";
 import Checkout from "./pages/Checkout";
@@ -28,6 +29,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/products" element={<ProductList />} />
               <Route path="/product/:id" element={<ProductDescription />} />
+              <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/address" element={<Address />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/checkout" element={<Checkout />} />
