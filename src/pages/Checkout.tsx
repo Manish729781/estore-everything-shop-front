@@ -32,42 +32,9 @@ const Checkout = () => {
       }];
     }
     
-    // Default mock cart items if no product data is passed
-    return [
-      {
-        id: 1,
-        title: 'Minimalism Shirts',
-        image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
-        price: '₹4,067',
-        quantity: 1
-      },
-      {
-        id: 3,
-        title: 'Gentle Body Care Cleanser',
-        image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-        price: '₹4,067',
-        quantity: 1
-      }
-    ];
+    // Default empty cart if no product data is passed
+    return [];
   });
-  
-  // Mock cart items - in a real app these would come from a cart context or state
-  // const [cartItems, setCartItems] = useState([
-  //   {
-  //     id: 1,
-  //     title: 'Minimalism Shirts',
-  //     image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
-  //     price: '₹4,067',
-  //     quantity: 1
-  //   },
-  //   {
-  //     id: 3,
-  //     title: 'Gentle Body Care Cleanser',
-  //     image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-  //     price: '₹4,067',
-  //     quantity: 1
-  //   }
-  // ]);
   
   const [formData, setFormData] = useState({
     firstName: '',
