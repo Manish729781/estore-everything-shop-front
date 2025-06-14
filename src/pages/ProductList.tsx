@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -95,6 +96,10 @@ const ProductList = () => {
   const handleProductClick = (productId: number) => {
     navigate(`/product/${productId}`);
   };
+
+  console.log('ProductList component rendered');
+  console.log('Current activeFilter:', activeFilter);
+  console.log('Filtered products count:', filteredProducts.length);
 
   return (
     <div className="min-h-screen bg-white">
