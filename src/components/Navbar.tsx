@@ -1,8 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { Search, User, Heart, ShoppingCart, ChevronDown, Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useWishlist } from '@/contexts/WishlistContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +14,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { selectedLanguage, setSelectedLanguage, t } = useLanguage();
+  const { wishlistCount } = useWishlist();
   const [activeLink, setActiveLink] = useState('Home');
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -130,6 +131,12 @@ const Navbar = () => {
     }
   };
 
+  const handleWishlistClick = () => {
+    console.log('Wishlist clicked, items:', wishlistCount);
+    // You can navigate to a wishlist page here if needed
+    // navigate('/wishlist');
+  };
+
   return (
     <header className="w-full bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-18">
@@ -215,8 +222,16 @@ const Navbar = () => {
             <button className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
               <User className="w-5 h-5 text-estore-dark" />
             </button>
-            <button className="w-10 h-10 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
+            <button 
+              onClick={handleWishlistClick}
+              className="w-10 h-10 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 relative"
+            >
               <Heart className="w-5 h-5 text-red-600" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-600 text-white text-xs rounded-full flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
             </button>
             <button className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 relative">
               <ShoppingCart className="w-5 h-5 text-blue-600" />
@@ -230,6 +245,19 @@ const Navbar = () => {
           {/* Mobile Search */}
           <button className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
             <Search className="w-5 h-5 text-estore-dark" />
+          </button>
+          
+          {/* Mobile Wishlist */}
+          <button 
+            onClick={handleWishlistClick}
+            className="w-10 h-10 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center relative"
+          >
+            <Heart className="w-5 h-5 text-red-600" />
+            {wishlistCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-white text-xs rounded-full flex items-center justify-center">
+                {wishlistCount}
+              </span>
+            )}
           </button>
           
           {/* Mobile Cart */}
@@ -295,9 +323,17 @@ const Navbar = () => {
                 <User className="w-5 h-5 text-estore-dark" />
                 <span className="text-sm font-medium text-estore-dark">Profile</span>
               </button>
-              <button className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-br from-red-100 to-red-200 rounded-xl py-3">
+              <button 
+                onClick={handleWishlistClick}
+                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-br from-red-100 to-red-200 rounded-xl py-3 relative"
+              >
                 <Heart className="w-5 h-5 text-red-600" />
                 <span className="text-sm font-medium text-red-600">Wishlist</span>
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-600 text-white text-xs rounded-full flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
               </button>
             </div>
           </div>
