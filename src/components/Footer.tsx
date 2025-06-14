@@ -1,5 +1,5 @@
 
-import { Facebook, Linkedin, Twitter, Instagram } from 'lucide-react';
+import { Facebook, Linkedin, Twitter, Instagram, Phone, Mail } from 'lucide-react';
 
 const Footer = () => {
   const quickLinks = [
@@ -24,9 +24,74 @@ const Footer = () => {
     'Installation Manual',
   ];
 
+  const handleWhatsAppClick = () => {
+    window.open('https://wa.me/919929283594', '_blank');
+  };
+
+  const handleInstagramClick = () => {
+    window.open('https://instagram.com/m4__manish_', '_blank');
+  };
+
+  const handleEmailClick = () => {
+    window.open('mailto:manishgayri34@gmail.com', '_blank');
+  };
+
   return (
     <footer className="bg-gray-200 rounded-b-3xl">
       <div className="max-w-7xl mx-auto px-8 py-12">
+        {/* Contact Section */}
+        <div className="mb-12">
+          <h2 className="text-3xl font-playfair font-bold text-estore-dark mb-6 text-center">
+            Get in Touch
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
+            {/* WhatsApp */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Phone className="w-6 h-6 text-green-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-estore-dark mb-2 text-center">WhatsApp</h3>
+              <p className="text-estore-text-light mb-3 text-center text-sm">Quick support via WhatsApp</p>
+              <button
+                onClick={handleWhatsAppClick}
+                className="w-full bg-green-500 text-white rounded-2xl px-4 py-2 text-sm font-medium hover:bg-green-600 transition-colors duration-200"
+              >
+                Chat on WhatsApp
+              </button>
+            </div>
+
+            {/* Instagram */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
+              <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Instagram className="w-6 h-6 text-pink-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-estore-dark mb-2 text-center">Instagram</h3>
+              <p className="text-estore-text-light mb-3 text-center text-sm">Follow us for updates</p>
+              <button
+                onClick={handleInstagramClick}
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl px-4 py-2 text-sm font-medium hover:from-purple-600 hover:to-pink-600 transition-all duration-200"
+              >
+                Follow @m4__manish_
+              </button>
+            </div>
+
+            {/* Email */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
+              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Mail className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-estore-dark mb-2 text-center">Email</h3>
+              <p className="text-estore-text-light mb-3 text-center text-sm">Send us an email</p>
+              <button
+                onClick={handleEmailClick}
+                className="w-full bg-blue-500 text-white rounded-2xl px-4 py-2 text-sm font-medium hover:bg-blue-600 transition-colors duration-200"
+              >
+                Send Email
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-12 mb-8">
           {/* Newsletter Box */}
           <div className="bg-white rounded-2xl p-8 flex-shrink-0 lg:max-w-sm">

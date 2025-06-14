@@ -5,7 +5,7 @@ import { Search, User, Heart, ShoppingCart, ChevronDown } from 'lucide-react';
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState('Home');
 
-  const navLinks = ['Home', 'Collection', 'Featured', 'Blog', 'Contact'];
+  const navLinks = ['Home', 'Collection', 'Featured', 'Blog'];
 
   const handleNavClick = (link: string) => {
     setActiveLink(link);
@@ -20,8 +20,7 @@ const Navbar = () => {
     const sectionMap: { [key: string]: string } = {
       'Collection': 'new-in-section',
       'Featured': 'featured-categories',
-      'Blog': 'blog-section',
-      'Contact': 'contact'
+      'Blog': 'blog-section'
     };
     
     const sectionId = sectionMap[link];
