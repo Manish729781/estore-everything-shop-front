@@ -15,6 +15,7 @@ import Address from "./pages/Address";
 import Payment from "./pages/Payment";
 import Checkout from "./pages/Checkout";
 import RequestReturnLabel from "./pages/RequestReturnLabel";
+import AffiliateProgram from "./pages/AffiliateProgram";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

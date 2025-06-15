@@ -1,4 +1,3 @@
-
 import { Facebook, Linkedin, Twitter, Instagram } from 'lucide-react';
 
 const Footer = () => {
@@ -6,7 +5,7 @@ const Footer = () => {
     { name: 'Shop All', href: '/products' },
     { name: 'Manage Subscription', href: '#' },
     { name: 'Request Return Label', href: '/request-return-label' },
-    { name: 'Affiliate Program', href: '#' },
+    { name: 'Affiliate Program', href: '/affiliate' },
   ];
 
   const secondColumn = [
