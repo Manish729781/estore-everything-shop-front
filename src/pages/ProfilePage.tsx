@@ -1,11 +1,9 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 type ProfileData = {
   full_name: string | null;
@@ -20,13 +18,13 @@ const ProfilePage = () => {
     mobile_number: "",
   });
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Redirect if not logged in
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
-        toast.info("Please sign in to view your profile.");
         navigate("/auth");
       }
     });
@@ -44,54 +42,25 @@ const ProfilePage = () => {
         .from("profiles")
         .select("full_name, email, mobile_number")
         .eq("id", user.id)
-        .single();
+        .maybeSingle();
 
-      if (error) {
-        toast.error("Failed to fetch profile.");
-      } else {
+      if (!error && data) {
         setProfile({
-          full_name: data?.full_name ?? "",
-          email: data?.email ?? "",
-          mobile_number: data?.mobile_number ?? "",
+          full_name: data.full_name ?? "",
+          email: data.email ?? "",
+          mobile_number: data.mobile_number ?? "",
         });
       }
       setLoading(false);
     }
-
     fetchProfile();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProfile((p) => ({
-      ...p,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      toast.error("You must be signed in.");
-      setSaving(false);
-      return;
-    }
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        full_name: profile.full_name,
-        mobile_number: profile.mobile_number,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", user.id);
-
-    if (error) {
-      toast.error("Failed to update profile.");
-    } else {
-      toast.success("Profile updated!");
-    }
-    setSaving(false);
+  const handleLogout = async () => {
+    setLogoutLoading(true);
+    await supabase.auth.signOut();
+    setLogoutLoading(false);
+    navigate("/auth");
   };
 
   if (loading) {
@@ -103,53 +72,47 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-pink-100 to-yellow-100">
-      <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8 mt-8">
-        <h2 className="text-3xl font-bold mb-2 text-estore-dark text-center">My Profile</h2>
-        <p className="mb-6 text-center text-gray-500">Update your details below and save changes.</p>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium mb-1 text-estore-dark">Full Name</label>
-            <Input
-              name="full_name"
-              type="text"
-              placeholder="Enter your full name"
-              value={profile.full_name || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1 text-estore-dark">Email</label>
-            <Input
-              name="email"
-              type="email"
-              value={profile.email || ""}
-              disabled
-              className="bg-gray-100 text-gray-400 cursor-not-allowed"
-              readOnly
-            />
-            <p className="text-xs text-muted-foreground mt-1">Email cannot be changed.</p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1 text-estore-dark">Mobile Number</label>
-            <Input
-              name="mobile_number"
-              type="tel"
-              placeholder="Enter your mobile number"
-              value={profile.mobile_number || ""}
-              onChange={handleChange}
-              pattern="^\+?\d{10,15}$"
-            />
-          </div>
+    <div className="min-h-screen bg-white">
+      {/* Banner */}
+      <div className="w-full bg-[#fdeee8] pb-4 md:pb-8 pt-7 px-4 md:px-16">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between max-w-7xl mx-auto">
+          <h1 className="text-[2.4rem] md:text-5xl font-playfair mb-3 font-bold text-[#bb5b24]">My Account</h1>
           <Button
-            type="submit"
-            className="w-full"
-            disabled={saving}
+            variant="link"
+            className="pl-0 underline text-[#884715] text-base font-medium flex gap-1 items-center mb-2"
+            onClick={handleLogout}
+            disabled={logoutLoading}
           >
-            {saving ? <Loader2 className="animate-spin mr-2" /> : null}
-            Save Changes
+            <LogOut className="w-5 h-5 mr-1" />
+            {logoutLoading ? "Logging out..." : "Log out"}
           </Button>
-        </form>
+        </div>
+      </div>
+
+      {/* Main content (responsive 2 column) */}
+      <div className="max-w-7xl mx-auto w-full px-4 py-10 md:pt-12 flex flex-col md:flex-row md:gap-6">
+        {/* Left: order history */}
+        <div className="w-full md:w-1/2 pr-0 md:pr-6 mb-10 md:mb-0">
+          <h2 className="font-playfair text-2xl md:text-2xl text-[#23243a] mb-3">Order history</h2>
+          <div className="text-lg text-[#23243a]">
+            <p className="mb-2">You haven't placed any orders yet.</p>
+          </div>
+        </div>
+        {/* Right: account details */}
+        <div className="w-full md:w-1/2 pl-0 md:pl-6 border-t md:border-t-0 md:border-l border-[#e7e7e7]">
+          <h2 className="font-playfair text-2xl md:text-2xl text-[#23243a] mb-3">Account details</h2>
+          <div className="text-base mb-1 text-[#23243a]">Default address</div>
+          <div className="italic text-xl text-[#23243a] mb-5">
+            {profile.full_name ? `${profile.full_name}, ` : ""}
+            India
+          </div>
+          <a
+            className="font-semibold text-lg text-[#884715] hover:underline flex items-center gap-1"
+            href="/address"
+          >
+            View addresses (1) <span className="text-xl">&gt;</span>
+          </a>
+        </div>
       </div>
     </div>
   );
