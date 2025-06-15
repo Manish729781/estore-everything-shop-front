@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, LogOut, Image, User, Phone } from "lucide-react";
@@ -113,7 +112,7 @@ const ProfilePage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#181c2b] via-[#f6e7d8] to-[#fdeee8]">
         <Loader2 className="animate-spin w-8 h-8 text-muted-foreground" />
       </div>
     );
@@ -122,9 +121,9 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#181c2b] via-[#f6e7d8] to-[#fdeee8] py-0 m-0">
       {/* Banner */}
-      <div className="w-full bg-[#fdeee8] pb-6 md:pb-10 pt-7 px-4 md:px-16 border-b">
+      <div className="w-full bg-[#fdeee8]/80 backdrop-blur-sm pb-6 md:pb-10 pt-7 px-4 md:px-16 border-b border-white/30 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between max-w-4xl mx-auto">
-          <h1 className="text-[2.3rem] md:text-5xl font-playfair mb-3 font-bold text-[#bb5b24]">My Account</h1>
+          <h1 className="text-[2.3rem] md:text-5xl font-playfair mb-3 font-bold text-white/80 drop-shadow-lg">My Account</h1>
           <Button
             variant="link"
             className="pl-0 underline text-[#884715] text-base font-medium flex gap-1 items-center mb-2"
@@ -141,25 +140,25 @@ const ProfilePage = () => {
         {/* Left column: Profile Info */}
         <div className="w-full md:w-1/2 mb-10 md:mb-0 flex flex-col gap-8">
           {/* Profile box */}
-          <div className="bg-white/90 rounded-lg shadow-md p-6 flex flex-col gap-5 items-center">
+          <div className="bg-white/80 backdrop-blur-xl rounded-lg shadow-md p-6 flex flex-col gap-5 items-center border border-white/30">
             <div className="relative">
               <Avatar className="w-24 h-24 border-2 border-[#f6e7d8] shadow">
                 {avatarPreview ? (
                   <AvatarImage src={avatarPreview} alt={profile.full_name || "Avatar"} />
                 ) : (
                   <AvatarFallback>
-                    <User className="w-12 h-12 text-[#bb5b24]" />
+                    <User className="w-12 h-12 text-[#bb5b24]/60" />
                   </AvatarFallback>
                 )}
               </Avatar>
               <Button
                 type="button"
                 size="icon"
-                className="absolute -bottom-2 -right-2 bg-[#fdeee8] border border-[#bb5b24] p-1"
+                className="absolute -bottom-2 -right-2 bg-[#fdeee8]/80 border border-[#bb5b24] p-1"
                 onClick={() => avatarInputRef.current?.click()}
                 title="Change profile picture"
               >
-                <Image className="w-5 h-5 text-[#bb5b24]" />
+                <Image className="w-5 h-5 text-[#bb5b24]/70" />
               </Button>
               <input
                 type="file"
@@ -175,11 +174,11 @@ const ProfilePage = () => {
               autoComplete="off"
             >
               <div>
-                <label className="text-sm font-medium text-[#23243a]">Full Name</label>
+                <label className="text-sm font-medium text-[#23243a]/80">Full Name</label>
                 <Input
                   name="full_name"
                   type="text"
-                  className="mt-1"
+                  className="mt-1 text-[#23243a]/90 bg-white/50 backdrop-blur px-3"
                   placeholder="Your name"
                   value={profile.full_name ?? ""}
                   onChange={handleChange}
@@ -187,11 +186,11 @@ const ProfilePage = () => {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-[#23243a]">Mobile Number</label>
+                <label className="text-sm font-medium text-[#23243a]/80">Mobile Number</label>
                 <Input
                   name="mobile_number"
                   type="text"
-                  className="mt-1"
+                  className="mt-1 text-[#23243a]/90 bg-white/50 backdrop-blur px-3"
                   placeholder="Your mobile number"
                   value={profile.mobile_number ?? ""}
                   onChange={handleChange}
@@ -200,7 +199,7 @@ const ProfilePage = () => {
               </div>
               <Button
                 type="submit"
-                className="mt-1 w-full bg-[#bb5b24] hover:bg-[#884715]"
+                className="mt-1 w-full bg-[#bb5b24]/90 hover:bg-[#884715]/90 text-white/90"
                 disabled={saving}
               >
                 {saving ? (
@@ -214,17 +213,17 @@ const ProfilePage = () => {
         {/* Right column: Order/Account */}
         <div className="w-full md:w-1/2 flex flex-col gap-8">
           {/* Order history */}
-          <div className="bg-white/90 rounded-lg shadow p-6">
-            <h2 className="font-playfair text-2xl text-[#23243a] mb-4">Order history</h2>
-            <div className="text-lg text-[#23243a]">
+          <div className="bg-white/60 backdrop-blur-xl rounded-lg shadow p-6 border border-white/30">
+            <h2 className="font-playfair text-2xl text-[#23243a]/90 mb-4">Order history</h2>
+            <div className="text-lg text-[#23243a]/60">
               <p className="mb-2">You haven't placed any orders yet.</p>
             </div>
           </div>
           {/* Account details/address */}
-          <div className="bg-white/90 rounded-lg shadow p-6">
-            <h2 className="font-playfair text-2xl text-[#23243a] mb-4">Account details</h2>
-            <div className="text-base mb-1 text-[#23243a]">Default address</div>
-            <div className="italic text-xl text-[#23243a] mb-5">
+          <div className="bg-white/60 backdrop-blur-xl rounded-lg shadow p-6 border border-white/30">
+            <h2 className="font-playfair text-2xl text-[#23243a]/90 mb-4">Account details</h2>
+            <div className="text-base mb-1 text-[#23243a]/60">Default address</div>
+            <div className="italic text-xl text-[#23243a]/80 mb-5">
               {profile.full_name ? `${profile.full_name}, ` : ""}
               India
             </div>
@@ -242,4 +241,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
