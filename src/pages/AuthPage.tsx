@@ -25,7 +25,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-pink-100 to-blue-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-slate-900 via-slate-800 to-amber-100">
       <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8 mt-8">
         {tab === "sign-in" ? (
           <>
