@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 const AuthPage = () => {
   const [tab, setTab] = useState<"sign-in" | "sign-up">("sign-in");
@@ -28,29 +27,6 @@ const AuthPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-pink-100 to-blue-100">
       <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8 mt-8">
-        <div className="flex mb-6">
-          <button
-            onClick={() => setTab("sign-in")}
-            className={`flex-1 py-2 rounded-l-xl font-semibold text-lg transition ${
-              tab === "sign-in"
-                ? "bg-estore-dark text-white shadow-md"
-                : "bg-gray-100 text-estore-dark"
-            }`}
-          >
-            Sign In
-          </button>
-          <button
-            onClick={() => setTab("sign-up")}
-            className={`flex-1 py-2 rounded-r-xl font-semibold text-lg transition ${
-              tab === "sign-up"
-                ? "bg-estore-dark text-white shadow-md"
-                : "bg-gray-100 text-estore-dark"
-            }`}
-          >
-            Sign Up
-          </button>
-        </div>
-
         {tab === "sign-in" ? (
           <>
             <h2 className="text-2xl font-bold mb-2 text-estore-dark text-center">Sign In</h2>
@@ -80,7 +56,11 @@ const AuthPage = () => {
             </form>
             <p className="text-center text-sm mt-4">
               Don't have an account?{" "}
-              <button className="text-estore-dark hover:underline font-medium" onClick={() => setTab("sign-up")}>
+              <button
+                className="text-estore-dark hover:underline font-medium"
+                onClick={() => setTab("sign-up")}
+                type="button"
+              >
                 Sign Up
               </button>
             </p>
@@ -123,7 +103,11 @@ const AuthPage = () => {
             </form>
             <p className="text-center text-sm mt-4">
               Already have an account?{" "}
-              <button className="text-estore-dark hover:underline font-medium" onClick={() => setTab("sign-in")}>
+              <button
+                className="text-estore-dark hover:underline font-medium"
+                onClick={() => setTab("sign-in")}
+                type="button"
+              >
                 Sign In
               </button>
             </p>
