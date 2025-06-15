@@ -228,9 +228,18 @@ const Navbar = () => {
 
           {/* Icon Actions */}
           <div className="flex items-center gap-4">
-            {/* User */}
-            <button className="w-11 h-11 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
-              <User className="w-5 h-5 text-estore-dark" />
+            {/* User (replacing with uploaded image and linking to /auth) */}
+            <button
+              className="w-11 h-11 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 overflow-hidden"
+              onClick={() => navigate("/auth")}
+              aria-label="User menu"
+            >
+              <img
+                src="/lovable-uploads/4cc4c6b8-aed9-453b-b9b2-edf9d726ceab.png"
+                alt="Profile"
+                className="w-7 h-7 object-contain"
+                draggable={false}
+              />
             </button>
             {/* Wishlist */}
             <button 
@@ -306,6 +315,20 @@ const Navbar = () => {
             )}
           </button>
 
+          {/* Mobile User Icon (replace with uploaded image) */}
+          <button
+            className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center overflow-hidden"
+            aria-label="User menu"
+            onClick={() => navigate("/auth")}
+          >
+            <img
+              src="/lovable-uploads/4cc4c6b8-aed9-453b-b9b2-edf9d726ceab.png"
+              alt="Profile"
+              className="w-7 h-7 object-contain"
+              draggable={false}
+            />
+          </button>
+
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -359,10 +382,23 @@ const Navbar = () => {
 
             {/* Mobile User Actions */}
             <div className="flex flex-col gap-3 pt-4 border-t border-gray-200">
-              <button className="flex items-center justify-center gap-2 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl py-4">
-                <User className="w-5 h-5 text-estore-dark" />
+              {/* User icon for menu - keep it consistent (optionally remove or replace if redundant) */}
+              <button
+                className="flex items-center justify-center gap-2 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl py-4 overflow-hidden"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  navigate("/auth");
+                }}
+              >
+                <img
+                  src="/lovable-uploads/4cc4c6b8-aed9-453b-b9b2-edf9d726ceab.png"
+                  alt="Profile"
+                  className="w-6 h-6 object-contain"
+                  draggable={false}
+                />
                 <span className="text-sm font-medium text-estore-dark">Profile</span>
               </button>
+              {/* Wishlist */}
               <button 
                 onClick={handleWishlistClick}
                 className="flex items-center justify-center gap-2 bg-gradient-to-br from-red-100 to-red-200 rounded-xl py-4 relative"
