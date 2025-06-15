@@ -130,7 +130,22 @@ const ProductDescription = () => {
   ];
 
   // Find the current product based on the ID from URL
-  const currentProduct = allProducts.find(product => product.id === parseInt(id || '1')) || allProducts[0];
+  const productId = parseInt(id || '1');
+  const currentProduct = allProducts.find(product => product.id === productId);
+
+  // Redirect to valid product if invalid ID is used
+  useEffect(() => {
+    if (!currentProduct) {
+      console.log(`Product with ID ${productId} not found, redirecting to product 1`);
+      navigate('/product/1', { replace: true });
+      return;
+    }
+  }, [productId, currentProduct, navigate]);
+
+  // Don't render anything while redirecting
+  if (!currentProduct) {
+    return null;
+  }
 
   // Initialize color and size based on current product
   useEffect(() => {
@@ -160,7 +175,6 @@ const ProductDescription = () => {
   // Check if product is in wishlist
   const isProductInWishlist = isInWishlist(currentProduct.id.toString());
 
-  // Handle wishlist toggle
   const handleWishlistToggle = () => {
     const wishlistItem = {
       id: currentProduct.id.toString(),
@@ -184,7 +198,6 @@ const ProductDescription = () => {
     }
   };
 
-  // Product data to capture
   const productData = {
     id: currentProduct.id,
     title: currentProduct.title,
@@ -199,7 +212,6 @@ const ProductDescription = () => {
 
   const handleBuyNow = () => {
     console.log('Buy Now clicked with data:', productData);
-    // Navigate to address page with product data
     navigate('/address', { 
       state: { 
         productData,
@@ -210,8 +222,6 @@ const ProductDescription = () => {
 
   const handleAddToCart = () => {
     console.log('Add to Cart clicked with data:', productData);
-    // For now, navigate to address page with product data
-    // In a real app, you'd add to cart state/context
     navigate('/address', { 
       state: { 
         productData,
