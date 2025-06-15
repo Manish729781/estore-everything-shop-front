@@ -492,20 +492,21 @@ const ProductList = () => {
     <div className="min-h-screen bg-white">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Breadcrumb */}
-        <div className="mb-8">
+      {/* Added extra spacing in cover area */}
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        {/* Breadcrumb with more spacing */}
+        <div className="mb-12">
           <p className="text-sm text-gray-600">{t('nav.home')} / {t('nav.collection')}</p>
         </div>
 
-        {/* Header */}
-        <div className="mb-10">
-          <h1 className="text-4xl font-playfair font-bold text-estore-dark mb-8">
+        {/* Header with increased spacing */}
+        <div className="mb-16">
+          <h1 className="text-4xl font-playfair font-bold text-estore-dark mb-12">
             {t('products.allProducts')}
           </h1>
 
-          {/* Enhanced Search Bar */}
-          <div className="mb-8">
+          {/* Enhanced Search Bar with more spacing */}
+          <div className="mb-12">
             <form onSubmit={handleSearchSubmit} className="relative max-w-md">
               <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3 border border-gray-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
                 <Search className="w-5 h-5 text-gray-400" />
@@ -534,8 +535,8 @@ const ProductList = () => {
             )}
           </div>
 
-          {/* Category Tiles */}
-          <div className="grid grid-cols-5 gap-6 mb-10">
+          {/* Category Tiles with increased spacing */}
+          <div className="grid grid-cols-5 gap-8 mb-16">
             {categories.map((category) => (
               <div key={category.name} className="relative rounded-lg overflow-hidden cursor-pointer group">
                 <img
