@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useCart } from '@/hooks/use-cart';
 import { useToast } from '@/hooks/use-toast';
@@ -9,7 +10,7 @@ interface ProductCardProps {
   oldPrice: string;
   tag: string;
   colors: string[];
-  onViewMore?: () => void;
+  onViewDescription?: () => void; // new prop for opening description
   onAddToCart?: () => void;
   rounded?: string; // tailwind rounded classes (optional)
 }
@@ -21,7 +22,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   oldPrice,
   tag,
   colors,
-  onViewMore,
+  onViewDescription,
   onAddToCart,
   rounded = "rounded-xl md:rounded-2xl",
 }) => {
@@ -55,7 +56,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <img
         src={image}
         alt={title}
-        className="w-full h-40 xs:h-48 md:h-56 object-cover"
+        className="w-full h-40 xs:h-48 md:h-56 object-cover cursor-pointer"
+        onClick={onViewDescription}
       />
       <div className="p-3 xs:p-4 md:p-6 flex-1 flex flex-col">
         <h3 className="font-semibold text-estore-dark mb-2 xs:mb-3 text-base xs:text-lg">{title}</h3>
@@ -77,23 +79,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="flex gap-2 mt-auto">
           <button
             type="button"
-            onClick={onViewMore}
-            className="
-              flex-1 bg-gray-100 text-estore-dark px-2 xs:px-4 py-2 xs:py-3 rounded-full text-xs xs:text-sm font-medium
-              hover:bg-gray-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-estore-dark
-            "
-          >
-            View more
-          </button>
-          <button
-            type="button"
             onClick={handleAddToCart}
             className="
               flex-1 bg-estore-dark text-white px-2 xs:px-4 py-2 xs:py-3 rounded-full text-xs xs:text-sm font-medium
               hover:bg-estore-dark/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-estore-dark
             "
           >
-            Add to Cart
+            Buy
           </button>
         </div>
       </div>
@@ -102,3 +94,4 @@ const ProductCard: React.FC<ProductCardProps> = ({
 };
 
 export default ProductCard;
+

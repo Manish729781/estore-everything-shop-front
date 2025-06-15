@@ -15,13 +15,13 @@ interface Product {
 
 interface MobileProductCarouselProps {
   products: Product[];
-  onViewMore: (id: number) => void;
+  onViewDescription: (id: number) => void;
   onAddToCart: () => void;
 }
 
 const MobileProductCarousel: React.FC<MobileProductCarouselProps> = ({
   products,
-  onViewMore,
+  onViewDescription,
   onAddToCart,
 }) => {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -47,7 +47,7 @@ const MobileProductCarousel: React.FC<MobileProductCarouselProps> = ({
         <div className="mx-auto w-full px-2" style={{ maxWidth: 340 }}>
           <ProductCard
             {...products[activeIdx]}
-            onViewMore={() => onViewMore(products[activeIdx].id)}
+            onViewDescription={() => onViewDescription(products[activeIdx].id)}
             onAddToCart={onAddToCart}
             rounded="rounded-2xl"
           />
@@ -77,3 +77,4 @@ const MobileProductCarousel: React.FC<MobileProductCarouselProps> = ({
 };
 
 export default MobileProductCarousel;
+

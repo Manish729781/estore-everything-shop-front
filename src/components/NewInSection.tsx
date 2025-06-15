@@ -139,7 +139,7 @@ const NewInSection = () => {
     setActiveCategory(category);
   };
 
-  const handleViewMore = (productId: number) => {
+  const handleViewDescription = (productId: number) => {
     navigate(`/product/${productId}`);
   };
 
@@ -220,7 +220,7 @@ const NewInSection = () => {
       <div className="sm:hidden bg-gray-50 pt-6 pb-8">
         <MobileProductCarousel
           products={filteredProducts}
-          onViewMore={handleViewMore}
+          onViewDescription={handleViewDescription}
           onAddToCart={handleGoToCheckout}
         />
         {/* Show message if no products found */}
@@ -256,7 +256,7 @@ const NewInSection = () => {
                 oldPrice={product.oldPrice}
                 tag={product.tag}
                 colors={product.colors}
-                onViewMore={() => handleViewMore(product.id)}
+                onViewDescription={() => handleViewDescription(product.id)}
                 onAddToCart={handleGoToCheckout}
               />
             ))}
