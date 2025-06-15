@@ -16,12 +16,36 @@ const AffiliateProgram = () => {
   const [selectedProduct, setSelectedProduct] = useState('');
   const [productCopied, setProductCopied] = useState(false);
 
-  // Available products for referral
+  // Available products for referral with images
   const products = [
-    { id: 1, name: 'Minimalism Shirts', category: 'Wardrobe wear', commission: '15%' },
-    { id: 2, name: 'Quicker Sneakers', category: 'Footwear', commission: '12%' },
-    { id: 3, name: 'Gentle Body Care Cleanser', category: 'Fragrance', commission: '18%' },
-    { id: 4, name: 'Gold Dipped U Shaped Earrings', category: 'Jewellery', commission: '20%' }
+    { 
+      id: 1, 
+      name: 'Minimalism Shirts', 
+      category: 'Wardrobe wear', 
+      commission: '15%',
+      image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=300&q=80'
+    },
+    { 
+      id: 2, 
+      name: 'Quicker Sneakers', 
+      category: 'Footwear', 
+      commission: '12%',
+      image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=300&q=80'
+    },
+    { 
+      id: 3, 
+      name: 'Gentle Body Care Cleanser', 
+      category: 'Fragrance', 
+      commission: '18%',
+      image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=300&q=80'
+    },
+    { 
+      id: 4, 
+      name: 'Gold Dipped U Shaped Earrings', 
+      category: 'Jewellery', 
+      commission: '20%',
+      image: '/lovable-uploads/2ff43a0b-370c-4ef4-91b1-da6f04986113.png'
+    }
   ];
 
   const handleCopyCode = () => {
@@ -40,15 +64,58 @@ const AffiliateProgram = () => {
   };
 
   const referralData = [
-    { id: 1, referredUser: 'john.doe@email.com', product: 'Minimalism Shirts', status: 'Active', commission: '$25.00', date: '2025-01-15' },
-    { id: 2, referredUser: 'jane.smith@email.com', product: 'Quicker Sneakers', status: 'Pending', commission: '$15.00', date: '2025-01-12' },
-    { id: 3, referredUser: 'mike.wilson@email.com', product: 'Gold Dipped U Shaped Earrings', status: 'Active', commission: '$30.00', date: '2025-01-10' },
-    { id: 4, referredUser: 'sarah.johnson@email.com', product: 'Gentle Body Care Cleanser', status: 'Active', commission: '$20.00', date: '2025-01-08' },
-    { id: 5, referredUser: 'alex.brown@email.com', product: 'Minimalism Shirts', status: 'Pending', commission: '$25.00', date: '2025-01-05' },
+    { 
+      id: 1, 
+      referredUser: 'john.doe@email.com', 
+      product: 'Minimalism Shirts', 
+      status: 'Active', 
+      commission: '$25.00', 
+      date: '2025-01-15',
+      productImage: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=100&q=80'
+    },
+    { 
+      id: 2, 
+      referredUser: 'jane.smith@email.com', 
+      product: 'Quicker Sneakers', 
+      status: 'Pending', 
+      commission: '$15.00', 
+      date: '2025-01-12',
+      productImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=100&q=80'
+    },
+    { 
+      id: 3, 
+      referredUser: 'mike.wilson@email.com', 
+      product: 'Gold Dipped U Shaped Earrings', 
+      status: 'Active', 
+      commission: '$30.00', 
+      date: '2025-01-10',
+      productImage: '/lovable-uploads/2ff43a0b-370c-4ef4-91b1-da6f04986113.png'
+    },
+    { 
+      id: 4, 
+      referredUser: 'sarah.johnson@email.com', 
+      product: 'Gentle Body Care Cleanser', 
+      status: 'Active', 
+      commission: '$20.00', 
+      date: '2025-01-08',
+      productImage: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=100&q=80'
+    },
+    { 
+      id: 5, 
+      referredUser: 'alex.brown@email.com', 
+      product: 'Minimalism Shirts', 
+      status: 'Pending', 
+      commission: '$25.00', 
+      date: '2025-01-05',
+      productImage: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=100&q=80'
+    },
   ];
 
   const totalCommission = referralData.reduce((sum, ref) => sum + parseFloat(ref.commission.replace('$', '')), 0);
   const activeReferrals = referralData.filter(ref => ref.status === 'Active').length;
+
+  // Get selected product details
+  const selectedProductDetails = products.find(p => p.id.toString() === selectedProduct);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -139,9 +206,16 @@ const AffiliateProgram = () => {
                   <SelectContent>
                     {products.map((product) => (
                       <SelectItem key={product.id} value={product.id.toString()}>
-                        <div className="flex justify-between items-center w-full">
-                          <span>{product.name}</span>
-                          <span className="text-sm text-gray-500 ml-2">({product.commission} commission)</span>
+                        <div className="flex items-center gap-3 w-full">
+                          <img 
+                            src={product.image} 
+                            alt={product.name}
+                            className="w-10 h-10 object-cover rounded-md"
+                          />
+                          <div className="flex flex-col">
+                            <span className="font-medium">{product.name}</span>
+                            <span className="text-sm text-gray-500">({product.commission} commission)</span>
+                          </div>
                         </div>
                       </SelectItem>
                     ))}
@@ -149,24 +223,36 @@ const AffiliateProgram = () => {
                 </Select>
               </div>
 
-              {selectedProduct && (
-                <div>
-                  <Label htmlFor="productReferralLink">Product referral link</Label>
-                  <div className="flex gap-2 mt-2">
-                    <Input
-                      id="productReferralLink"
-                      value={`https://estore.com/product/${selectedProduct}?ref=${referralCode}`}
-                      readOnly
-                      className="flex-1"
+              {selectedProduct && selectedProductDetails && (
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="flex items-center gap-4 mb-4">
+                    <img 
+                      src={selectedProductDetails.image} 
+                      alt={selectedProductDetails.name}
+                      className="w-20 h-20 object-cover rounded-lg"
                     />
-                    <Button onClick={handleCopyProductLink} variant="outline">
-                      <Copy className="h-4 w-4 mr-2" />
-                      {productCopied ? 'Copied!' : 'Copy'}
-                    </Button>
+                    <div>
+                      <h3 className="font-semibold text-lg">{selectedProductDetails.name}</h3>
+                      <p className="text-gray-600">{selectedProductDetails.category}</p>
+                      <p className="text-green-600 font-medium">Commission: {selectedProductDetails.commission}</p>
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">
-                    Commission rate: {products.find(p => p.id.toString() === selectedProduct)?.commission}
-                  </p>
+                  
+                  <div>
+                    <Label htmlFor="productReferralLink">Product referral link</Label>
+                    <div className="flex gap-2 mt-2">
+                      <Input
+                        id="productReferralLink"
+                        value={`https://estore.com/product/${selectedProduct}?ref=${referralCode}`}
+                        readOnly
+                        className="flex-1"
+                      />
+                      <Button onClick={handleCopyProductLink} variant="outline">
+                        <Copy className="h-4 w-4 mr-2" />
+                        {productCopied ? 'Copied!' : 'Copy'}
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -212,8 +298,8 @@ const AffiliateProgram = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Referred User</TableHead>
                   <TableHead>Product</TableHead>
+                  <TableHead>Referred User</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Commission</TableHead>
                   <TableHead>Date</TableHead>
@@ -222,8 +308,17 @@ const AffiliateProgram = () => {
               <TableBody>
                 {referralData.map((referral) => (
                   <TableRow key={referral.id}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <img 
+                          src={referral.productImage} 
+                          alt={referral.product}
+                          className="w-12 h-12 object-cover rounded-md"
+                        />
+                        <span className="font-medium">{referral.product}</span>
+                      </div>
+                    </TableCell>
                     <TableCell>{referral.referredUser}</TableCell>
-                    <TableCell>{referral.product}</TableCell>
                     <TableCell>
                       <span className={`px-2 py-1 rounded-full text-xs ${
                         referral.status === 'Active' 
