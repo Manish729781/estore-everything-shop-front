@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Minus, Plus, Heart, Share2, FileText } from 'lucide-react';
+import { Minus, Plus, Heart, Share2, FileText, Star, User } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,7 @@ const ProductDescription = () => {
   const [selectedSize, setSelectedSize] = useState('');
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
+  const [isReviewsOpen, setIsReviewsOpen] = useState(false);
 
   // Product data array (this would typically come from an API or context)
   const allProducts = [
@@ -129,6 +130,50 @@ const ProductDescription = () => {
         { label: 'Purity', value: '14 KT' }
       ],
       inStock: true
+    }
+  ];
+
+  // Customer reviews data
+  const customerReviews = [
+    {
+      id: 1,
+      name: "Priya Sharma",
+      location: "Mumbai",
+      rating: 5,
+      comment: "Excellent quality! The fabric is so soft and comfortable. Perfect fit and great value for money.",
+      date: "2 days ago"
+    },
+    {
+      id: 2,
+      name: "Rajesh Kumar",
+      location: "Delhi",
+      rating: 4,
+      comment: "Good product overall. Fast delivery and nice packaging. Would definitely recommend to others.",
+      date: "1 week ago"
+    },
+    {
+      id: 3,
+      name: "Anjali Patel",
+      location: "Bangalore",
+      rating: 5,
+      comment: "Amazing quality and exactly as shown in pictures. The color is vibrant and the material feels premium.",
+      date: "2 weeks ago"
+    },
+    {
+      id: 4,
+      name: "Vikram Singh",
+      location: "Pune",
+      rating: 4,
+      comment: "Very satisfied with the purchase. Good quality and comfortable to wear. Will buy again.",
+      date: "3 weeks ago"
+    },
+    {
+      id: 5,
+      name: "Kavya Nair",
+      location: "Chennai",
+      rating: 5,
+      comment: "Outstanding product! The design is elegant and the quality exceeded my expectations. Highly recommended!",
+      date: "1 month ago"
     }
   ];
 
@@ -463,6 +508,9 @@ const ProductDescription = () => {
           </div>
         </div>
 
+        {/* Add some blank space */}
+        <div className="mt-12 mb-8"></div>
+
         {/* Product Description Section */}
         <div className="mt-8 sm:mt-12">
           <Card className="shadow-lg">
@@ -543,6 +591,103 @@ const ProductDescription = () => {
             </Collapsible>
           </Card>
         </div>
+
+        {/* Add more blank space */}
+        <div className="mt-16 mb-8"></div>
+
+        {/* Customer Reviews Section */}
+        <div className="mt-8 sm:mt-12">
+          <Card className="shadow-lg">
+            <Collapsible open={isReviewsOpen} onOpenChange={setIsReviewsOpen}>
+              <CollapsibleTrigger asChild>
+                <CardHeader className="cursor-pointer hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <User className="w-6 h-6 text-estore-dark" />
+                      <CardTitle className="text-xl sm:text-2xl text-estore-dark">
+                        Customer Reviews
+                      </CardTitle>
+                      <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-sm font-medium">
+                        {customerReviews.length} Reviews
+                      </span>
+                    </div>
+                    <div className={`transform transition-transform duration-200 ${isReviewsOpen ? 'rotate-180' : ''}`}>
+                      <Plus className="w-5 h-5 text-gray-500" />
+                    </div>
+                  </div>
+                  <CardDescription>
+                    See what our customers from across India are saying
+                  </CardDescription>
+                </CardHeader>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <CardContent className="pt-0">
+                  <div className="space-y-6">
+                    {/* Overall Rating */}
+                    <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200">
+                      <div className="flex items-center gap-4 mb-2">
+                        <div className="text-3xl font-bold text-estore-dark">4.6</div>
+                        <div className="flex items-center gap-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star 
+                              key={star} 
+                              className={`w-5 h-5 ${star <= 5 ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} 
+                            />
+                          ))}
+                        </div>
+                        <span className="text-gray-600">Based on {customerReviews.length} reviews</span>
+                      </div>
+                    </div>
+
+                    {/* Individual Reviews */}
+                    <div className="space-y-4">
+                      {customerReviews.map((review) => (
+                        <div key={review.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                                {review.name.charAt(0)}
+                              </div>
+                              <div>
+                                <h4 className="font-semibold text-estore-dark">{review.name}</h4>
+                                <p className="text-sm text-gray-500">{review.location}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-1">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <Star 
+                                    key={star} 
+                                    className={`w-4 h-4 ${star <= review.rating ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} 
+                                  />
+                                ))}
+                              </div>
+                              <span className="text-sm text-gray-500">{review.date}</span>
+                            </div>
+                          </div>
+                          <p className="text-gray-700 leading-relaxed">{review.comment}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Write Review Button */}
+                    <div className="text-center pt-4">
+                      <Button 
+                        variant="outline" 
+                        className="px-8 py-3 border-2 border-estore-dark text-estore-dark hover:bg-estore-dark hover:text-white transition-all duration-200"
+                      >
+                        Write a Review
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </CollapsibleContent>
+            </Collapsible>
+          </Card>
+        </div>
+
+        {/* Final blank space */}
+        <div className="mt-16 mb-12"></div>
       </div>
 
       <Footer />
