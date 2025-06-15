@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { WishlistProvider } from "./contexts/WishlistContext";
+import { CartProvider } from "./contexts/CartContext";
 import Index from "./pages/Index";
 import ProductDescription from "./pages/ProductDescription";
 import ProductList from "./pages/ProductList";
@@ -31,34 +32,36 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
       <WishlistProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/products" element={<ProductList />} />
-              <Route path="/product/:id" element={<ProductDescription />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/address" element={<Address />} />
-              <Route path="/payment" element={<Payment />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/request-return-label" element={<RequestReturnLabel />} />
-              <Route path="/affiliate" element={<AffiliateProgram />} />
-              <Route path="/wholesale" element={<Wholesale />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/terms-conditions" element={<TermsConditions />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/learn-more" element={<LearnMore />} />
-              <Route path="/about-us" element={<AboutUs />} />
-              <Route path="/wash-learn" element={<WashLearn />} />
-              <Route path="/faqs-support" element={<FAQsSupport />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+        <CartProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/products" element={<ProductList />} />
+                <Route path="/product/:id" element={<ProductDescription />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/address" element={<Address />} />
+                <Route path="/payment" element={<Payment />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/request-return-label" element={<RequestReturnLabel />} />
+                <Route path="/affiliate" element={<AffiliateProgram />} />
+                <Route path="/wholesale" element={<Wholesale />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/terms-conditions" element={<TermsConditions />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/learn-more" element={<LearnMore />} />
+                <Route path="/about-us" element={<AboutUs />} />
+                <Route path="/wash-learn" element={<WashLearn />} />
+                <Route path="/faqs-support" element={<FAQsSupport />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </CartProvider>
       </WishlistProvider>
     </LanguageProvider>
   </QueryClientProvider>

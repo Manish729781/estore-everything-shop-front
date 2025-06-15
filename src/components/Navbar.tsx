@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { Search, User, Heart, ShoppingCart, ChevronDown, Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useWishlist } from '@/contexts/WishlistContext';
+import { useCart } from '@/hooks/use-cart';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +16,7 @@ const Navbar = () => {
   const location = useLocation();
   const { selectedLanguage, setSelectedLanguage, t } = useLanguage();
   const { wishlistCount } = useWishlist();
+  const { cartItems } = useCart();
   const [activeLink, setActiveLink] = useState('Home');
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -142,6 +143,8 @@ const Navbar = () => {
     navigate('/cart');
   };
 
+  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
   return (
     <header className="w-full bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-18 lg:h-20">
@@ -224,9 +227,11 @@ const Navbar = () => {
 
           {/* Icon Actions */}
           <div className="flex items-center gap-4">
+            {/* User */}
             <button className="w-11 h-11 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
               <User className="w-5 h-5 text-estore-dark" />
             </button>
+            {/* Wishlist */}
             <button 
               onClick={handleWishlistClick}
               className="w-11 h-11 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 relative"
@@ -238,12 +243,15 @@ const Navbar = () => {
                 </span>
               )}
             </button>
+            {/* Cart */}
             <button 
               onClick={handleCartClick}
               className="w-11 h-11 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 relative"
             >
               <ShoppingCart className="w-5 h-5 text-blue-600" />
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-estore-dark text-white text-xs rounded-full flex items-center justify-center">2</span>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-estore-dark text-white text-xs rounded-full flex items-center justify-center">{cartCount}</span>
+              )}
             </button>
           </div>
         </div>
@@ -274,7 +282,9 @@ const Navbar = () => {
             className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center relative"
           >
             <ShoppingCart className="w-5 h-5 text-blue-600" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-estore-dark text-white text-xs rounded-full flex items-center justify-center">2</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-estore-dark text-white text-xs rounded-full flex items-center justify-center">{cartCount}</span>
+            )}
           </button>
 
           {/* Mobile Menu Button */}

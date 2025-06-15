@@ -1,5 +1,6 @@
-
 import React from "react";
+import { useCart } from '@/hooks/use-cart';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProductCardProps {
   image: string;
@@ -24,6 +25,26 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onAddToCart,
   rounded = "rounded-xl md:rounded-2xl",
 }) => {
+  const { addToCart } = useCart();
+  const { toast } = useToast();
+
+  // Assume id as title (ideally, should be passed as prop! Here, fallback for demo)
+  const id = title.replace(/\s+/g, "-").toLowerCase();
+
+  const handleAddToCart = () => {
+    addToCart({
+      id,
+      name: title,
+      title,
+      price: Number(price.replace(/[^\d]/g, "")),
+      image,
+      color: colors[0] || "",
+      oldPrice,
+    });
+    toast({ title: "Added to Cart", description: `${title} has been added to your cart.` });
+    if (onAddToCart) onAddToCart();
+  };
+
   return (
     <div
       className={`bg-white ${rounded} shadow-sm overflow-hidden relative flex flex-col transition-shadow duration-300 hover:shadow-lg`}
@@ -66,7 +87,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </button>
           <button
             type="button"
-            onClick={onAddToCart}
+            onClick={handleAddToCart}
             className="
               flex-1 bg-estore-dark text-white px-2 xs:px-4 py-2 xs:py-3 rounded-full text-xs xs:text-sm font-medium
               hover:bg-estore-dark/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-estore-dark

@@ -6,36 +6,19 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { useCart } from "@/hooks/use-cart";
 
 const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+  const { cartItems, removeFromCart, clearCart } = useCart();
   
   // Get product data from navigation state
   const productData = location.state?.productData;
   const fromBuyNow = location.state?.fromBuyNow;
   
   // Initialize cart items based on whether we have product data
-  const [cartItems, setCartItems] = useState(() => {
-    if (productData) {
-      return [{
-        id: productData.id,
-        title: productData.title,
-        image: productData.image,
-        price: productData.price,
-        originalPrice: productData.originalPrice,
-        quantity: productData.quantity,
-        selectedColor: productData.selectedColor,
-        selectedSize: productData.selectedSize,
-        specifications: productData.specifications
-      }];
-    }
-    
-    // Default empty cart if no product data is passed
-    return [];
-  });
-  
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -56,38 +39,27 @@ const Checkout = () => {
     }));
   };
 
-  const removeItem = (id: number) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
-    toast({
-      title: "Product removed",
-      description: "Item has been removed from your cart"
-    });
-  };
-
   const handleSubmitOrder = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Here you would typically process the order, connect with payment gateway, etc.
     toast({
       title: "Order Placed Successfully!",
       description: "Thank you for shopping with us.",
       variant: "default",
     });
-    
-    // Redirect to a success page
+    clearCart();
     setTimeout(() => navigate('/'), 2000);
   };
 
   // Calculate subtotal and total dynamically
   const calculateSubtotal = () => {
     return cartItems.reduce((total, item) => {
-      const price = parseFloat(item.price.replace('₹', '').replace(',', ''));
+      const price = parseFloat(String(item.price).replace('₹', '').replace(',', ''));
       return total + (price * item.quantity);
     }, 0);
   };
 
   const subtotal = calculateSubtotal();
-  const shipping = 150;
+  const shipping = cartItems.length > 0 ? 150 : 0;
   const total = subtotal + shipping;
 
   return (
@@ -129,18 +101,18 @@ const Checkout = () => {
                 {cartItems.map(item => (
                   <div key={item.id} className="border-b pb-4">
                     <div className="flex items-center gap-4">
-                      <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded-md" />
+                      <img src={item.image} alt={item.title || item.name} className="w-16 h-16 object-cover rounded-md" />
                       <div className="flex-1">
-                        <h3 className="font-medium text-estore-dark">{item.title}</h3>
+                        <h3 className="font-medium text-estore-dark">{item.title || item.name}</h3>
                         <div className="text-sm text-gray-600 mt-1">
                           <div>Quantity: {item.quantity}</div>
                           {item.selectedColor && <div>Color: {item.selectedColor}</div>}
                           {item.selectedSize && <div>Size: {item.selectedSize}</div>}
                         </div>
                         <div className="flex justify-between mt-2">
-                          <span className="font-semibold">{item.price}</span>
-                          {item.originalPrice && (
-                            <span className="text-gray-500 line-through text-sm">{item.originalPrice}</span>
+                          <span className="font-semibold">₹{item.price.toLocaleString()}</span>
+                          {item.oldPrice && (
+                            <span className="text-gray-500 line-through text-sm">{item.oldPrice}</span>
                           )}
                         </div>
                       </div>
@@ -161,7 +133,7 @@ const Checkout = () => {
                     )}
                     
                     <button 
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeFromCart(item.id)}
                       className="text-red-500 hover:text-red-700 text-sm mt-2"
                     >
                       Remove

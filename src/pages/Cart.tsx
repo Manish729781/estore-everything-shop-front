@@ -1,59 +1,22 @@
-
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Plus, Minus, Trash2, ArrowLeft } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useCart } from "@/hooks/use-cart";
 
 const Cart = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  // Mock cart data with proper image URLs
-  const cartItems = [
-    {
-      id: "1",
-      name: "Premium Wireless Headphones",
-      price: 2499,
-      quantity: 1,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
-      color: "Black",
-      size: "One Size"
-    },
-    {
-      id: "2", 
-      name: "Smart Fitness Watch",
-      price: 3999,
-      quantity: 2,
-      image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
-      color: "Silver",
-      size: "42mm"
-    }
-  ];
-
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    toast({
-      title: "Quantity updated",
-      description: `Item quantity updated to ${newQuantity}`,
-    });
-  };
-
-  const removeFromCart = (id: string, name: string) => {
-    toast({
-      title: "Removed from cart",
-      description: `${name} has been removed from your cart.`,
-    });
-  };
+  const { cartItems, updateQuantity, removeFromCart } = useCart();
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shipping = 99;
+  const shipping = cartItems.length > 0 ? 99 : 0;
   const total = subtotal + shipping;
 
   const handleProceedToCheckout = () => {
-    // Navigate to address page first, then to checkout
-    navigate('/address');
+    navigate('/checkout');
   };
 
   if (cartItems.length === 0) {
@@ -130,26 +93,29 @@ const Cart = () => {
                       alt={item.name}
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        // Fallback to placeholder if image fails to load
                         e.currentTarget.src = "/placeholder.svg";
                       }}
                     />
                   </div>
-
                   {/* Product Details */}
                   <div className="flex-1 space-y-3">
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-semibold text-lg text-estore-dark mb-1">
-                          {item.name}
+                          {item.name || item.title}
                         </h3>
                         <div className="text-sm text-gray-600 space-y-1">
-                          <p>Color: {item.color}</p>
-                          <p>Size: {item.size}</p>
+                          {item.color && <p>Color: {item.color}</p>}
+                          {item.size && <p>Size: {item.size}</p>}
+                          {item.selectedColor && <p>Color: {item.selectedColor}</p>}
+                          {item.selectedSize && <p>Size: {item.selectedSize}</p>}
                         </div>
                       </div>
                       <Button
-                        onClick={() => removeFromCart(item.id, item.name)}
+                        onClick={() => {
+                          removeFromCart(item.id);
+                          toast({ title: "Removed from cart", description: `${item.name || item.title} has been removed from your cart.` });
+                        }}
                         variant="outline"
                         size="sm"
                         className="text-red-600 border-red-300 hover:bg-red-50"
@@ -157,11 +123,10 @@ const Cart = () => {
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
-
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-3">
                         <Button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                           variant="outline"
                           size="sm"
                           className="w-8 h-8 p-0"
