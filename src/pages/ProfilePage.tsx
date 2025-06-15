@@ -118,7 +118,10 @@ const ProfilePage = () => {
       {/* Banner */}
       <div className="w-full bg-[#fdeee8]/80 backdrop-blur-sm pb-6 md:pb-10 pt-7 px-4 md:px-16 border-b border-white/30 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between max-w-4xl mx-auto">
-          <h1 className="text-[2.3rem] md:text-5xl font-playfair mb-3 font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#884715] via-[#f6e7d8] to-[#23243a] drop-shadow-lg">
+          <h1
+            className="text-[2.3rem] md:text-5xl font-playfair mb-3 font-bold text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+            // Removed text-transparent and gradient backgrounds for clarity
+          >
             My Account
           </h1>
           <Button
