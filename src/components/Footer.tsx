@@ -20,7 +20,6 @@ const Footer = () => {
     { name: 'About Us', href: '/about-us' },
     { name: 'Wash & Learn', href: '/wash-learn' },
     { name: 'FAQs & Support', href: '/faqs-support' },
-    { name: 'Installation Manual', href: '#' },
   ];
 
   return (
