@@ -11,6 +11,11 @@ const NewInSection = () => {
   const { addToCart } = useCart();
   const { toast } = useToast();
   
+  // Define handleGoToCheckout using useNavigate
+  const handleGoToCheckout = () => {
+    navigate('/checkout');
+  };
+
   const products = [
     {
       id: 1,
@@ -231,12 +236,10 @@ const NewInSection = () => {
 
       {/* Mobile Carousel */}
       <div className="sm:hidden bg-gray-50 pt-6 pb-8">
-        {/* The carousel doesn’t handle Add to Cart by product, but could be passed a callback */}
         <MobileProductCarousel
           products={filteredProducts}
           onViewDescription={handleViewDescription}
           onAddToCart={() => {
-            // Add the currently visible product to cart
             if (filteredProducts.length) {
               handleAddProductToCart(filteredProducts[0]);
             }
