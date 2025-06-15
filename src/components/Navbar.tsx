@@ -228,14 +228,14 @@ const Navbar = () => {
 
           {/* Icon Actions */}
           <div className="flex items-center gap-4">
-            {/* User (replacing with uploaded image and linking to /auth) */}
+            {/* User (replacing with the NEW icon and linking to /auth) */}
             <button
               className="w-11 h-11 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 overflow-hidden"
               onClick={() => navigate("/auth")}
               aria-label="User menu"
             >
               <img
-                src="/lovable-uploads/4cc4c6b8-aed9-453b-b9b2-edf9d726ceab.png"
+                src="https://i.imgur.com/0KWoAkS.png"
                 alt="Profile"
                 className="w-7 h-7 object-contain"
                 draggable={false}
@@ -315,14 +315,14 @@ const Navbar = () => {
             )}
           </button>
 
-          {/* Mobile User Icon (replace with uploaded image) */}
+          {/* Mobile User Icon (replace with NEW icon) */}
           <button
             className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center overflow-hidden"
             aria-label="User menu"
             onClick={() => navigate("/auth")}
           >
             <img
-              src="/lovable-uploads/4cc4c6b8-aed9-453b-b9b2-edf9d726ceab.png"
+              src="https://i.imgur.com/0KWoAkS.png"
               alt="Profile"
               className="w-7 h-7 object-contain"
               draggable={false}
@@ -382,7 +382,7 @@ const Navbar = () => {
 
             {/* Mobile User Actions */}
             <div className="flex flex-col gap-3 pt-4 border-t border-gray-200">
-              {/* User icon for menu - keep it consistent (optionally remove or replace if redundant) */}
+              {/* User icon for menu - replaced with NEW icon */}
               <button
                 className="flex items-center justify-center gap-2 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl py-4 overflow-hidden"
                 onClick={() => {
@@ -391,7 +391,7 @@ const Navbar = () => {
                 }}
               >
                 <img
-                  src="/lovable-uploads/4cc4c6b8-aed9-453b-b9b2-edf9d726ceab.png"
+                  src="https://i.imgur.com/0KWoAkS.png"
                   alt="Profile"
                   className="w-6 h-6 object-contain"
                   draggable={false}
