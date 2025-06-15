@@ -28,6 +28,7 @@ import NotFound from "./pages/NotFound";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import AuthPage from "./pages/AuthPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
                 <Route path="/about-us" element={<AboutUs />} />
                 <Route path="/wash-learn" element={<WashLearn />} />
                 <Route path="/faqs-support" element={<FAQsSupport />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 {/* Combined Auth Page */}
                 <Route path="/auth" element={<AuthPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
