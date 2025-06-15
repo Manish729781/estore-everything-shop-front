@@ -28,8 +28,8 @@ const ProductList = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [sortBy, setSortBy] = useState('relevance');
   const [availabilityFilter, setAvailabilityFilter] = useState(['In Stock']);
-  const [productTypeFilter, setProductTypeFilter] = useState(['Wardrobe wear', 'Home Decore', 'Fragrance', 'Jewellery', 'Footwear', 'Handbag', 'Skincare']);
-  const [currentPage, setCurrentPage] = useState(1);
+  // Update the initial productTypeFilter default also:
+  const [productTypeFilter, setProductTypeFilter] = useState(['Wardrobe wear', 'Home Decore', 'Fragrance', 'Jewelry', 'Footwear', 'Skincare', 'Electronics']);
   const productsPerPage = 12;
 
   // Update search query when URL params change
@@ -41,11 +41,26 @@ const ProductList = () => {
   }, [searchParams]);
 
   const categories = [
-    { name: 'Handbags', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=300&q=80' },
-    { name: 'Jewellery', image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=300&q=80' },
-    { name: 'GUCCI', image: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=300&q=80' },
-    { name: 'Fragrance', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=300&q=80' },
-    { name: 'Lamps', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80' }
+    {
+      name: 'Electronics',
+      image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=300&q=80'
+    },
+    {
+      name: 'Jewelry',
+      image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=300&q=80'
+    },
+    {
+      name: 'Fragrance',
+      image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=300&q=80'
+    },
+    {
+      name: 'Home Decore',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80'
+    },
+    {
+      name: 'Wardrobe wear',
+      image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=300&q=80'
+    }
   ];
 
   const allProducts = [
@@ -85,7 +100,7 @@ const ProductList = () => {
       title: 'Gold Dipped U Shaped Earrings',
       price: '₹5,511',
       oldPrice: '₹6,889',
-      category: 'Jewellery',
+      category: 'Jewelry',
       colors: ['#b6a07a', '#c2b59b'],
       inStock: true
     },
@@ -145,7 +160,7 @@ const ProductList = () => {
       title: 'Diamond Necklace Set',
       price: '₹15,999',
       oldPrice: '₹20,000',
-      category: 'Jewellery',
+      category: 'Jewelry',
       colors: ['#C0C0C0', '#FFD700'],
       inStock: true
     },
@@ -215,7 +230,7 @@ const ProductList = () => {
       title: 'Silver Chain Bracelet',
       price: '₹4,299',
       oldPrice: '₹5,599',
-      category: 'Jewellery',
+      category: 'Jewelry',
       colors: ['#C0C0C0'],
       inStock: true
     },
@@ -340,6 +355,9 @@ const ProductList = () => {
   const startIndex = (currentPage - 1) * productsPerPage;
   const endIndex = startIndex + productsPerPage;
   const currentProducts = filteredProducts.slice(startIndex, endIndex);
+
+  // Product type filter names
+  const productTypeNames = ['Wardrobe wear', 'Home Decore', 'Footwear', 'Skincare', 'Fragrance', 'Jewelry', 'Electronics'];
 
   // Function to render pagination numbers 1-10
   const renderPaginationNumbers = () => {
@@ -613,7 +631,7 @@ const ProductList = () => {
                     onClick={() => {
                       clearSearch();
                       setAvailabilityFilter(['In Stock']);
-                      setProductTypeFilter(['Wardrobe wear', 'Home Decore', 'Fragrance', 'Jewellery', 'Footwear', 'Handbag', 'Skincare']);
+                      setProductTypeFilter(['Wardrobe wear', 'Home Decore', 'Fragrance', 'Jewelry', 'Footwear', 'Skincare', 'Electronics']);
                     }}
                     className="text-sm text-blue-600 hover:underline"
                   >
@@ -657,7 +675,7 @@ const ProductList = () => {
                   <ChevronDown size={16} />
                 </div>
                 <div className="space-y-2">
-                  {['Wardrobe wear', 'Home Decore', 'Footwear', 'Skincare', 'Fragrance', 'Jewellery', 'Handbag'].map((type) => (
+                  {productTypeNames.map((type) => (
                     <label key={type} className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
