@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -253,6 +254,24 @@ const Navbar = () => {
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-estore-dark text-white text-xs rounded-full flex items-center justify-center">{cartCount}</span>
               )}
             </button>
+            {/* ---- Added Sign In & Sign Up ---- */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="ml-2 min-w-[88px]"
+              onClick={() => navigate("/sign-in")}
+            >
+              Sign In
+            </Button>
+            <Button
+              variant="default"
+              size="sm"
+              className="ml-0 min-w-[88px]"
+              onClick={() => navigate("/sign-up")}
+            >
+              Sign Up
+            </Button>
+            {/* ---- End Added ---- */}
           </div>
         </div>
 
@@ -339,14 +358,14 @@ const Navbar = () => {
             </div>
 
             {/* Mobile User Actions */}
-            <div className="flex items-center gap-3 pt-4 border-t border-gray-200">
-              <button className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl py-4">
+            <div className="flex flex-col gap-3 pt-4 border-t border-gray-200">
+              <button className="flex items-center justify-center gap-2 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl py-4">
                 <User className="w-5 h-5 text-estore-dark" />
                 <span className="text-sm font-medium text-estore-dark">Profile</span>
               </button>
               <button 
                 onClick={handleWishlistClick}
-                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-br from-red-100 to-red-200 rounded-xl py-4 relative"
+                className="flex items-center justify-center gap-2 bg-gradient-to-br from-red-100 to-red-200 rounded-xl py-4 relative"
               >
                 <Heart className="w-5 h-5 text-red-600" />
                 <span className="text-sm font-medium text-red-600">Wishlist</span>
@@ -356,6 +375,30 @@ const Navbar = () => {
                   </span>
                 )}
               </button>
+              {/* ---- Added Sign In & Sign Up (Mobile) ---- */}
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-2 w-full"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  navigate("/sign-in");
+                }}
+              >
+                Sign In
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                className="mt-0 w-full"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  navigate("/sign-up");
+                }}
+              >
+                Sign Up
+              </Button>
+              {/* ---- End Added ---- */}
             </div>
           </div>
         </div>
