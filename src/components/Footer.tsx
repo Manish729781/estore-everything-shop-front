@@ -1,3 +1,4 @@
+
 import { Facebook, Linkedin, Twitter, Instagram } from 'lucide-react';
 
 const Footer = () => {
@@ -6,17 +7,14 @@ const Footer = () => {
     { name: 'Manage Subscription', href: '#' },
     { name: 'Request Return Label', href: '/request-return-label' },
     { name: 'Affiliate Program', href: '/affiliate' },
-  ];
-
-  const secondColumn = [
     { name: 'Wholesale', href: '/wholesale' },
     { name: 'Contact Us', href: '/contact' },
+  ];
+
+  const supportLinks = [
     { name: 'Terms & Conditions', href: '/terms-conditions' },
     { name: 'Privacy Policy', href: '/privacy-policy' },
     { name: 'Learn More', href: '/learn-more' },
-  ];
-
-  const thirdColumn = [
     { name: 'About Us', href: '/about-us' },
     { name: 'Wash & Learn', href: '/wash-learn' },
     { name: 'FAQs & Support', href: '/faqs-support' },
@@ -27,7 +25,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-8 py-12">
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-12 mb-8">
           {/* Newsletter Box */}
-          <div className="bg-white rounded-2xl p-8 flex-shrink-0 lg:max-w-sm">
+          <div className="bg-white rounded-2xl p-8 flex-shrink-0 lg:max-w-md">
             <h3 className="text-2xl font-playfair font-bold text-estore-dark mb-5">
               Newsletter
             </h3>
@@ -51,46 +49,31 @@ const Footer = () => {
           </div>
 
           {/* Footer Links */}
-          <div className="flex flex-1 flex-wrap gap-12 justify-end">
-            <div className="flex flex-col gap-2 min-w-36">
-              <div className="font-semibold text-estore-dark mb-2 text-lg">
+          <div className="flex flex-1 flex-wrap gap-8 lg:gap-12 justify-end">
+            <div className="flex flex-col gap-3 min-w-48">
+              <div className="font-semibold text-estore-dark mb-3 text-lg">
                 Quick Links
               </div>
               {quickLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-estore-dark opacity-85 hover:opacity-100 transition-opacity duration-200"
+                  className="text-estore-dark opacity-85 hover:opacity-100 transition-opacity duration-200 text-base"
                 >
                   {link.name}
                 </a>
               ))}
             </div>
 
-            <div className="flex flex-col gap-2 min-w-36">
-              <div className="font-semibold text-estore-dark mb-2 text-lg opacity-0">
-                .
+            <div className="flex flex-col gap-3 min-w-48">
+              <div className="font-semibold text-estore-dark mb-3 text-lg">
+                Support & Info
               </div>
-              {secondColumn.map((link) => (
+              {supportLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-estore-dark opacity-85 hover:opacity-100 transition-opacity duration-200"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </div>
-
-            <div className="flex flex-col gap-2 min-w-36">
-              <div className="font-semibold text-estore-dark mb-2 text-lg opacity-0">
-                .
-              </div>
-              {thirdColumn.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-estore-dark opacity-85 hover:opacity-100 transition-opacity duration-200"
+                  className="text-estore-dark opacity-85 hover:opacity-100 transition-opacity duration-200 text-base"
                 >
                   {link.name}
                 </a>
