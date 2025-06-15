@@ -16,6 +16,7 @@ import Payment from "./pages/Payment";
 import Checkout from "./pages/Checkout";
 import RequestReturnLabel from "./pages/RequestReturnLabel";
 import AffiliateProgram from "./pages/AffiliateProgram";
+import Wholesale from "./pages/Wholesale";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/request-return-label" element={<RequestReturnLabel />} />
               <Route path="/affiliate" element={<AffiliateProgram />} />
+              <Route path="/wholesale" element={<Wholesale />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
