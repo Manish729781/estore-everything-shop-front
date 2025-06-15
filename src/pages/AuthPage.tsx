@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/sonner";
-import { Loader2, Google } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 const AuthPage = () => {
   const [tab, setTab] = useState<"sign-in" | "sign-up">("sign-in");
@@ -14,14 +14,29 @@ const AuthPage = () => {
   const [signInPassword, setSignInPassword] = useState("");
   const [signUpName, setSignUpName] = useState("");
   const [signUpEmail, setSignUpEmail] = useState("");
+  const [signUpMobile, setSignUpMobile] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
 
+  // Helper to get the user's mobile number from metadata (if signed up previously)
+  async function getMobileNumberForUser(user_id: string): Promise<string | null> {
+    // Use Supabase auth.user() to get user with metadata
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error || !user) return null;
+    const mobile =
+      user.user_metadata?.mobile_number ||
+      user.user_metadata?.mobile ||
+      user.user_metadata?.phone ||
+      user.phone ||
+      null;
+    return mobile ? String(mobile) : null;
+  }
+
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: signInEmail,
       password: signInPassword,
     });
@@ -29,10 +44,23 @@ const AuthPage = () => {
 
     if (error) {
       toast.error(error.message || "Error signing in");
-    } else {
-      toast.success("Signed in!");
-      window.location.href = "/";
+      return;
     }
+
+    // Save login history on successful login
+    const user_id = data?.user?.id;
+    let mobile_number = null;
+    if (user_id) {
+      mobile_number = await getMobileNumberForUser(user_id);
+      await supabase.from("login_history").insert({
+        user_id,
+        email: signInEmail,
+        mobile_number,
+      });
+    }
+
+    toast.success("Signed in!");
+    window.location.href = "/";
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -42,7 +70,7 @@ const AuthPage = () => {
       email: signUpEmail,
       password: signUpPassword,
       options: {
-        data: { full_name: signUpName },
+        data: { full_name: signUpName, mobile_number: signUpMobile },
         emailRedirectTo: `${window.location.origin}/`,
       },
     });
@@ -56,44 +84,13 @@ const AuthPage = () => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: window.location.origin + "/",
-      },
-    });
-    setLoading(false);
-
-    if (error) {
-      toast.error(error.message || "Error with Google Sign-In.");
-    }
-    // Supabase will redirect to Google, then back to your app after login
-  };
+  // Removed Google sign-in button and icon - "Google" icon does not exist in lucide-react
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-slate-900 via-slate-800 to-amber-100">
       <div className="w-full max-w-md p-8 mt-8 rounded-lg shadow-xl bg-white/5">
         <div className="flex flex-col gap-4 mb-4">
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            className="w-full flex gap-2 items-center justify-center bg-white text-black border border-gray-300 hover:bg-gray-50"
-            onClick={handleGoogleSignIn}
-            disabled={loading}
-          >
-            <Google className="mr-2" />
-            {loading ? (
-              <>
-                <Loader2 className="animate-spin mr-2" />
-                Please wait...
-              </>
-            ) : (
-              "Continue with Google"
-            )}
-          </Button>
+          {/* Removed Google sign-in button due to missing icon */}
           <div className="flex items-center gap-2 my-2">
             <hr className="flex-1 border-slate-400" />
             <span className="text-xs text-slate-200">or</span>
@@ -182,6 +179,19 @@ const AuthPage = () => {
                   value={signUpEmail}
                   onChange={e => setSignUpEmail(e.target.value)}
                   autoComplete="email"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1 text-white">Mobile Number</label>
+                <Input
+                  type="tel"
+                  placeholder="Enter your mobile number"
+                  required
+                  className="text-black placeholder:text-black/70"
+                  value={signUpMobile}
+                  onChange={e => setSignUpMobile(e.target.value)}
+                  autoComplete="tel"
+                  pattern="^\+?\d{10,15}$"
                 />
               </div>
               <div>
