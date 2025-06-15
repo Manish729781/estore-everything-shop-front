@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, LogOut, Image, User, Phone } from "lucide-react";
@@ -10,7 +11,6 @@ type ProfileData = {
   full_name: string | null;
   email: string | null;
   mobile_number: string | null;
-  avatar_url?: string | null;
 };
 
 const ProfilePage = () => {
@@ -18,16 +18,15 @@ const ProfilePage = () => {
     full_name: "",
     email: "",
     mobile_number: "",
-    avatar_url: null,
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
+  // We'll still use this for local preview, but not persist to DB
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  // Redirect if not logged in
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
@@ -46,7 +45,7 @@ const ProfilePage = () => {
       }
       const { data, error } = await supabase
         .from("profiles")
-        .select("full_name, email, mobile_number, avatar_url")
+        .select("full_name, email, mobile_number")
         .eq("id", user.id)
         .maybeSingle();
 
@@ -55,9 +54,7 @@ const ProfilePage = () => {
           full_name: data.full_name ?? "",
           email: data.email ?? "",
           mobile_number: data.mobile_number ?? "",
-          avatar_url: data.avatar_url ?? null,
         });
-        setAvatarPreview(data.avatar_url ?? null);
       }
       setLoading(false);
     }
@@ -71,33 +68,32 @@ const ProfilePage = () => {
     navigate("/auth");
   };
 
-  // Profile field update handlers
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
-  // Saving the updated profile information (excluding avatar upload for now)
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
 
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-    // You can extend this to include avatar_url when storage is implemented
+    if (!user) {
+      setSaving(false);
+      return;
+    }
     const { error } = await supabase
       .from("profiles")
       .update({
         full_name: profile.full_name,
         mobile_number: profile.mobile_number,
-        // avatar_url: profile.avatar_url, // Uncomment if using storage
       })
       .eq("id", user.id);
 
     setSaving(false);
-    // Optionally, show a toast for success/error
+    // Optionally, show a toast
   };
 
-  // Handle avatar file input (preview only)
+  // Local avatar preview only (no DB persistence)
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -106,7 +102,6 @@ const ProfilePage = () => {
         setAvatarPreview(ev.target?.result as string);
       };
       reader.readAsDataURL(file);
-      // Here, you would also upload the image to storage and update profile.avatar_url.
     }
   };
 
@@ -123,7 +118,9 @@ const ProfilePage = () => {
       {/* Banner */}
       <div className="w-full bg-[#fdeee8]/80 backdrop-blur-sm pb-6 md:pb-10 pt-7 px-4 md:px-16 border-b border-white/30 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between max-w-4xl mx-auto">
-          <h1 className="text-[2.3rem] md:text-5xl font-playfair mb-3 font-bold text-white/80 drop-shadow-lg">My Account</h1>
+          <h1 className="text-[2.3rem] md:text-5xl font-playfair mb-3 font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#884715] via-[#f6e7d8] to-[#23243a] drop-shadow-lg">
+            My Account
+          </h1>
           <Button
             variant="link"
             className="pl-0 underline text-[#884715] text-base font-medium flex gap-1 items-center mb-2"
@@ -174,7 +171,9 @@ const ProfilePage = () => {
               autoComplete="off"
             >
               <div>
-                <label className="text-sm font-medium text-[#23243a]/80">Full Name</label>
+                <label className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#884715] via-[#f6e7d8] to-[#23243a]">
+                  Full Name
+                </label>
                 <Input
                   name="full_name"
                   type="text"
@@ -186,7 +185,9 @@ const ProfilePage = () => {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-[#23243a]/80">Mobile Number</label>
+                <label className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#bb5b24] via-[#884715] to-[#23243a]">
+                  Mobile Number
+                </label>
                 <Input
                   name="mobile_number"
                   type="text"
@@ -214,14 +215,18 @@ const ProfilePage = () => {
         <div className="w-full md:w-1/2 flex flex-col gap-8">
           {/* Order history */}
           <div className="bg-white/60 backdrop-blur-xl rounded-lg shadow p-6 border border-white/30">
-            <h2 className="font-playfair text-2xl text-[#23243a]/90 mb-4">Order history</h2>
+            <h2 className="font-playfair text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#bb5b24] via-[#23243a] to-[#884715] mb-4">
+              Order history
+            </h2>
             <div className="text-lg text-[#23243a]/60">
               <p className="mb-2">You haven't placed any orders yet.</p>
             </div>
           </div>
           {/* Account details/address */}
           <div className="bg-white/60 backdrop-blur-xl rounded-lg shadow p-6 border border-white/30">
-            <h2 className="font-playfair text-2xl text-[#23243a]/90 mb-4">Account details</h2>
+            <h2 className="font-playfair text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#884715] via-[#f6e7d8] to-[#23243a] mb-4">
+              Account details
+            </h2>
             <div className="text-base mb-1 text-[#23243a]/60">Default address</div>
             <div className="italic text-xl text-[#23243a]/80 mb-5">
               {profile.full_name ? `${profile.full_name}, ` : ""}
@@ -231,7 +236,7 @@ const ProfilePage = () => {
               className="font-semibold text-lg text-[#884715] hover:underline flex items-center gap-1"
               href="/address"
             >
-              View addresses (1) <span className="text-xl">&gt;</span>
+              Update or add address <span className="text-xl">&gt;</span>
             </a>
           </div>
         </div>
@@ -241,3 +246,4 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+
