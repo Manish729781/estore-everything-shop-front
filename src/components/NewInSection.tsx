@@ -1,6 +1,7 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ProductCard from './ProductCard';
+import MobileProductCarousel from './MobileProductCarousel';
 
 const NewInSection = () => {
   const navigate = useNavigate();
@@ -161,7 +162,7 @@ const NewInSection = () => {
         </p>
       </div>
 
-      {/* Banner and Filter */}
+      {/* Category Filter */}
       <div className="flex justify-center mb-6 md:mb-12 px-2 xs:px-4">
         <div className="relative w-full max-w-6xl rounded-xl md:rounded-2xl overflow-hidden">
           <img
@@ -215,64 +216,49 @@ const NewInSection = () => {
         </div>
       </div>
 
-      {/* Product Grid */}
-      <div className="bg-gray-50 py-6 md:py-12">
+      {/* Mobile Carousel */}
+      <div className="sm:hidden bg-gray-50 pt-6 pb-8">
+        <MobileProductCarousel
+          products={filteredProducts}
+          onViewMore={handleViewMore}
+          onAddToCart={handleGoToCheckout}
+        />
+        {/* Show message if no products found */}
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-8 xs:py-12">
+            <p className="text-gray-500 text-base xs:text-lg">No products found in this category.</p>
+          </div>
+        )}
+        <div className="mt-6 text-center">
+          <button
+            type="button"
+            onClick={handleGoToCheckout}
+            className="
+              bg-estore-dark text-white px-8 xs:px-10 py-3 xs:py-4 rounded-full font-medium text-base xs:text-lg
+              hover:bg-estore-dark/90 transition-colors shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-estore-dark
+            "
+          >
+            Go to Checkout
+          </button>
+        </div>
+      </div>
+
+      {/* Desktop/Tablet Product Grid */}
+      <div className="hidden sm:block bg-gray-50 py-6 md:py-12">
         <div className="max-w-7xl mx-auto px-2 xs:px-4 md:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xs:gap-6 md:gap-8">
             {filteredProducts.map((product) => (
-              <div
+              <ProductCard
                 key={product.id}
-                className="bg-white rounded-xl md:rounded-2xl shadow-sm overflow-hidden relative hover:shadow-lg transition-shadow duration-300 flex flex-col"
-              >
-                <span className="absolute top-3 left-3 bg-gray-100 text-estore-dark text-xs xs:text-sm px-2 xs:px-3 py-1 rounded-xl font-medium z-10">
-                  {product.tag}
-                </span>
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-full h-40 xs:h-48 md:h-56 object-cover"
-                />
-                <div className="p-3 xs:p-4 md:p-6 flex-1 flex flex-col">
-                  <h3 className="font-semibold text-estore-dark mb-2 xs:mb-3 text-base xs:text-lg">{product.title}</h3>
-                  <div className="flex items-center gap-2 xs:gap-3 mb-2 xs:mb-4">
-                    <span className="font-bold text-estore-dark text-base xs:text-lg">{product.price}</span>
-                    <span className="text-gray-500 line-through text-xs xs:text-sm">{product.oldPrice}</span>
-                  </div>
-                  {product.colors.length > 0 && (
-                    <div className="flex gap-1 xs:gap-2 mb-3 xs:mb-5">
-                      {product.colors.map((color, index) => (
-                        <div
-                          key={index}
-                          className="w-4 xs:w-5 h-4 xs:h-5 rounded-full border-2 border-gray-200"
-                          style={{ backgroundColor: color }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                  <div className="flex gap-2 mt-auto">
-                    <button
-                      type="button"
-                      onClick={() => handleViewMore(product.id)}
-                      className="
-                        flex-1 bg-gray-100 text-estore-dark px-2 xs:px-4 py-2 xs:py-3 rounded-full text-xs xs:text-sm font-medium
-                        hover:bg-gray-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-estore-dark
-                      "
-                    >
-                      View more
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleGoToCheckout}
-                      className="
-                        flex-1 bg-estore-dark text-white px-2 xs:px-4 py-2 xs:py-3 rounded-full text-xs xs:text-sm font-medium
-                        hover:bg-estore-dark/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-estore-dark
-                      "
-                    >
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </div>
+                image={product.image}
+                title={product.title}
+                price={product.price}
+                oldPrice={product.oldPrice}
+                tag={product.tag}
+                colors={product.colors}
+                onViewMore={() => handleViewMore(product.id)}
+                onAddToCart={handleGoToCheckout}
+              />
             ))}
           </div>
           {/* Show message if no products found */}
