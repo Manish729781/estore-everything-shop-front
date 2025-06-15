@@ -1,8 +1,10 @@
 
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const NewInSection = () => {
   const navigate = useNavigate();
+  const [activeCategory, setActiveCategory] = useState('All');
   
   const products = [
     {
@@ -117,6 +119,15 @@ const NewInSection = () => {
 
   const categories = ['All', 'Wardrobe wear', 'Footwear', 'Skincare', 'Electronics', 'Jewelry', 'Handbag', 'Accessories'];
 
+  // Filter products based on active category
+  const filteredProducts = activeCategory === 'All' 
+    ? products 
+    : products.filter(product => product.tag === activeCategory);
+
+  const handleCategoryClick = (category: string) => {
+    setActiveCategory(category);
+  };
+
   const handleViewMore = (productId: number) => {
     navigate(`/product/${productId}`);
   };
@@ -146,12 +157,13 @@ const NewInSection = () => {
             className="w-full h-64 object-cover"
           />
           <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-full shadow-lg flex gap-2 p-2 flex-wrap justify-center">
-            {categories.map((category, index) => (
+            {categories.map((category) => (
               <button
                 key={category}
+                onClick={() => handleCategoryClick(category)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  index === 0
-                    ? 'bg-estore-light-gray text-estore-dark'
+                  activeCategory === category
+                    ? 'bg-estore-dark text-white'
                     : 'text-estore-dark hover:bg-estore-light-gray'
                 }`}
               >
@@ -166,7 +178,7 @@ const NewInSection = () => {
       <div className="bg-gray-50 py-12">
         <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <div key={product.id} className="bg-white rounded-2xl shadow-sm overflow-hidden relative hover:shadow-lg transition-shadow duration-300">
                 <span className="absolute top-4 left-4 bg-gray-100 text-estore-dark text-sm px-3 py-1 rounded-xl font-medium z-10">
                   {product.tag}
@@ -211,6 +223,13 @@ const NewInSection = () => {
               </div>
             ))}
           </div>
+          
+          {/* Show message if no products found */}
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No products found in this category.</p>
+            </div>
+          )}
           
           {/* Checkout Button */}
           <div className="mt-12 text-center">
