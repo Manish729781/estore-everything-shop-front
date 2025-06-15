@@ -30,6 +30,7 @@ const ProductList = () => {
   const [availabilityFilter, setAvailabilityFilter] = useState(['In Stock']);
   // Update the initial productTypeFilter default also:
   const [productTypeFilter, setProductTypeFilter] = useState(['Wardrobe wear', 'Home Decore', 'Fragrance', 'Jewelry', 'Footwear', 'Skincare', 'Electronics']);
+  const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
   // Update search query when URL params change
