@@ -3,25 +3,25 @@ import { Facebook, Linkedin, Twitter, Instagram } from 'lucide-react';
 
 const Footer = () => {
   const quickLinks = [
-    'Shop All',
-    'Manage Subscription',
-    'Request Return Label',
-    'Affiliate Program',
+    { name: 'Shop All', href: '/products' },
+    { name: 'Manage Subscription', href: '#' },
+    { name: 'Request Return Label', href: '#' },
+    { name: 'Affiliate Program', href: '#' },
   ];
 
   const secondColumn = [
-    'Wholesale',
-    'Contact Us',
-    'Terms & Conditions',
-    'Privacy Policy',
-    'Learn More',
+    { name: 'Wholesale', href: '#' },
+    { name: 'Contact Us', href: '#' },
+    { name: 'Terms & Conditions', href: '#' },
+    { name: 'Privacy Policy', href: '#' },
+    { name: 'Learn More', href: '#' },
   ];
 
   const thirdColumn = [
-    'About Us',
-    'Wash & Learn',
-    'FAQs & Support',
-    'Installation Manual',
+    { name: 'About Us', href: '#' },
+    { name: 'Wash & Learn', href: '#' },
+    { name: 'FAQs & Support', href: '#' },
+    { name: 'Installation Manual', href: '#' },
   ];
 
   return (
@@ -60,11 +60,11 @@ const Footer = () => {
               </div>
               {quickLinks.map((link) => (
                 <a
-                  key={link}
-                  href="#"
+                  key={link.name}
+                  href={link.href}
                   className="text-estore-dark opacity-85 hover:opacity-100 transition-opacity duration-200"
                 >
-                  {link}
+                  {link.name}
                 </a>
               ))}
             </div>
@@ -75,11 +75,11 @@ const Footer = () => {
               </div>
               {secondColumn.map((link) => (
                 <a
-                  key={link}
-                  href="#"
+                  key={link.name}
+                  href={link.href}
                   className="text-estore-dark opacity-85 hover:opacity-100 transition-opacity duration-200"
                 >
-                  {link}
+                  {link.name}
                 </a>
               ))}
             </div>
@@ -90,11 +90,11 @@ const Footer = () => {
               </div>
               {thirdColumn.map((link) => (
                 <a
-                  key={link}
-                  href="#"
+                  key={link.name}
+                  href={link.href}
                   className="text-estore-dark opacity-85 hover:opacity-100 transition-opacity duration-200"
                 >
-                  {link}
+                  {link.name}
                 </a>
               ))}
             </div>
