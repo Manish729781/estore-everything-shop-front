@@ -38,6 +38,7 @@ const App = () => (
               <Route path="/payment" element={<Payment />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/request-return-label" element={<RequestReturnLabel />} />
+              <Route path="/affiliate" element={<AffiliateProgram />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
