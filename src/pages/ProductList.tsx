@@ -16,6 +16,9 @@ import {
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
+import ProductFilters from "@/components/ProductFilters";
+import ProductGrid from "@/components/ProductGrid";
+import CategoryTiles from "@/components/CategoryTiles";
 
 const ProductList = () => {
   const navigate = useNavigate();
@@ -127,7 +130,7 @@ const ProductList = () => {
     },
     {
       id: 7,
-      image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=400&q=80',
+      image: 'https://images.unsplash.com/photo-1553062407-98eeb64c3136?auto=format&fit=crop&w=400&q=80',
       title: 'Luxury Leather Handbag',
       price: '₹8,999',
       oldPrice: '₹12,000',
@@ -507,24 +510,29 @@ const ProductList = () => {
     setCurrentPage(1);
   };
 
+  // Sidebar filter handlers, now split out for passing as props:
+  const onAvailabilityChange = (value: string, checked: boolean) => handleFilterChange('availability', value, checked);
+  const onProductTypeChange = (value: string, checked: boolean) => handleFilterChange('productType', value, checked);
+
+  // Tags & all-clear
+  const onClearAll = () => {
+    clearSearch();
+    setAvailabilityFilter(['In Stock']);
+    setProductTypeFilter(['Wardrobe wear', 'Home Decore', 'Fragrance', 'Jewelry', 'Footwear', 'Skincare', 'Electronics']);
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      
-      {/* Added extra spacing in cover area */}
       <div className="max-w-7xl mx-auto px-4 py-12">
-        {/* Breadcrumb with more spacing */}
         <div className="mb-12">
           <p className="text-sm text-gray-600">{t('nav.home')} / {t('nav.collection')}</p>
         </div>
 
-        {/* Header with increased spacing */}
         <div className="mb-16">
           <h1 className="text-4xl font-playfair font-bold text-estore-dark mb-12">
             {t('products.allProducts')}
           </h1>
-
-          {/* Enhanced Search Bar with more spacing */}
           <div className="mb-12">
             <form onSubmit={handleSearchSubmit} className="relative max-w-md">
               <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3 border border-gray-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
@@ -553,262 +561,42 @@ const ProductList = () => {
               </p>
             )}
           </div>
-
-          {/* Category Tiles with increased spacing */}
-          <div className="grid grid-cols-5 gap-8 mb-16">
-            {categories.map((category) => (
-              <div key={category.name} className="relative rounded-lg overflow-hidden cursor-pointer group">
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-200"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-20 flex items-end p-3">
-                  <span className="text-white font-medium text-sm">{category.name}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+          <CategoryTiles categories={categories} />
         </div>
-
         <div className="flex gap-10">
-          {/* Sidebar Filters */}
-          <div className="w-72 flex-shrink-0">
-            <div className="space-y-8">
-              {/* Results Count */}
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-sm text-gray-600 font-medium">
-                  {filteredProducts.length} {t('products.of')} {extendedProducts.length} {t('products.results')}
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  {t('products.page')} {currentPage} {t('products.of')} {totalPages}
-                </p>
-              </div>
-
-              {/* Sort By */}
-              <div className="flex items-center gap-3 flex-wrap">
-                <span className="text-sm font-medium">{t('products.sortBy')}</span>
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-36">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="relevance">{t('products.relevance')}</SelectItem>
-                    <SelectItem value="price-low">{t('products.priceLowToHigh')}</SelectItem>
-                    <SelectItem value="price-high">{t('products.priceHighToLow')}</SelectItem>
-                    <SelectItem value="newest">{t('products.newestFirst')}</SelectItem>
-                  </SelectContent>
-                </Select>
-                <div className="flex gap-1 ml-auto">
-                  <button
-                    onClick={() => setViewMode('grid')}
-                    className={`p-2 rounded ${viewMode === 'grid' ? 'bg-gray-200' : 'hover:bg-gray-100'}`}
-                  >
-                    <Grid3X3 size={16} />
-                  </button>
-                  <button
-                    onClick={() => setViewMode('list')}
-                    className={`p-2 rounded ${viewMode === 'list' ? 'bg-gray-200' : 'hover:bg-gray-100'}`}
-                  >
-                    <List size={16} />
-                  </button>
-                </div>
-              </div>
-
-              {/* Filter Tags */}
-              <div className="flex flex-wrap gap-2">
-                {searchQuery && (
-                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                    {t('search.search')}: {searchQuery}
-                  </span>
-                )}
-                {availabilityFilter.map(filter => (
-                  <span key={filter} className="px-3 py-1 bg-gray-100 rounded-full text-sm">
-                    {filter}
-                  </span>
-                ))}
-                {(searchQuery || availabilityFilter.length > 0) && (
-                  <button 
-                    onClick={() => {
-                      clearSearch();
-                      setAvailabilityFilter(['In Stock']);
-                      setProductTypeFilter(['Wardrobe wear', 'Home Decore', 'Fragrance', 'Jewelry', 'Footwear', 'Skincare', 'Electronics']);
-                    }}
-                    className="text-sm text-blue-600 hover:underline"
-                  >
-                    {t('products.clearAll')}
-                  </button>
-                )}
-              </div>
-
-              {/* Availability Filter */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-medium">{t('products.availability')}</h3>
-                  <ChevronDown size={16} />
-                </div>
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={availabilityFilter.includes('In Stock')}
-                      onChange={(e) => handleFilterChange('availability', 'In Stock', e.target.checked)}
-                      className="rounded"
-                    />
-                    <span className="text-sm">{t('products.inStock')}</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={availabilityFilter.includes('Out Of Stock')}
-                      onChange={(e) => handleFilterChange('availability', 'Out Of Stock', e.target.checked)}
-                      className="rounded"
-                    />
-                    <span className="text-sm">{t('products.outOfStock')}</span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Product Type Filter */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-medium">{t('products.productType')}</h3>
-                  <ChevronDown size={16} />
-                </div>
-                <div className="space-y-2">
-                  {productTypeNames.map((type) => (
-                    <label key={type} className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={productTypeFilter.includes(type)}
-                        onChange={(e) => handleFilterChange('productType', type, e.target.checked)}
-                        className="rounded"
-                      />
-                      <span className="text-sm">{type}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Size Filter */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-medium">{t('products.size')}</h3>
-                  <ChevronDown size={16} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Products Grid */}
-          <div className="flex-1">
-            {/* No Results Message */}
-            {filteredProducts.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">{t('products.noProducts')}</p>
-                {searchQuery && (
-                  <p className="text-gray-400 mt-2">
-                    {t('products.tryAdjusting')}
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Products Grid */}
-            {filteredProducts.length > 0 && (
-              <>
-                <div className={`grid gap-8 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-                  {currentProducts.map((product) => (
-                    <div 
-                      key={product.id} 
-                      className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer group relative"
-                      onClick={() => handleProductClick(product.id)}
-                    >
-                      <div className="relative">
-                        <span className="absolute top-4 left-4 bg-gray-100 text-estore-dark text-xs px-2 py-1 rounded-lg font-medium z-10">
-                          {product.category}
-                        </span>
-                        {!product.inStock && (
-                          <span className="absolute top-4 right-4 bg-red-500 text-white text-xs px-2 py-1 rounded-lg font-medium z-10">
-                            {t('products.outOfStock')}
-                          </span>
-                        )}
-                        <button
-                          onClick={(e) => handleWishlistToggle(e, product)}
-                          className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 z-20 ${
-                            !product.inStock ? 'top-12' : ''
-                          } ${
-                            isInWishlist(product.id.toString())
-                              ? 'bg-red-500 text-white' 
-                              : 'bg-white/80 text-gray-600 hover:bg-red-100 hover:text-red-600'
-                          }`}
-                        >
-                          <Heart className={`w-4 h-4 ${isInWishlist(product.id.toString()) ? 'fill-current' : ''}`} />
-                        </button>
-                        <img
-                          src={product.image}
-                          alt={product.title}
-                          className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-200"
-                        />
-                      </div>
-                      <div className="p-6">
-                        <h3 className="font-semibold text-estore-dark mb-2 line-clamp-2">{product.title}</h3>
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="font-bold text-estore-dark">{product.price}</span>
-                          <span className="text-gray-500 line-through text-sm">{product.oldPrice}</span>
-                        </div>
-                        {product.colors.length > 0 && (
-                          <div className="flex gap-2 mb-4">
-                            {product.colors.map((color, index) => (
-                              <div
-                                key={index}
-                                className="w-4 h-4 rounded-full border-2 border-gray-200"
-                                style={{ backgroundColor: color }}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Enhanced Pagination with 1-10 pages */}
-                <div className="mt-12 flex justify-center">
-                  <Pagination>
-                    <PaginationContent className="gap-2">
-                      <PaginationItem>
-                        <PaginationPrevious 
-                          href="#" 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            if (currentPage > 1) handlePageChange(currentPage - 1);
-                          }}
-                          className={`${currentPage === 1 ? 'pointer-events-none opacity-50' : 'hover:bg-gray-100'} px-4 py-2`}
-                        />
-                      </PaginationItem>
-                      
-                      {renderPaginationNumbers()}
-                      
-                      <PaginationItem>
-                        <PaginationNext 
-                          href="#" 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            if (currentPage < totalPages) handlePageChange(currentPage + 1);
-                          }}
-                          className={`${currentPage === totalPages ? 'pointer-events-none opacity-50' : 'hover:bg-gray-100'} px-4 py-2`}
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
-                </div>
-              </>
-            )}
-          </div>
+          <ProductFilters
+            t={t}
+            filteredCount={filteredProducts.length}
+            totalProducts={extendedProducts.length}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            searchQuery={searchQuery}
+            onSearchClear={clearSearch}
+            sortBy={sortBy}
+            onSortByChange={setSortBy}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            availabilityFilter={availabilityFilter}
+            onAvailabilityChange={onAvailabilityChange}
+            productTypeNames={productTypeNames}
+            productTypeFilter={productTypeFilter}
+            onProductTypeChange={onProductTypeChange}
+            onClearAll={onClearAll}
+          />
+          <ProductGrid
+            t={t}
+            currentProducts={currentProducts}
+            filteredProducts={filteredProducts}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            viewMode={viewMode}
+            onPageChange={handlePageChange}
+            onWishlistToggle={handleWishlistToggle}
+            isInWishlist={isInWishlist}
+            handleProductClick={handleProductClick}
+          />
         </div>
       </div>
-
       <Footer />
     </div>
   );
