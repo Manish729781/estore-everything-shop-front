@@ -1,3 +1,4 @@
+
 import { ArrowRight } from 'lucide-react';
 
 const HeroSection = () => {
@@ -36,6 +37,11 @@ const HeroSection = () => {
 
   return (
     <div className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-amber-100 text-white overflow-hidden">
+      {/* Bottom Corner Gradient */}
+      <div 
+        className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-amber-200/30 to-transparent"
+      ></div>
+
       <div className="relative z-10 max-w-7xl mx-auto px-8 py-12">
         {/* Hero Content - Horizontal Layout */}
         <div className="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-8">
