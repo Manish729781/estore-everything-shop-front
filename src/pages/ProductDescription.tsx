@@ -296,15 +296,15 @@ const ProductDescription = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-500 mb-4 sm:mb-8 px-2">
+        <nav className="text-sm text-gray-500 mb-4 px-2">
           <span>{t('nav.home')}</span> / <span>{t('nav.collection')}</span> / <span>{currentProduct.category}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {/* Image Gallery */}
-          <div className="space-y-3 sm:space-y-4 order-1">
+          <div className="space-y-3 order-1">
             {/* Main Image */}
             <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg">
               <img
@@ -315,7 +315,7 @@ const ProductDescription = () => {
             </div>
             
             {/* Thumbnail Images - Different Angles */}
-            <div className="grid grid-cols-4 gap-2 sm:gap-4 px-2 sm:px-0">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 px-2 sm:px-0">
               {currentProduct.images.map((image, index) => (
                 <button
                   key={index}
@@ -343,9 +343,9 @@ const ProductDescription = () => {
           </div>
 
           {/* Product Details */}
-          <div className="space-y-4 sm:space-y-6 order-2 px-2 sm:px-0">
-            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-playfair font-bold text-estore-dark mb-3 sm:mb-4 leading-tight">
+          <div className="space-y-4 order-2 px-2 sm:px-0">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-playfair font-bold text-estore-dark mb-3 leading-tight">
                 {currentProduct.title}
               </h1>
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
@@ -354,8 +354,8 @@ const ProductDescription = () => {
             </div>
 
             {/* Price */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
-              <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
+              <div className="flex flex-wrap items-center gap-3">
                 <span className="text-2xl sm:text-3xl font-bold text-estore-dark">{currentProduct.price}</span>
                 <span className="text-lg sm:text-xl text-gray-500 line-through">{currentProduct.originalPrice}</span>
                 <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap">
@@ -365,8 +365,8 @@ const ProductDescription = () => {
             </div>
 
             {/* Specifications */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {currentProduct.specifications.map((spec, index) => (
                   <div key={index} className="text-sm border-b border-gray-100 pb-2 last:border-b-0">
                     <span className="text-gray-500 block sm:inline">{spec.label}:</span>
@@ -378,7 +378,7 @@ const ProductDescription = () => {
 
             {/* Color Selection */}
             {currentProduct.colors.length > 0 && (
-              <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
+              <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
                 <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.chooseColor')}</h3>
                 <div className="flex flex-wrap gap-3">
                   {currentProduct.colors.map((color) => (
@@ -400,9 +400,9 @@ const ProductDescription = () => {
             )}
 
             {/* Size Selection */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
               <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.selectSize')}</h3>
-              <div className="flex flex-wrap gap-2 sm:gap-3">
+              <div className="flex flex-wrap gap-2">
                 {currentProduct.sizes.map((size) => (
                   <button
                     key={size}
@@ -421,7 +421,7 @@ const ProductDescription = () => {
             </div>
 
             {/* Quantity */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
               <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.quantity')}</h3>
               <div className="flex items-center gap-4">
                 <div className="flex items-center border-2 border-gray-300 rounded-xl overflow-hidden">
@@ -445,10 +445,10 @@ const ProductDescription = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="space-y-3 sm:space-y-4 sticky bottom-4 sm:static">
+            <div className="space-y-3 sticky bottom-4 sm:static">
               <Button 
                 onClick={handleBuyNow}
-                className="w-full bg-gradient-to-r from-estore-dark to-estore-navy text-white py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
+                className="w-full bg-gradient-to-r from-estore-dark to-estore-navy text-white py-4 sm:py-5 text-lg sm:text-xl font-semibold rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
                 disabled={!currentProduct.inStock}
               >
                 {currentProduct.inStock ? t('product.buyNow') : t('product.outOfStock')}
@@ -456,7 +456,7 @@ const ProductDescription = () => {
               <Button 
                 onClick={handleAddToCart}
                 variant="outline" 
-                className="w-full py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-xl border-2 border-estore-dark text-estore-dark hover:bg-estore-dark hover:text-white transform hover:scale-[1.02] transition-all duration-200"
+                className="w-full py-4 sm:py-5 text-lg sm:text-xl font-semibold rounded-xl border-2 border-estore-dark text-estore-dark hover:bg-estore-dark hover:text-white transform hover:scale-[1.02] transition-all duration-200"
                 disabled={!currentProduct.inStock}
               >
                 {t('product.addToCart')}
@@ -464,7 +464,7 @@ const ProductDescription = () => {
             </div>
 
             {/* Share & Features */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
               <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
                 <span className="text-sm font-medium text-estore-dark">{t('product.share')}</span>
                 <div className="flex gap-3">
@@ -508,11 +508,8 @@ const ProductDescription = () => {
           </div>
         </div>
 
-        {/* Add some blank space */}
-        <div className="mt-12 mb-8"></div>
-
         {/* Product Description Section */}
-        <div className="mt-8 sm:mt-12">
+        <div className="mt-6">
           <Card className="shadow-lg">
             <Collapsible open={isDescriptionOpen} onOpenChange={setIsDescriptionOpen}>
               <CollapsibleTrigger asChild>
@@ -592,11 +589,8 @@ const ProductDescription = () => {
           </Card>
         </div>
 
-        {/* Add more blank space */}
-        <div className="mt-16 mb-8"></div>
-
         {/* Customer Reviews Section */}
-        <div className="mt-8 sm:mt-12">
+        <div className="mt-6">
           <Card className="shadow-lg">
             <Collapsible open={isReviewsOpen} onOpenChange={setIsReviewsOpen}>
               <CollapsibleTrigger asChild>
@@ -685,9 +679,6 @@ const ProductDescription = () => {
             </Collapsible>
           </Card>
         </div>
-
-        {/* Final blank space */}
-        <div className="mt-16 mb-12"></div>
       </div>
 
       <Footer />
