@@ -23,7 +23,6 @@ const ProfilePage = () => {
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
-  // Redirect to /auth if not signed in
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
@@ -104,10 +103,11 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-yellow-50 to-amber-100">
-      <div className="w-full max-w-md bg-white/80 shadow-xl rounded-lg p-8 mt-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-pink-100 to-yellow-100">
+      <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8 mt-8">
         <h2 className="text-3xl font-bold mb-2 text-estore-dark text-center">My Profile</h2>
-        <form onSubmit={handleSubmit} className="space-y-6 mt-8">
+        <p className="mb-6 text-center text-gray-500">Update your details below and save changes.</p>
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium mb-1 text-estore-dark">Full Name</label>
             <Input
