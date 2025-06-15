@@ -1,22 +1,34 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { languages } from "@/i18n/settings";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
-import { useCart } from "@/contexts/CartContext";
+import { useCart } from "@/hooks/use-cart";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { Search } from "lucide-react";
 
 const Navbar = () => {
-  const { language } = useLanguage();
+  const { selectedLanguage } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { totalItems: cartTotalItems } = useCart();
-  const { totalItems: wishlistTotalItems } = useWishlist();
+  const { cartItems } = useCart();
+  const { wishlistCount } = useWishlist();
+
+  const cartTotalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const currentLang = selectedLanguage.code;
+  const langHome = currentLang === "FR" ? "Accueil" : currentLang === "ES" ? "Inicio"
+    : currentLang === "HI" ? "होम" : currentLang === "DE" ? "Startseite"
+    : currentLang === "ZH" ? "首页" : currentLang === "JA" ? "ホーム"
+    : currentLang === "AR" ? "الرئيسية" : "Home";
+
+  const langProducts = currentLang === "FR" ? "Produits" : currentLang === "ES" ? "Productos"
+    : currentLang === "HI" ? "उत्पाद" : currentLang === "DE" ? "Produkte"
+    : currentLang === "ZH" ? "产品" : currentLang === "JA" ? "商品"
+    : currentLang === "AR" ? "المنتجات" : "Products";
 
   return (
     <nav className="bg-white dark:bg-estore-dark shadow-md">
@@ -36,19 +48,19 @@ const Navbar = () => {
                   to="/"
                   className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  {language === "en" ? "Home" : "Accueil"}
+                  {langHome}
                 </Link>
                 <Link
                   to="/products"
                   className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  {language === "en" ? "Products" : "Produits"}
+                  {langProducts}
                 </Link>
                 <Link
                   to="/wishlist"
                   className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Wishlist ({wishlistTotalItems})
+                  Wishlist ({wishlistCount})
                 </Link>
                 <Link
                   to="/cart"
@@ -74,10 +86,7 @@ const Navbar = () => {
                 <span className="sr-only">View notifications</span>
                 <Search className="h-6 w-6" aria-hidden="true" />
               </button>
-              <LanguageSwitcher
-                languages={languages}
-                className="px-4 py-2 text-sm"
-              />
+              <LanguageSwitcher className="px-4 py-2 text-sm" />
               <ThemeSwitcher className="px-4 py-2 text-sm" />
             </div>
           </div>
@@ -87,7 +96,7 @@ const Navbar = () => {
               type="button"
               className="bg-gray-100 dark:bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-400 dark:hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
               aria-controls="mobile-menu"
-              aria-expanded="false"
+              aria-expanded={isMenuOpen}
             >
               <span className="sr-only">Open main menu</span>
               <svg
@@ -126,9 +135,7 @@ const Navbar = () => {
       </div>
 
       <div
-        className={`${
-          isMenuOpen ? "block" : "hidden"
-        } md:hidden`}
+        className={`${isMenuOpen ? "block" : "hidden"} md:hidden`}
         id="mobile-menu"
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
@@ -136,19 +143,19 @@ const Navbar = () => {
             to="/"
             className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
           >
-            {language === "en" ? "Home" : "Accueil"}
+            {langHome}
           </Link>
           <Link
             to="/products"
             className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
           >
-            {language === "en" ? "Products" : "Produits"}
+            {langProducts}
           </Link>
           <Link
             to="/wishlist"
             className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
           >
-            Wishlist ({wishlistTotalItems})
+            Wishlist ({wishlistCount})
           </Link>
           <Link
             to="/cart"
@@ -162,7 +169,7 @@ const Navbar = () => {
           >
             Profile
           </Link>
-          <LanguageSwitcher languages={languages} className="block px-3 py-2" />
+          <LanguageSwitcher className="block px-3 py-2" />
           <ThemeSwitcher className="block px-3 py-2" />
         </div>
       </div>
