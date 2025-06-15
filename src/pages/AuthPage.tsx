@@ -38,7 +38,7 @@ const AuthPage = () => {
                   type="email"
                   placeholder="Enter your email"
                   required
-                  className="text-white placeholder:text-white/70"
+                  className="text-black placeholder:text-black/70"
                   value={signInEmail}
                   onChange={e => setSignInEmail(e.target.value)}
                 />
@@ -49,7 +49,7 @@ const AuthPage = () => {
                   type="password"
                   placeholder="Enter your password"
                   required
-                  className="text-white placeholder:text-white/70"
+                  className="text-black placeholder:text-black/70"
                   value={signInPassword}
                   onChange={e => setSignInPassword(e.target.value)}
                 />
@@ -89,7 +89,7 @@ const AuthPage = () => {
                 <Input
                   type="text"
                   placeholder="Enter your full name"
-                  className="text-white placeholder:text-white/70"
+                  className="text-black placeholder:text-black/70"
                   value={signUpName}
                   onChange={e => setSignUpName(e.target.value)}
                 />
@@ -100,7 +100,7 @@ const AuthPage = () => {
                   type="email"
                   placeholder="Enter your email"
                   required
-                  className="text-white placeholder:text-white/70"
+                  className="text-black placeholder:text-black/70"
                   value={signUpEmail}
                   onChange={e => setSignUpEmail(e.target.value)}
                 />
@@ -111,7 +111,7 @@ const AuthPage = () => {
                   type="password"
                   placeholder="Create your password"
                   required
-                  className="text-white placeholder:text-white/70"
+                  className="text-black placeholder:text-black/70"
                   value={signUpPassword}
                   onChange={e => setSignUpPassword(e.target.value)}
                 />
