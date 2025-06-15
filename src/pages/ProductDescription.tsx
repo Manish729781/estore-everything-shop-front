@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Minus, Plus, Heart, Share2 } from 'lucide-react';
@@ -20,6 +19,7 @@ const ProductDescription = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedSize, setSelectedSize] = useState('');
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   // Product data array (this would typically come from an API or context)
   const allProducts = [
@@ -133,44 +133,58 @@ const ProductDescription = () => {
   const productId = parseInt(id || '1');
   const currentProduct = allProducts.find(product => product.id === productId);
 
-  // Redirect to valid product if invalid ID is used
+  // FIRST useEffect: Handle redirect for invalid products
   useEffect(() => {
-    if (!currentProduct) {
+    if (!currentProduct && !isRedirecting) {
       console.log(`Product with ID ${productId} not found, redirecting to product 1`);
+      setIsRedirecting(true);
       navigate('/product/1', { replace: true });
-      return;
     }
-  }, [productId, currentProduct, navigate]);
+  }, [productId, currentProduct, navigate, isRedirecting]);
 
-  // Don't render anything while redirecting
-  if (!currentProduct) {
-    return null;
-  }
-
-  // Initialize color and size based on current product
+  // SECOND useEffect: Initialize color and size when currentProduct is available
   useEffect(() => {
-    console.log('Product loaded:', currentProduct.id, currentProduct.title);
-    
-    // Set initial color
-    if (currentProduct.colors.length > 0) {
-      setSelectedColor(currentProduct.colors[0].name);
-      console.log('Initial color set to:', currentProduct.colors[0].name);
-    } else {
-      setSelectedColor('');
+    if (currentProduct) {
+      console.log('Product loaded:', currentProduct.id, currentProduct.title);
+      
+      // Set initial color
+      if (currentProduct.colors.length > 0) {
+        setSelectedColor(currentProduct.colors[0].name);
+        console.log('Initial color set to:', currentProduct.colors[0].name);
+      } else {
+        setSelectedColor('');
+      }
+      
+      // Set initial size
+      if (currentProduct.sizes.length > 0) {
+        setSelectedSize(currentProduct.sizes[0]);
+        console.log('Initial size set to:', currentProduct.sizes[0]);
+      } else {
+        setSelectedSize('');
+      }
+      
+      // Reset other states when product changes
+      setSelectedImage(0);
+      setQuantity(1);
+      setIsRedirecting(false);
     }
-    
-    // Set initial size
-    if (currentProduct.sizes.length > 0) {
-      setSelectedSize(currentProduct.sizes[0]);
-      console.log('Initial size set to:', currentProduct.sizes[0]);
-    } else {
-      setSelectedSize('');
-    }
-    
-    // Reset other states when product changes
-    setSelectedImage(0);
-    setQuantity(1);
-  }, [currentProduct.id]);
+  }, [currentProduct?.id]);
+
+  // Don't render content if redirecting or no product found
+  if (isRedirecting || !currentProduct) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+        <Navbar />
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-estore-dark mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading product...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   // Check if product is in wishlist
   const isProductInWishlist = isInWishlist(currentProduct.id.toString());
