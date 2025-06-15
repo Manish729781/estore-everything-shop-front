@@ -35,18 +35,10 @@ const HeroSection = () => {
   ];
 
   return (
-    <div
-      className="relative text-white overflow-hidden"
-      style={{
-        background: 'linear-gradient(to right, #0F172A 0%, #3F2B47 100%)',
-      }}
-    >
+    <div className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-amber-100 text-white overflow-hidden">
       {/* Bottom Corner Gradient */}
       <div 
-        className="absolute bottom-0 left-0 w-full h-32"
-        style={{
-          background: 'linear-gradient(to top, #efd6ff40 0%, transparent 100%)',
-        }}
+        className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-amber-200/30 to-transparent"
       ></div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-8 py-12">
