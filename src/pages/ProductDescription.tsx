@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Minus, Plus, Heart, Share2 } from 'lucide-react';
+import { Minus, Plus, Heart, Share2, FileText } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
@@ -20,6 +22,7 @@ const ProductDescription = () => {
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedSize, setSelectedSize] = useState('');
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
 
   // Product data array (this would typically come from an API or context)
   const allProducts = [
@@ -458,6 +461,87 @@ const ProductDescription = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Product Description Section */}
+        <div className="mt-8 sm:mt-12">
+          <Card className="shadow-lg">
+            <Collapsible open={isDescriptionOpen} onOpenChange={setIsDescriptionOpen}>
+              <CollapsibleTrigger asChild>
+                <CardHeader className="cursor-pointer hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <FileText className="w-6 h-6 text-estore-dark" />
+                      <CardTitle className="text-xl sm:text-2xl text-estore-dark">
+                        Product Description
+                      </CardTitle>
+                    </div>
+                    <div className={`transform transition-transform duration-200 ${isDescriptionOpen ? 'rotate-180' : ''}`}>
+                      <Plus className="w-5 h-5 text-gray-500" />
+                    </div>
+                  </div>
+                  <CardDescription>
+                    Learn more about this product's features and benefits
+                  </CardDescription>
+                </CardHeader>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <CardContent className="pt-0">
+                  <div className="prose prose-gray max-w-none">
+                    <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border border-gray-200">
+                      <h3 className="text-lg font-semibold text-estore-dark mb-4">About {currentProduct.title}</h3>
+                      <p className="text-gray-700 leading-relaxed text-base mb-6">
+                        {currentProduct.description}
+                      </p>
+                      
+                      {/* Key Features */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div className="bg-white rounded-lg p-4 border border-gray-100">
+                          <h4 className="font-semibold text-estore-dark mb-2">Quality Materials</h4>
+                          <p className="text-sm text-gray-600">
+                            Crafted with premium materials for lasting durability and comfort.
+                          </p>
+                        </div>
+                        <div className="bg-white rounded-lg p-4 border border-gray-100">
+                          <h4 className="font-semibold text-estore-dark mb-2">Expert Craftsmanship</h4>
+                          <p className="text-sm text-gray-600">
+                            Designed with attention to detail by skilled artisans.
+                          </p>
+                        </div>
+                        <div className="bg-white rounded-lg p-4 border border-gray-100">
+                          <h4 className="font-semibold text-estore-dark mb-2">Versatile Design</h4>
+                          <p className="text-sm text-gray-600">
+                            Perfect for various occasions and styling preferences.
+                          </p>
+                        </div>
+                        <div className="bg-white rounded-lg p-4 border border-gray-100">
+                          <h4 className="font-semibold text-estore-dark mb-2">Easy Care</h4>
+                          <p className="text-sm text-gray-600">
+                            Simple maintenance instructions for long-lasting wear.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Specifications Table */}
+                      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                        <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                          <h4 className="font-semibold text-estore-dark">Technical Specifications</h4>
+                        </div>
+                        <div className="divide-y divide-gray-200">
+                          {currentProduct.specifications.map((spec, index) => (
+                            <div key={index} className="px-4 py-3 flex justify-between items-center">
+                              <span className="text-gray-600 font-medium">{spec.label}</span>
+                              <span className="text-estore-dark font-semibold">{spec.value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </CollapsibleContent>
+            </Collapsible>
+          </Card>
         </div>
       </div>
 
