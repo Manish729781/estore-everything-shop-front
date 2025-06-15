@@ -27,6 +27,7 @@ import FAQsSupport from "./pages/FAQsSupport";
 import NotFound from "./pages/NotFound";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import AuthPage from "./pages/AuthPage";
 
 const queryClient = new QueryClient();
 
@@ -58,8 +59,8 @@ const App = () => (
                 <Route path="/about-us" element={<AboutUs />} />
                 <Route path="/wash-learn" element={<WashLearn />} />
                 <Route path="/faqs-support" element={<FAQsSupport />} />
-                <Route path="/sign-in" element={<SignIn />} />
-                <Route path="/sign-up" element={<SignUp />} />
+                {/* Combined Auth Page */}
+                <Route path="/auth" element={<AuthPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

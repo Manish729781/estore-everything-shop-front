@@ -254,12 +254,12 @@ const Navbar = () => {
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-estore-dark text-white text-xs rounded-full flex items-center justify-center">{cartCount}</span>
               )}
             </button>
-            {/* ---- Added Sign In & Sign Up ---- */}
+            {/* ---- Combined Auth ---- */}
             <Button
               variant="outline"
               size="sm"
               className="ml-2 min-w-[88px]"
-              onClick={() => navigate("/sign-in")}
+              onClick={() => navigate("/auth")}
             >
               Sign In
             </Button>
@@ -267,11 +267,11 @@ const Navbar = () => {
               variant="default"
               size="sm"
               className="ml-0 min-w-[88px]"
-              onClick={() => navigate("/sign-up")}
+              onClick={() => navigate("/auth")}
             >
               Sign Up
             </Button>
-            {/* ---- End Added ---- */}
+            {/* ---- End Combined Auth ---- */}
           </div>
         </div>
 
@@ -375,14 +375,14 @@ const Navbar = () => {
                   </span>
                 )}
               </button>
-              {/* ---- Added Sign In & Sign Up (Mobile) ---- */}
+              {/* ---- Combined Auth (Mobile) ---- */}
               <Button
                 variant="outline"
                 size="sm"
                 className="mt-2 w-full"
                 onClick={() => {
                   setIsMobileMenuOpen(false);
-                  navigate("/sign-in");
+                  navigate("/auth");
                 }}
               >
                 Sign In
@@ -393,12 +393,12 @@ const Navbar = () => {
                 className="mt-0 w-full"
                 onClick={() => {
                   setIsMobileMenuOpen(false);
-                  navigate("/sign-up");
+                  navigate("/auth");
                 }}
               >
                 Sign Up
               </Button>
-              {/* ---- End Added ---- */}
+              {/* ---- End Combined Auth (Mobile) ---- */}
             </div>
           </div>
         </div>
