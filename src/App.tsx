@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +17,12 @@ import RequestReturnLabel from "./pages/RequestReturnLabel";
 import AffiliateProgram from "./pages/AffiliateProgram";
 import Wholesale from "./pages/Wholesale";
 import Contact from "./pages/Contact";
+import TermsConditions from "./pages/TermsConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import LearnMore from "./pages/LearnMore";
+import AboutUs from "./pages/AboutUs";
+import WashLearn from "./pages/WashLearn";
+import FAQsSupport from "./pages/FAQsSupport";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +48,12 @@ const App = () => (
               <Route path="/affiliate" element={<AffiliateProgram />} />
               <Route path="/wholesale" element={<Wholesale />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/terms-conditions" element={<TermsConditions />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/learn-more" element={<LearnMore />} />
+              <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/wash-learn" element={<WashLearn />} />
+              <Route path="/faqs-support" element={<FAQsSupport />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -1,4 +1,3 @@
-
 import { Facebook, Linkedin, Twitter, Instagram } from 'lucide-react';
 
 const Footer = () => {
@@ -12,15 +11,15 @@ const Footer = () => {
   const secondColumn = [
     { name: 'Wholesale', href: '/wholesale' },
     { name: 'Contact Us', href: '/contact' },
-    { name: 'Terms & Conditions', href: '#' },
-    { name: 'Privacy Policy', href: '#' },
-    { name: 'Learn More', href: '#' },
+    { name: 'Terms & Conditions', href: '/terms-conditions' },
+    { name: 'Privacy Policy', href: '/privacy-policy' },
+    { name: 'Learn More', href: '/learn-more' },
   ];
 
   const thirdColumn = [
-    { name: 'About Us', href: '#' },
-    { name: 'Wash & Learn', href: '#' },
-    { name: 'FAQs & Support', href: '#' },
+    { name: 'About Us', href: '/about-us' },
+    { name: 'Wash & Learn', href: '/wash-learn' },
+    { name: 'FAQs & Support', href: '/faqs-support' },
     { name: 'Installation Manual', href: '#' },
   ];
 
