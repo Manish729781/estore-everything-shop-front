@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -6,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { CreditCard, Wallet, Smartphone, Building2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import CheckoutGiftCard from "@/components/CheckoutGiftCard";
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -13,7 +13,19 @@ const Payment = () => {
   const { toast } = useToast();
   
   const addressData = location.state?.addressData;
+
+  // Gift card states
+  const [giftCardApplied, setGiftCardApplied] = useState(false);
+  const [giftCardDiscount, setGiftCardDiscount] = useState(0);
+  const [giftCardCode, setGiftCardCode] = useState<string | undefined>(undefined);
+
+  // Example subtotal & shipping logic (normally comes from cart/order, here static as before)
+  const initialSubtotal = 3373;
+  const shipping = 150;
+
+  // COD charge
   const [paymentMethod, setPaymentMethod] = useState('card');
+  const codCharges = paymentMethod === 'cod' ? 50 : 0;
 
   useEffect(() => {
     // Redirect to address page if no address data
@@ -29,14 +41,28 @@ const Payment = () => {
       description: "Your order has been placed successfully.",
       variant: "default",
     });
-    
+
     // Redirect to success page or home
     setTimeout(() => navigate('/'), 2000);
+  };
+
+  const handleApplyGiftCard = (discountAmount: number) => {
+    setGiftCardApplied(true);
+    setGiftCardDiscount(discountAmount);
+    setGiftCardCode(document.querySelector<HTMLInputElement>("input[placeholder='Enter gift card code']")?.value.toUpperCase() || "");
   };
 
   if (!addressData) {
     return null; // Will redirect in useEffect
   }
+
+  // Calculate the new total with gift card discount
+  const subtotal = initialSubtotal;
+  const total =
+    Math.max(
+      0,
+      subtotal + shipping + codCharges - giftCardDiscount
+    );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -74,15 +100,17 @@ const Payment = () => {
             </Button>
           </div>
           
-          {/* Payment Methods */}
-          <div className="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6">
+          {/* Payment Methods and Order Summary */}
+          <div className="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6 flex flex-col">
             <h2 className="text-xl font-semibold text-estore-dark mb-6">Payment Method</h2>
             
             <div className="space-y-4 mb-8">
-              {/* UPI Payment */}
+              {/* Payment Options */}
+              {/* ... keep existing code for payment methods ... */}
               <div className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
                 paymentMethod === 'upi' ? 'border-estore-dark bg-blue-50' : 'border-gray-200'
               }`} onClick={() => setPaymentMethod('upi')}>
+                {/* ... keep existing payment option code ... */}
                 <div className="flex items-center gap-3">
                   <input 
                     type="radio" 
@@ -117,10 +145,10 @@ const Payment = () => {
                 )}
               </div>
 
-              {/* Digital Wallets */}
               <div className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
                 paymentMethod === 'wallet' ? 'border-estore-dark bg-blue-50' : 'border-gray-200'
               }`} onClick={() => setPaymentMethod('wallet')}>
+                {/* ... keep existing payment wallets code ... */}
                 <div className="flex items-center gap-3">
                   <input 
                     type="radio" 
@@ -155,10 +183,10 @@ const Payment = () => {
                 )}
               </div>
               
-              {/* Credit/Debit Card */}
               <div className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
                 paymentMethod === 'card' ? 'border-estore-dark bg-blue-50' : 'border-gray-200'
               }`} onClick={() => setPaymentMethod('card')}>
+                {/* ... keep existing code for card payment ... */}
                 <div className="flex items-center gap-3">
                   <input 
                     type="radio" 
@@ -202,10 +230,10 @@ const Payment = () => {
                 )}
               </div>
 
-              {/* Net Banking */}
               <div className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
                 paymentMethod === 'netbanking' ? 'border-estore-dark bg-blue-50' : 'border-gray-200'
               }`} onClick={() => setPaymentMethod('netbanking')}>
+                {/* ... keep existing code for net banking ... */}
                 <div className="flex items-center gap-3">
                   <input 
                     type="radio" 
@@ -237,10 +265,10 @@ const Payment = () => {
                 )}
               </div>
               
-              {/* Cash on Delivery */}
               <div className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
                 paymentMethod === 'cod' ? 'border-estore-dark bg-blue-50' : 'border-gray-200'
               }`} onClick={() => setPaymentMethod('cod')}>
+                {/* ... keep existing code for COD ... */}
                 <div className="flex items-center gap-3">
                   <input 
                     type="radio" 
@@ -259,28 +287,42 @@ const Payment = () => {
                 )}
               </div>
             </div>
-            
+
+            {/* Gift Card Option (REUSED) */}
+            <CheckoutGiftCard
+              onApply={handleApplyGiftCard}
+              applied={giftCardApplied}
+              appliedCode={giftCardCode}
+              discount={giftCardDiscount}
+            />
+
             {/* Order Summary */}
             <div className="border-t pt-6 mb-6">
               <h3 className="font-semibold text-estore-dark mb-4">Order Summary</h3>
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>₹3,373</span>
+                  <span>₹{subtotal.toLocaleString()}</span>
                 </div>
+                {giftCardApplied && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Gift Card</span>
+                    <span className="font-semibold text-green-700">- ₹{giftCardDiscount}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span>Shipping</span>
-                  <span>₹150</span>
+                  <span>₹{shipping}</span>
                 </div>
                 {paymentMethod === 'cod' && (
                   <div className="flex justify-between">
                     <span>COD Charges</span>
-                    <span>₹50</span>
+                    <span>₹{codCharges}</span>
                   </div>
                 )}
                 <div className="flex justify-between font-semibold text-lg border-t pt-2">
                   <span>Total</span>
-                  <span>₹{paymentMethod === 'cod' ? '3,573' : '3,523'}</span>
+                  <span>₹{total.toLocaleString()}</span>
                 </div>
               </div>
             </div>
