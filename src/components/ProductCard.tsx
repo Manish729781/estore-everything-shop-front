@@ -43,6 +43,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
       oldPrice,
     });
     toast({ title: "Added to Cart", description: `${title} has been added to your cart.` });
+  };
+
+  const handleBuy = () => {
     if (onAddToCart) onAddToCart();
   };
 
@@ -83,6 +86,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
             className="
               flex-1 bg-estore-dark text-white px-2 xs:px-4 py-2 xs:py-3 rounded-full text-xs xs:text-sm font-medium
               hover:bg-estore-dark/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-estore-dark
+            "
+          >
+            Add to Cart
+          </button>
+          <button
+            type="button"
+            onClick={handleBuy}
+            className="
+              flex-1 bg-estore-dark text-white px-2 xs:px-4 py-2 xs:py-3 rounded-full text-xs xs:text-sm font-medium border border-white
+              hover:bg-estore-navy/95 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-estore-dark
             "
           >
             Buy
