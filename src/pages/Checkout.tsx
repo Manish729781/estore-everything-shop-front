@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useCart } from "@/hooks/use-cart";
+import CheckoutGiftCard from "@/components/CheckoutGiftCard";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -31,6 +32,10 @@ const Checkout = () => {
     paymentMethod: 'cod'
   });
 
+  const [giftCardApplied, setGiftCardApplied] = useState(false);
+  const [giftCardDiscount, setGiftCardDiscount] = useState(0);
+  const [giftCardCode, setGiftCardCode] = useState<string | undefined>();
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -50,6 +55,12 @@ const Checkout = () => {
     setTimeout(() => navigate('/'), 2000);
   };
 
+  const handleApplyGiftCard = (discountAmount: number) => {
+    setGiftCardApplied(true);
+    setGiftCardDiscount(discountAmount);
+    setGiftCardCode(document.querySelector<HTMLInputElement>("input[placeholder='Enter gift card code']")?.value.toUpperCase() || "");
+  };
+
   // Calculate subtotal and total dynamically
   const calculateSubtotal = () => {
     return cartItems.reduce((total, item) => {
@@ -60,7 +71,7 @@ const Checkout = () => {
 
   const subtotal = calculateSubtotal();
   const shipping = cartItems.length > 0 ? 150 : 0;
-  const total = subtotal + shipping;
+  const total = Math.max(0, subtotal + shipping - giftCardDiscount);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -96,6 +107,14 @@ const Checkout = () => {
             {/* Order Summary */}
             <div className="lg:col-span-1 bg-white rounded-2xl shadow p-6">
               <h2 className="text-2xl font-semibold text-estore-dark mb-4">Order Summary</h2>
+              
+              {/* NEW: Gift Card Box */}
+              <CheckoutGiftCard
+                onApply={handleApplyGiftCard}
+                applied={giftCardApplied}
+                appliedCode={giftCardCode}
+                discount={giftCardDiscount}
+              />
               
               <div className="space-y-4">
                 {cartItems.map(item => (
@@ -147,6 +166,12 @@ const Checkout = () => {
                   <span className="text-gray-600">Subtotal</span>
                   <span className="font-semibold">₹{subtotal.toLocaleString()}</span>
                 </div>
+                {giftCardApplied && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Gift Card</span>
+                    <span className="font-semibold text-green-700">- ₹{giftCardDiscount}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
                   <span className="font-semibold">₹{shipping}</span>
