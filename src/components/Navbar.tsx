@@ -1,190 +1,161 @@
+
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
-import LanguageSwitcher from "./LanguageSwitcher";
-import ThemeSwitcher from "./ThemeSwitcher";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/hooks/use-cart";
 import { useWishlist } from "@/contexts/WishlistContext";
-import { Search } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Input } from "@/components/ui/input";
+import { Search, User, Heart, ShoppingCart } from "lucide-react";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Navbar = () => {
-  const { selectedLanguage } = useLanguage();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   const { cartItems } = useCart();
   const { wishlistCount } = useWishlist();
+  const { selectedLanguage } = useLanguage();
 
   const cartTotalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  // Flag for English (India) as in your screenshot; you can swap for other flags as needed
+  const FLAG_ICON = (
+    <span className="inline-block w-6 mr-1" title="India flag" aria-label="India flag">
+      <img src="https://flagcdn.com/in.svg" alt="IN" className="w-6 h-4 rounded shadow" />
+    </span>
+  );
+
+  // Main nav links
+  const navLinks = [
+    { to: "/", label: "Home", bold: true },
+    { to: "/products", label: "Collection" },
+    { to: "/featured", label: "featured" },
+    { to: "/blog", label: "Blog" },
+    { to: "/contact", label: "Contact" },
+  ];
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (search.trim()) navigate(`/products?search=${encodeURIComponent(search.trim())}`);
   };
 
-  const currentLang = selectedLanguage.code;
-  const langHome = currentLang === "FR" ? "Accueil" : currentLang === "ES" ? "Inicio"
-    : currentLang === "HI" ? "होम" : currentLang === "DE" ? "Startseite"
-    : currentLang === "ZH" ? "首页" : currentLang === "JA" ? "ホーム"
-    : currentLang === "AR" ? "الرئيسية" : "Home";
-
-  const langProducts = currentLang === "FR" ? "Produits" : currentLang === "ES" ? "Productos"
-    : currentLang === "HI" ? "उत्पाद" : currentLang === "DE" ? "Produkte"
-    : currentLang === "ZH" ? "产品" : currentLang === "JA" ? "商品"
-    : currentLang === "AR" ? "المنتجات" : "Products";
-
   return (
-    <nav className="bg-white dark:bg-estore-dark shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0">
-              <img
-                className="h-8 w-8"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                alt="Workflow"
-              />
-            </Link>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <Link
-                  to="/"
-                  className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  {langHome}
-                </Link>
-                <Link
-                  to="/products"
-                  className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  {langProducts}
-                </Link>
-                <Link
-                  to="/about-us"
-                  className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  About
-                </Link>
-                <Link
-                  to="/wishlist"
-                  className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Wishlist ({wishlistCount})
-                </Link>
-                <Link
-                  to="/cart"
-                  className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Cart ({cartTotalItems})
-                </Link>
-                <Link
-                  to="/profile"
-                  className="text-sm font-medium hover:underline px-4 py-1"
-                >
-                  Profile
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="hidden md:block">
-            <div className="ml-4 flex items-center md:ml-6">
-              <button
-                type="button"
-                className="bg-gray-100 dark:bg-gray-800 p-1 rounded-full text-gray-500 dark:text-gray-400 hover:text-gray-400 dark:hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-              >
-                <span className="sr-only">View notifications</span>
-                <Search className="h-6 w-6" aria-hidden="true" />
-              </button>
-              <LanguageSwitcher className="px-4 py-2 text-sm" />
-              <ThemeSwitcher className="px-4 py-2 text-sm" />
-            </div>
-          </div>
-          <div className="-mr-2 flex md:hidden">
-            <button
-              onClick={toggleMenu}
-              type="button"
-              className="bg-gray-100 dark:bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-400 dark:hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-              aria-controls="mobile-menu"
-              aria-expanded={isMenuOpen}
-            >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className={`${isMenuOpen ? "hidden" : "block"} h-6 w-6`}
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-              <svg
-                className={`${isMenuOpen ? "block" : "hidden"} h-6 w-6`}
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div
-        className={`${isMenuOpen ? "block" : "hidden"} md:hidden`}
-        id="mobile-menu"
-      >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+    <nav className="w-full bg-white dark:bg-estore-dark shadow z-50">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-3 sm:px-6 h-16">
+        {/* Left: Logo + Main Links */}
+        <div className="flex items-center gap-8">
+          {/* Site Name */}
           <Link
             to="/"
-            className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
+            className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
           >
-            {langHome}
+            Estore
           </Link>
-          <Link
-            to="/products"
-            className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
-          >
-            {langProducts}
-          </Link>
-          <Link
-            to="/about-us"
-            className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
-          >
-            About
-          </Link>
-          <Link
-            to="/wishlist"
-            className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Wishlist ({wishlistCount})
-          </Link>
-          <Link
-            to="/cart"
-            className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Cart ({cartTotalItems})
-          </Link>
+          {/* Main Nav */}
+          <div className="hidden md:flex gap-4">
+            {navLinks.map((item) => (
+              <Link
+                key={item.label}
+                to={item.to}
+                className={`text-base transition-colors ${
+                  item.bold ? "font-bold" : "font-normal"
+                } text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white px-2`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+        {/* Center/Right: Search, Language, Icons */}
+        <div className="flex items-center gap-4">
+          {/* Search Bar */}
+          <form onSubmit={handleSearch}>
+            <div className="relative">
+              <Input
+                type="text"
+                placeholder="Search product"
+                className="pl-9 pr-2 py-1.5 w-48 sm:w-64 rounded-full bg-gray-100 focus:bg-white text-black placeholder:text-gray-400 text-sm"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+              <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            </div>
+          </form>
+          {/* Language and flag */}
+          <div className="flex items-center gap-1 rounded-full bg-gray-100 px-2">
+            {FLAG_ICON}
+            <LanguageSwitcher className="bg-transparent p-0 text-base text-black dark:text-white w-auto min-w-[2rem] border-0 shadow-none outline-none focus:ring-0 appearance-none pl-0 pr-1" />
+          </div>
+          {/* Profile */}
           <Link
             to="/profile"
-            className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
+            title="Profile"
+            className="ml-2 flex items-center"
           >
-            Profile
+            <User className="w-5 h-5 text-black/80 dark:text-white/80" />
           </Link>
-          <LanguageSwitcher className="block px-3 py-2" />
-          <ThemeSwitcher className="block px-3 py-2" />
+          {/* Wishlist */}
+          <Link
+            to="/wishlist"
+            title="Wishlist"
+            className="ml-2 relative flex items-center"
+          >
+            <Heart className="w-5 h-5 text-black/80 dark:text-white/80" />
+            {wishlistCount > 0 && (
+              <span className="absolute -top-1 -right-1 rounded-full bg-amber-400 text-xs font-semibold px-1 text-white">
+                {wishlistCount}
+              </span>
+            )}
+          </Link>
+          {/* Cart */}
+          <Link
+            to="/cart"
+            title="Cart"
+            className="ml-2 relative flex items-center"
+          >
+            <ShoppingCart className="w-5 h-5 text-black/80 dark:text-white/80" />
+            {cartTotalItems > 0 && (
+              <span className="absolute -top-1 -right-1 rounded-full bg-amber-400 text-xs font-semibold px-1 text-white">
+                {cartTotalItems}
+              </span>
+            )}
+          </Link>
         </div>
       </div>
+      {/* Mobile nav */}
+      <div className="flex md:hidden items-center justify-between px-3 py-2 bg-white dark:bg-estore-dark">
+        {/* Hamburger could go here for mobile navigation (not shown for brevity) */}
+        <div className="flex items-center gap-3">
+          <Link
+            to="/"
+            className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+          >
+            Estore
+          </Link>
+        </div>
+        {/* Profile/Cart/Wishlist in a row */}
+        <div className="flex items-center gap-3">
+          <Link to="/profile" title="Profile">
+            <User className="w-5 h-5" />
+          </Link>
+          <Link to="/wishlist" title="Wishlist" className="relative">
+            <Heart className="w-5 h-5" />
+            {wishlistCount > 0 && (
+              <span className="absolute -top-1 -right-1 rounded-full bg-amber-400 text-xs font-semibold px-1 text-white">
+                {wishlistCount}
+              </span>
+            )}
+          </Link>
+          <Link to="/cart" title="Cart" className="relative">
+            <ShoppingCart className="w-5 h-5" />
+            {cartTotalItems > 0 && (
+              <span className="absolute -top-1 -right-1 rounded-full bg-amber-400 text-xs font-semibold px-1 text-white">
+                {cartTotalItems}
+              </span>
+            )}
+          </Link>
+        </div>
+      </div>
+      {/* If you want a mobile nav drawer for links, it can be added here later */}
     </nav>
   );
 };
