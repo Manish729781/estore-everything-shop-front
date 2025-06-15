@@ -57,6 +57,12 @@ const Navbar = () => {
                   {langProducts}
                 </Link>
                 <Link
+                  to="/about-us"
+                  className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  About
+                </Link>
+                <Link
                   to="/wishlist"
                   className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium"
                 >
@@ -150,6 +156,12 @@ const Navbar = () => {
             className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
           >
             {langProducts}
+          </Link>
+          <Link
+            to="/about-us"
+            className="text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium"
+          >
+            About
           </Link>
           <Link
             to="/wishlist"
