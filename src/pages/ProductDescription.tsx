@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Minus, Plus, Heart, Share2, FileText, Star, User } from 'lucide-react';
@@ -296,17 +297,17 @@ const ProductDescription = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-4">
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-500 mb-4 px-2">
+        <nav className="text-sm text-gray-500 mb-2 px-2">
           <span>{t('nav.home')}</span> / <span>{t('nav.collection')}</span> / <span>{currentProduct.category}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           {/* Image Gallery */}
-          <div className="space-y-3 order-1">
+          <div className="space-y-2 order-1">
             {/* Main Image */}
-            <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg">
+            <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg">
               <img
                 src={currentProduct.images[selectedImage]}
                 alt={`${currentProduct.title} - Angle ${selectedImage + 1}`}
@@ -314,13 +315,13 @@ const ProductDescription = () => {
               />
             </div>
             
-            {/* Thumbnail Images - Different Angles */}
-            <div className="grid grid-cols-4 gap-2 sm:gap-3 px-2 sm:px-0">
+            {/* Thumbnail Images */}
+            <div className="grid grid-cols-4 gap-2 px-2 sm:px-0">
               {currentProduct.images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg sm:rounded-xl overflow-hidden border-2 transition-all duration-200 ${
+                  className={`aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
                     selectedImage === index 
                       ? 'border-estore-dark shadow-lg scale-105' 
                       : 'border-transparent hover:border-gray-300 hover:shadow-md'
@@ -343,18 +344,18 @@ const ProductDescription = () => {
           </div>
 
           {/* Product Details */}
-          <div className="space-y-4 order-2 px-2 sm:px-0">
-            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-playfair font-bold text-estore-dark mb-3 leading-tight">
+          <div className="space-y-3 order-2 px-2 sm:px-0">
+            <div className="bg-white rounded-2xl p-4 shadow-sm">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-playfair font-bold text-estore-dark mb-2 leading-tight">
                 {currentProduct.title}
               </h1>
-              <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
+              <p className="text-gray-600 text-base leading-relaxed">
                 {currentProduct.description}
               </p>
             </div>
 
             {/* Price */}
-            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
+            <div className="bg-white rounded-2xl p-4 shadow-sm">
               <div className="flex flex-wrap items-center gap-3">
                 <span className="text-2xl sm:text-3xl font-bold text-estore-dark">{currentProduct.price}</span>
                 <span className="text-lg sm:text-xl text-gray-500 line-through">{currentProduct.originalPrice}</span>
@@ -365,10 +366,10 @@ const ProductDescription = () => {
             </div>
 
             {/* Specifications */}
-            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="bg-white rounded-2xl p-4 shadow-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {currentProduct.specifications.map((spec, index) => (
-                  <div key={index} className="text-sm border-b border-gray-100 pb-2 last:border-b-0">
+                  <div key={index} className="text-sm border-b border-gray-100 pb-1 last:border-b-0">
                     <span className="text-gray-500 block sm:inline">{spec.label}:</span>
                     <span className="ml-0 sm:ml-2 font-medium text-estore-dark block sm:inline">{spec.value}</span>
                   </div>
@@ -378,14 +379,14 @@ const ProductDescription = () => {
 
             {/* Color Selection */}
             {currentProduct.colors.length > 0 && (
-              <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
-                <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.chooseColor')}</h3>
-                <div className="flex flex-wrap gap-3">
+              <div className="bg-white rounded-2xl p-4 shadow-sm">
+                <h3 className="text-lg font-semibold text-estore-dark mb-2">{t('product.chooseColor')}</h3>
+                <div className="flex flex-wrap gap-2">
                   {currentProduct.colors.map((color) => (
                     <button
                       key={color.name}
                       onClick={() => setSelectedColor(color.name)}
-                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 transition-all duration-200 ${
+                      className={`w-10 h-10 rounded-full border-2 transition-all duration-200 ${
                         selectedColor === color.name 
                           ? 'border-estore-dark scale-110 shadow-lg' 
                           : 'border-gray-300 hover:border-estore-dark hover:scale-105'
@@ -395,19 +396,19 @@ const ProductDescription = () => {
                     />
                   ))}
                 </div>
-                <p className="text-sm text-gray-600 mt-2">Selected: {selectedColor}</p>
+                <p className="text-sm text-gray-600 mt-1">Selected: {selectedColor}</p>
               </div>
             )}
 
             {/* Size Selection */}
-            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
-              <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.selectSize')}</h3>
+            <div className="bg-white rounded-2xl p-4 shadow-sm">
+              <h3 className="text-lg font-semibold text-estore-dark mb-2">{t('product.selectSize')}</h3>
               <div className="flex flex-wrap gap-2">
                 {currentProduct.sizes.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 sm:px-5 sm:py-3 rounded-xl border-2 font-medium transition-all duration-200 min-w-[50px] ${
+                    className={`px-4 py-2 rounded-xl border-2 font-medium transition-all duration-200 min-w-[50px] ${
                       selectedSize === size 
                         ? 'border-estore-dark bg-estore-dark text-white shadow-lg' 
                         : 'border-gray-300 text-estore-dark hover:border-estore-dark hover:shadow-md'
@@ -417,38 +418,38 @@ const ProductDescription = () => {
                   </button>
                 ))}
               </div>
-              <p className="text-sm text-gray-600 mt-2">Selected: {selectedSize}</p>
+              <p className="text-sm text-gray-600 mt-1">Selected: {selectedSize}</p>
             </div>
 
             {/* Quantity */}
-            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
-              <h3 className="text-lg font-semibold text-estore-dark mb-3">{t('product.quantity')}</h3>
+            <div className="bg-white rounded-2xl p-4 shadow-sm">
+              <h3 className="text-lg font-semibold text-estore-dark mb-2">{t('product.quantity')}</h3>
               <div className="flex items-center gap-4">
                 <div className="flex items-center border-2 border-gray-300 rounded-xl overflow-hidden">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-3 sm:p-4 hover:bg-gray-100 transition-colors"
+                    className="p-3 hover:bg-gray-100 transition-colors"
                   >
-                    <Minus className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <Minus className="w-4 h-4" />
                   </button>
-                  <span className="px-4 sm:px-6 py-3 sm:py-4 border-x-2 border-gray-300 min-w-[60px] sm:min-w-[80px] text-center font-medium">
+                  <span className="px-4 py-3 border-x-2 border-gray-300 min-w-[60px] text-center font-medium">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="p-3 sm:p-4 hover:bg-gray-100 transition-colors"
+                    className="p-3 hover:bg-gray-100 transition-colors"
                   >
-                    <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <Plus className="w-4 h-4" />
                   </button>
                 </div>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="space-y-3 sticky bottom-4 sm:static">
+            <div className="space-y-2 sticky bottom-4 sm:static">
               <Button 
                 onClick={handleBuyNow}
-                className="w-full bg-gradient-to-r from-estore-dark to-estore-navy text-white py-4 sm:py-5 text-lg sm:text-xl font-semibold rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
+                className="w-full bg-gradient-to-r from-estore-dark to-estore-navy text-white py-4 text-lg font-semibold rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
                 disabled={!currentProduct.inStock}
               >
                 {currentProduct.inStock ? t('product.buyNow') : t('product.outOfStock')}
@@ -456,7 +457,7 @@ const ProductDescription = () => {
               <Button 
                 onClick={handleAddToCart}
                 variant="outline" 
-                className="w-full py-4 sm:py-5 text-lg sm:text-xl font-semibold rounded-xl border-2 border-estore-dark text-estore-dark hover:bg-estore-dark hover:text-white transform hover:scale-[1.02] transition-all duration-200"
+                className="w-full py-4 text-lg font-semibold rounded-xl border-2 border-estore-dark text-estore-dark hover:bg-estore-dark hover:text-white transform hover:scale-[1.02] transition-all duration-200"
                 disabled={!currentProduct.inStock}
               >
                 {t('product.addToCart')}
@@ -464,8 +465,8 @@ const ProductDescription = () => {
             </div>
 
             {/* Share & Features */}
-            <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm">
-              <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+            <div className="bg-white rounded-2xl p-4 shadow-sm">
+              <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
                 <span className="text-sm font-medium text-estore-dark">{t('product.share')}</span>
                 <div className="flex gap-3">
                   <button className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
@@ -484,7 +485,7 @@ const ProductDescription = () => {
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center">
                     <div className="w-3 h-3 bg-green-600 rounded-full"></div>
@@ -509,15 +510,15 @@ const ProductDescription = () => {
         </div>
 
         {/* Product Description Section */}
-        <div className="mt-6">
+        <div className="mt-4">
           <Card className="shadow-lg">
             <Collapsible open={isDescriptionOpen} onOpenChange={setIsDescriptionOpen}>
               <CollapsibleTrigger asChild>
-                <CardHeader className="cursor-pointer hover:bg-gray-50 transition-colors">
+                <CardHeader className="cursor-pointer hover:bg-gray-50 transition-colors py-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <FileText className="w-6 h-6 text-estore-dark" />
-                      <CardTitle className="text-xl sm:text-2xl text-estore-dark">
+                      <CardTitle className="text-xl text-estore-dark">
                         Product Description
                       </CardTitle>
                     </div>
@@ -533,34 +534,34 @@ const ProductDescription = () => {
               <CollapsibleContent>
                 <CardContent className="pt-0">
                   <div className="prose prose-gray max-w-none">
-                    <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border border-gray-200">
-                      <h3 className="text-lg font-semibold text-estore-dark mb-4">About {currentProduct.title}</h3>
-                      <p className="text-gray-700 leading-relaxed text-base mb-6">
+                    <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-5 border border-gray-200">
+                      <h3 className="text-lg font-semibold text-estore-dark mb-3">About {currentProduct.title}</h3>
+                      <p className="text-gray-700 leading-relaxed text-base mb-4">
                         {currentProduct.description}
                       </p>
                       
                       {/* Key Features */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <div className="bg-white rounded-lg p-4 border border-gray-100">
-                          <h4 className="font-semibold text-estore-dark mb-2">Quality Materials</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                        <div className="bg-white rounded-lg p-3 border border-gray-100">
+                          <h4 className="font-semibold text-estore-dark mb-1">Quality Materials</h4>
                           <p className="text-sm text-gray-600">
                             Crafted with premium materials for lasting durability and comfort.
                           </p>
                         </div>
-                        <div className="bg-white rounded-lg p-4 border border-gray-100">
-                          <h4 className="font-semibold text-estore-dark mb-2">Expert Craftsmanship</h4>
+                        <div className="bg-white rounded-lg p-3 border border-gray-100">
+                          <h4 className="font-semibold text-estore-dark mb-1">Expert Craftsmanship</h4>
                           <p className="text-sm text-gray-600">
                             Designed with attention to detail by skilled artisans.
                           </p>
                         </div>
-                        <div className="bg-white rounded-lg p-4 border border-gray-100">
-                          <h4 className="font-semibold text-estore-dark mb-2">Versatile Design</h4>
+                        <div className="bg-white rounded-lg p-3 border border-gray-100">
+                          <h4 className="font-semibold text-estore-dark mb-1">Versatile Design</h4>
                           <p className="text-sm text-gray-600">
                             Perfect for various occasions and styling preferences.
                           </p>
                         </div>
-                        <div className="bg-white rounded-lg p-4 border border-gray-100">
-                          <h4 className="font-semibold text-estore-dark mb-2">Easy Care</h4>
+                        <div className="bg-white rounded-lg p-3 border border-gray-100">
+                          <h4 className="font-semibold text-estore-dark mb-1">Easy Care</h4>
                           <p className="text-sm text-gray-600">
                             Simple maintenance instructions for long-lasting wear.
                           </p>
@@ -569,12 +570,12 @@ const ProductDescription = () => {
 
                       {/* Specifications Table */}
                       <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                        <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                        <div className="bg-gray-50 px-4 py-2 border-b border-gray-200">
                           <h4 className="font-semibold text-estore-dark">Technical Specifications</h4>
                         </div>
                         <div className="divide-y divide-gray-200">
                           {currentProduct.specifications.map((spec, index) => (
-                            <div key={index} className="px-4 py-3 flex justify-between items-center">
+                            <div key={index} className="px-4 py-2 flex justify-between items-center">
                               <span className="text-gray-600 font-medium">{spec.label}</span>
                               <span className="text-estore-dark font-semibold">{spec.value}</span>
                             </div>
@@ -590,15 +591,15 @@ const ProductDescription = () => {
         </div>
 
         {/* Customer Reviews Section */}
-        <div className="mt-6">
+        <div className="mt-4">
           <Card className="shadow-lg">
             <Collapsible open={isReviewsOpen} onOpenChange={setIsReviewsOpen}>
               <CollapsibleTrigger asChild>
-                <CardHeader className="cursor-pointer hover:bg-gray-50 transition-colors">
+                <CardHeader className="cursor-pointer hover:bg-gray-50 transition-colors py-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <User className="w-6 h-6 text-estore-dark" />
-                      <CardTitle className="text-xl sm:text-2xl text-estore-dark">
+                      <CardTitle className="text-xl text-estore-dark">
                         Customer Reviews
                       </CardTitle>
                       <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-sm font-medium">
@@ -616,9 +617,9 @@ const ProductDescription = () => {
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <CardContent className="pt-0">
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     {/* Overall Rating */}
-                    <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200">
+                    <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-4 border border-yellow-200">
                       <div className="flex items-center gap-4 mb-2">
                         <div className="text-3xl font-bold text-estore-dark">4.6</div>
                         <div className="flex items-center gap-1">
@@ -634,10 +635,10 @@ const ProductDescription = () => {
                     </div>
 
                     {/* Individual Reviews */}
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       {customerReviews.map((review) => (
-                        <div key={review.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-                          <div className="flex items-start justify-between mb-3">
+                        <div key={review.id} className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-start justify-between mb-2">
                             <div className="flex items-center gap-3">
                               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
                                 {review.name.charAt(0)}
@@ -665,7 +666,7 @@ const ProductDescription = () => {
                     </div>
 
                     {/* Write Review Button */}
-                    <div className="text-center pt-4">
+                    <div className="text-center pt-2">
                       <Button 
                         variant="outline" 
                         className="px-8 py-3 border-2 border-estore-dark text-estore-dark hover:bg-estore-dark hover:text-white transition-all duration-200"
