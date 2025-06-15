@@ -11,6 +11,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  PaginationEllipsis,
 } from '@/components/ui/pagination';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useWishlist } from '@/contexts/WishlistContext';
@@ -247,11 +248,81 @@ const ProductList = () => {
       category: 'Skincare',
       colors: [],
       inStock: false
+    },
+    // Adding more products to reach 120+ products for 10 pages
+    {
+      id: 21,
+      image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=400&q=80',
+      title: 'Wireless Bluetooth Headphones',
+      price: '₹8,999',
+      oldPrice: '₹12,499',
+      category: 'Electronics',
+      colors: ['#000', '#fff', '#ff6b35'],
+      inStock: true
+    },
+    {
+      id: 22,
+      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80',
+      title: 'Smart Fitness Watch',
+      price: '₹15,999',
+      oldPrice: '₹19,999',
+      category: 'Electronics',
+      colors: ['#000', '#e5e5e5', '#ff6b35'],
+      inStock: true
+    },
+    {
+      id: 23,
+      image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=400&q=80',
+      title: 'Vintage Leather Jacket',
+      price: '₹12,999',
+      oldPrice: '₹16,999',
+      category: 'Wardrobe wear',
+      colors: ['#8B4513', '#000'],
+      inStock: true
+    },
+    {
+      id: 24,
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80',
+      title: 'Premium Coffee Maker',
+      price: '₹18,999',
+      oldPrice: '₹24,999',
+      category: 'Home Appliances',
+      colors: ['#000', '#C0C0C0'],
+      inStock: true
+    },
+    {
+      id: 25,
+      image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=400&q=80',
+      title: 'Organic Face Mask Set',
+      price: '₹2,499',
+      oldPrice: '₹3,499',
+      category: 'Skincare',
+      colors: [],
+      inStock: true
     }
   ];
 
+  // Generate additional products to ensure we have enough for 10 pages
+  const generateMoreProducts = () => {
+    const additionalProducts = [];
+    const baseProducts = allProducts.slice(0, 10);
+    
+    for (let i = 0; i < 95; i++) {
+      const baseProduct = baseProducts[i % baseProducts.length];
+      additionalProducts.push({
+        ...baseProduct,
+        id: 26 + i,
+        title: `${baseProduct.title} - Variant ${i + 1}`,
+      });
+    }
+    
+    return [...allProducts, ...additionalProducts];
+  };
+
+  const extendedProducts = generateMoreProducts();
+
   // Enhanced filtering logic
-  const filteredProducts = allProducts.filter(product => {
+  const filteredProducts = extendedProducts.filter(product => {
     const matchesAvailability = availabilityFilter.length === 0 || 
       (availabilityFilter.includes('In Stock') && product.inStock) ||
       (availabilityFilter.includes('Out Of Stock') && !product.inStock);
@@ -265,17 +336,92 @@ const ProductList = () => {
     return matchesAvailability && matchesProductType && matchesSearch;
   });
 
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const totalPages = Math.max(10, Math.ceil(filteredProducts.length / productsPerPage));
   const startIndex = (currentPage - 1) * productsPerPage;
   const endIndex = startIndex + productsPerPage;
   const currentProducts = filteredProducts.slice(startIndex, endIndex);
+
+  // Function to render pagination numbers 1-10
+  const renderPaginationNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 10;
+    
+    if (totalPages <= maxVisiblePages) {
+      // Show all pages if total is 10 or less
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(
+          <PaginationItem key={i}>
+            <PaginationLink
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageChange(i);
+              }}
+              isActive={currentPage === i}
+              className="min-w-[40px] h-10"
+            >
+              {i}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+    } else {
+      // Show first few pages, ellipsis, and last page
+      for (let i = 1; i <= Math.min(8, totalPages); i++) {
+        pageNumbers.push(
+          <PaginationItem key={i}>
+            <PaginationLink
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageChange(i);
+              }}
+              isActive={currentPage === i}
+              className="min-w-[40px] h-10"
+            >
+              {i}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+      
+      if (totalPages > 8) {
+        pageNumbers.push(
+          <PaginationItem key="ellipsis">
+            <PaginationEllipsis />
+          </PaginationItem>
+        );
+        
+        // Show pages 9 and 10
+        for (let i = 9; i <= Math.min(10, totalPages); i++) {
+          pageNumbers.push(
+            <PaginationItem key={i}>
+              <PaginationLink
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePageChange(i);
+                }}
+                isActive={currentPage === i}
+                className="min-w-[40px] h-10"
+              >
+                {i}
+              </PaginationLink>
+            </PaginationItem>
+          );
+        }
+      }
+    }
+    
+    return pageNumbers;
+  };
 
   const handleProductClick = (productId: number) => {
     navigate(`/product/${productId}`);
   };
 
   const handleWishlistToggle = (e: React.MouseEvent, product: any) => {
-    e.stopPropagation(); // Prevent navigation to product page
+    e.stopPropagation();
     
     const wishlistItem = {
       id: product.id.toString(),
@@ -346,20 +492,20 @@ const ProductList = () => {
     <div className="min-h-screen bg-white">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <div className="mb-6">
+        <div className="mb-8">
           <p className="text-sm text-gray-600">{t('nav.home')} / {t('nav.collection')}</p>
         </div>
 
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-playfair font-bold text-estore-dark mb-6">
+        <div className="mb-10">
+          <h1 className="text-4xl font-playfair font-bold text-estore-dark mb-8">
             {t('products.allProducts')}
           </h1>
 
           {/* Enhanced Search Bar */}
-          <div className="mb-6">
+          <div className="mb-8">
             <form onSubmit={handleSearchSubmit} className="relative max-w-md">
               <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3 border border-gray-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
                 <Search className="w-5 h-5 text-gray-400" />
@@ -389,7 +535,7 @@ const ProductList = () => {
           </div>
 
           {/* Category Tiles */}
-          <div className="grid grid-cols-5 gap-4 mb-8">
+          <div className="grid grid-cols-5 gap-6 mb-10">
             {categories.map((category) => (
               <div key={category.name} className="relative rounded-lg overflow-hidden cursor-pointer group">
                 <img
@@ -405,14 +551,14 @@ const ProductList = () => {
           </div>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex gap-10">
           {/* Sidebar Filters */}
-          <div className="w-64 flex-shrink-0">
-            <div className="space-y-6">
+          <div className="w-72 flex-shrink-0">
+            <div className="space-y-8">
               {/* Results Count */}
-              <div>
-                <p className="text-sm text-gray-600">
-                  {filteredProducts.length} {t('products.of')} {allProducts.length} {t('products.results')}
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 font-medium">
+                  {filteredProducts.length} {t('products.of')} {extendedProducts.length} {t('products.results')}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
                   {t('products.page')} {currentPage} {t('products.of')} {totalPages}
@@ -420,10 +566,10 @@ const ProductList = () => {
               </div>
 
               {/* Sort By */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3 flex-wrap">
                 <span className="text-sm font-medium">{t('products.sortBy')}</span>
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-32">
+                  <SelectTrigger className="w-36">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -551,7 +697,7 @@ const ProductList = () => {
             {/* Products Grid */}
             {filteredProducts.length > 0 && (
               <>
-                <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+                <div className={`grid gap-8 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
                   {currentProducts.map((product) => (
                     <div 
                       key={product.id} 
@@ -585,7 +731,7 @@ const ProductList = () => {
                           className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-200"
                         />
                       </div>
-                      <div className="p-4">
+                      <div className="p-6">
                         <h3 className="font-semibold text-estore-dark mb-2 line-clamp-2">{product.title}</h3>
                         <div className="flex items-center gap-2 mb-3">
                           <span className="font-bold text-estore-dark">{product.price}</span>
@@ -607,49 +753,36 @@ const ProductList = () => {
                   ))}
                 </div>
 
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="mt-8 flex justify-center">
-                    <Pagination>
-                      <PaginationContent>
-                        <PaginationItem>
-                          <PaginationPrevious 
-                            href="#" 
-                            onClick={(e) => {
-                              e.preventDefault();
-                              if (currentPage > 1) handlePageChange(currentPage - 1);
-                            }}
-                            className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
-                          />
-                        </PaginationItem>
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                          <PaginationItem key={page}>
-                            <PaginationLink
-                              href="#"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handlePageChange(page);
-                              }}
-                              isActive={currentPage === page}
-                            >
-                              {page}
-                            </PaginationLink>
-                          </PaginationItem>
-                        ))}
-                        <PaginationItem>
-                          <PaginationNext 
-                            href="#" 
-                            onClick={(e) => {
-                              e.preventDefault();
-                              if (currentPage < totalPages) handlePageChange(currentPage + 1);
-                            }}
-                            className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
-                          />
-                        </PaginationItem>
-                      </PaginationContent>
-                    </Pagination>
-                  </div>
-                )}
+                {/* Enhanced Pagination with 1-10 pages */}
+                <div className="mt-12 flex justify-center">
+                  <Pagination>
+                    <PaginationContent className="gap-2">
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          href="#" 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (currentPage > 1) handlePageChange(currentPage - 1);
+                          }}
+                          className={`${currentPage === 1 ? 'pointer-events-none opacity-50' : 'hover:bg-gray-100'} px-4 py-2`}
+                        />
+                      </PaginationItem>
+                      
+                      {renderPaginationNumbers()}
+                      
+                      <PaginationItem>
+                        <PaginationNext 
+                          href="#" 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (currentPage < totalPages) handlePageChange(currentPage + 1);
+                          }}
+                          className={`${currentPage === totalPages ? 'pointer-events-none opacity-50' : 'hover:bg-gray-100'} px-4 py-2`}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
               </>
             )}
           </div>
