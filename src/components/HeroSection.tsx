@@ -1,3 +1,4 @@
+
 import { ArrowRight } from 'lucide-react';
 
 const HeroSection = () => {
@@ -35,7 +36,13 @@ const HeroSection = () => {
   ];
 
   return (
-    <div className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-amber-100 text-white overflow-hidden">
+    <div
+      className="relative overflow-hidden"
+      style={{
+        background:
+          'linear-gradient(90deg, #181c2b 0%, #f6e7d8 100%)',
+      }}
+    >
       {/* Bottom Corner Gradient */}
       <div 
         className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-amber-200/30 to-transparent"
@@ -45,12 +52,12 @@ const HeroSection = () => {
         {/* Hero Content - Horizontal Layout */}
         <div className="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-8">
           <div className="flex-1">
-            <h1 className="text-5xl md:text-6xl font-playfair font-bold mb-4 leading-tight tracking-wide">
+            <h1 className="text-5xl md:text-6xl font-playfair font-bold mb-4 leading-tight tracking-wide text-white drop-shadow-lg">
               Your One-Stop Shop for Everything.
             </h1>
           </div>
           <div className="flex-1 lg:max-w-md">
-            <p className="text-xl text-gray-200 mb-8 leading-relaxed">
+            <p className="text-xl text-white/90 mb-8 leading-relaxed">
               Find everything you need in one place—great deals, top quality, and
               ultimate convenience. Shop anytime, anywhere, hassle-free!
             </p>
@@ -93,3 +100,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
