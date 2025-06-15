@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Search, User, Heart, ShoppingCart, ChevronDown, Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -143,22 +144,22 @@ const Navbar = () => {
 
   return (
     <header className="w-full bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 sm:h-18">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-18 lg:h-20">
         {/* Logo */}
         <div 
-          className="text-xl sm:text-2xl font-playfair font-bold text-estore-dark tracking-wide cursor-pointer flex-shrink-0"
+          className="text-xl sm:text-2xl lg:text-3xl font-playfair font-bold text-estore-dark tracking-wide cursor-pointer flex-shrink-0"
           onClick={() => handleNavClick('Home')}
         >
           Estore
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex gap-6 xl:gap-8">
+        <nav className="hidden lg:flex gap-8 xl:gap-10">
           {navLinks.map((link) => (
             <button
               key={link.key}
               onClick={() => handleNavClick(link.key)}
-              className={`text-base xl:text-lg font-medium transition-all duration-200 relative ${
+              className={`text-base xl:text-lg font-medium transition-all duration-200 relative px-2 py-1 ${
                 activeLink === link.key
                   ? 'text-estore-dark font-bold'
                   : 'text-estore-dark opacity-80 hover:opacity-100 hover:font-bold'
@@ -175,7 +176,7 @@ const Navbar = () => {
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-4 xl:gap-6">
           {/* Enhanced Search Box */}
-          <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 bg-gradient-to-r from-gray-50 to-gray-100 rounded-full px-4 py-2.5 border border-gray-200 focus-within:border-estore-dark focus-within:ring-2 focus-within:ring-estore-dark/20 transition-all duration-200 min-w-[200px]">
+          <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 bg-gradient-to-r from-gray-50 to-gray-100 rounded-full px-4 py-3 border border-gray-200 focus-within:border-estore-dark focus-within:ring-2 focus-within:ring-estore-dark/20 transition-all duration-200 min-w-[220px]">
             <Search className="w-4 h-4 text-gray-500 cursor-pointer" onClick={handleSearchSubmit} />
             <input
               type="text"
@@ -199,7 +200,7 @@ const Navbar = () => {
           {/* Enhanced Language & Country Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2 bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-full px-3 py-2 hover:shadow-md transition-all duration-200">
+              <button className="flex items-center gap-2 bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-full px-4 py-3 hover:shadow-md transition-all duration-200">
                 <span className="text-sm font-medium text-estore-dark">{selectedLanguage.flag} {selectedLanguage.language}</span>
                 <ChevronDown className="w-4 h-4 text-gray-500" />
               </button>
@@ -222,13 +223,13 @@ const Navbar = () => {
           </DropdownMenu>
 
           {/* Icon Actions */}
-          <div className="flex items-center gap-3">
-            <button className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
+          <div className="flex items-center gap-4">
+            <button className="w-11 h-11 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200">
               <User className="w-5 h-5 text-estore-dark" />
             </button>
             <button 
               onClick={handleWishlistClick}
-              className="w-10 h-10 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 relative"
+              className="w-11 h-11 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 relative"
             >
               <Heart className="w-5 h-5 text-red-600" />
               {wishlistCount > 0 && (
@@ -239,7 +240,7 @@ const Navbar = () => {
             </button>
             <button 
               onClick={handleCartClick}
-              className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 relative"
+              className="w-11 h-11 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center hover:shadow-md transition-all duration-200 relative"
             >
               <ShoppingCart className="w-5 h-5 text-blue-600" />
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-estore-dark text-white text-xs rounded-full flex items-center justify-center">2</span>
@@ -293,7 +294,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-lg">
-          <div className="px-4 py-4 space-y-3">
+          <div className="px-4 py-6 space-y-4">
             {/* Mobile Search Bar */}
             <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 bg-gradient-to-r from-gray-50 to-gray-100 rounded-full px-4 py-3 border border-gray-200">
               <Search className="w-4 h-4 text-gray-500" />
@@ -308,7 +309,7 @@ const Navbar = () => {
             </form>
 
             {/* Mobile Navigation Links */}
-            <div className="space-y-2">
+            <div className="space-y-3">
               {navLinks.map((link) => (
                 <button
                   key={link.key}
@@ -316,7 +317,7 @@ const Navbar = () => {
                     handleNavClick(link.key);
                     setIsMobileMenuOpen(false);
                   }}
-                  className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 ${
+                  className={`w-full text-left px-4 py-4 rounded-xl transition-all duration-200 ${
                     activeLink === link.key
                       ? 'bg-gradient-to-r from-estore-dark to-estore-navy text-white font-bold'
                       : 'text-estore-dark hover:bg-gray-100 font-medium'
@@ -328,14 +329,14 @@ const Navbar = () => {
             </div>
 
             {/* Mobile User Actions */}
-            <div className="flex items-center gap-3 pt-3 border-t border-gray-200">
-              <button className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl py-3">
+            <div className="flex items-center gap-3 pt-4 border-t border-gray-200">
+              <button className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl py-4">
                 <User className="w-5 h-5 text-estore-dark" />
                 <span className="text-sm font-medium text-estore-dark">Profile</span>
               </button>
               <button 
                 onClick={handleWishlistClick}
-                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-br from-red-100 to-red-200 rounded-xl py-3 relative"
+                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-br from-red-100 to-red-200 rounded-xl py-4 relative"
               >
                 <Heart className="w-5 h-5 text-red-600" />
                 <span className="text-sm font-medium text-red-600">Wishlist</span>
