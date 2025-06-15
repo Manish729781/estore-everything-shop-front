@@ -1,7 +1,8 @@
-
 import React from "react";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, PaginationEllipsis } from "@/components/ui/pagination";
 import { Heart } from "lucide-react";
+import { useCart } from '@/hooks/use-cart';
+import { useToast } from '@/hooks/use-toast';
 
 interface Product {
   id: number;
@@ -106,13 +107,14 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   isInWishlist,
   handleProductClick
 }) => {
+  const { addToCart } = useCart();
+  const { toast } = useToast();
+
   return (
     <div className="flex-1">
-      {/* No Results Message */}
       {filteredProducts.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg">{t('products.noProducts')}</p>
-          {/* Optionally show suggestion */}
         </div>
       )}
       {filteredProducts.length > 0 && (
@@ -168,6 +170,26 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                       ))}
                     </div>
                   )}
+                  {/* Add to Cart Button */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart({
+                        id: product.id,
+                        name: product.title,
+                        title: product.title,
+                        price: Number(product.price.replace(/[^\d]/g, "")),
+                        image: product.image,
+                        color: product.colors[0] || "",
+                        oldPrice: product.oldPrice,
+                      });
+                      toast({ title: "Added to Cart", description: `${product.title} has been added to your cart.` });
+                    }}
+                    className="mt-2 w-full bg-estore-dark text-white px-4 py-2 rounded-full font-medium hover:bg-estore-dark/90 transition-colors"
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             ))}

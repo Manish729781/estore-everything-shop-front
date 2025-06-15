@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useCart } from '@/hooks/use-cart';
 import { useToast } from '@/hooks/use-toast';
@@ -10,9 +9,9 @@ interface ProductCardProps {
   oldPrice: string;
   tag: string;
   colors: string[];
-  onViewDescription?: () => void; // new prop for opening description
+  onViewDescription?: () => void;
   onAddToCart?: () => void;
-  rounded?: string; // tailwind rounded classes (optional)
+  rounded?: string;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -92,9 +91,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </button>
           <button
             type="button"
-            onClick={handleBuy}
+            onClick={handleAddToCart}
             className="
-              flex-1 bg-estore-dark text-white px-2 xs:px-4 py-2 xs:py-3 rounded-full text-xs xs:text-sm font-medium border border-white
+              flex-1 bg-estore-dark/80 text-white px-2 xs:px-4 py-2 xs:py-3 rounded-full text-xs xs:text-sm font-medium border border-white
               hover:bg-estore-navy/95 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-estore-dark
             "
           >
@@ -107,4 +106,3 @@ const ProductCard: React.FC<ProductCardProps> = ({
 };
 
 export default ProductCard;
-

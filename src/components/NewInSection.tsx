@@ -2,10 +2,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductCard from './ProductCard';
 import MobileProductCarousel from './MobileProductCarousel';
+import { useCart } from '@/hooks/use-cart';
+import { useToast } from '@/hooks/use-toast';
 
 const NewInSection = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('All');
+  const { addToCart } = useCart();
+  const { toast } = useToast();
   
   const products = [
     {
@@ -143,8 +147,17 @@ const NewInSection = () => {
     navigate(`/product/${productId}`);
   };
 
-  const handleGoToCheckout = () => {
-    navigate('/checkout');
+  const handleAddProductToCart = (product: typeof products[number]) => {
+    addToCart({
+      id: product.id,
+      name: product.title,
+      title: product.title,
+      price: Number(product.price.replace(/[^\d]/g, "")),
+      image: product.image,
+      color: product.colors[0] || "",
+      oldPrice: product.oldPrice,
+    });
+    toast({ title: "Added to Cart", description: `${product.title} has been added to your cart.` });
   };
 
   return (
@@ -218,10 +231,16 @@ const NewInSection = () => {
 
       {/* Mobile Carousel */}
       <div className="sm:hidden bg-gray-50 pt-6 pb-8">
+        {/* The carousel doesn’t handle Add to Cart by product, but could be passed a callback */}
         <MobileProductCarousel
           products={filteredProducts}
           onViewDescription={handleViewDescription}
-          onAddToCart={handleGoToCheckout}
+          onAddToCart={() => {
+            // Add the currently visible product to cart
+            if (filteredProducts.length) {
+              handleAddProductToCart(filteredProducts[0]);
+            }
+          }}
         />
         {/* Show message if no products found */}
         {filteredProducts.length === 0 && (
@@ -257,7 +276,7 @@ const NewInSection = () => {
                 tag={product.tag}
                 colors={product.colors}
                 onViewDescription={() => handleViewDescription(product.id)}
-                onAddToCart={handleGoToCheckout}
+                rounded="rounded-2xl"
               />
             ))}
           </div>
