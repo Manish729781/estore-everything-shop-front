@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Minus, Plus, Heart, Share2, FileText, Star, User } from 'lucide-react';
+import { Minus, Plus, Heart, Share2, FileText, Star, User, Shield, Truck, CreditCard, Award, CheckCircle, Users } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -503,6 +503,119 @@ const ProductDescription = () => {
                   </div>
                   <span className="text-xs text-gray-600 font-medium">{t('product.delivery')}</span>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Trust & Company Credentials Section */}
+        <div className="mt-3 mb-2">
+          <div className="bg-white rounded-xl shadow-md p-4">
+            <div className="text-center mb-4">
+              <h2 className="text-lg font-playfair font-bold text-estore-dark mb-2">Why Choose Us?</h2>
+              <p className="text-sm text-gray-600">Trusted by thousands of customers across India</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              {/* Trust Badge 1 */}
+              <div className="text-center bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-3 border border-blue-200">
+                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="font-semibold text-estore-dark text-sm mb-1">100% Secure</h3>
+                <p className="text-xs text-gray-600">SSL encrypted checkout & secure payment processing</p>
+              </div>
+
+              {/* Trust Badge 2 */}
+              <div className="text-center bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-3 border border-green-200">
+                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Award className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="font-semibold text-estore-dark text-sm mb-1">Quality Assured</h3>
+                <p className="text-xs text-gray-600">Premium quality products with 30-day return guarantee</p>
+              </div>
+
+              {/* Trust Badge 3 */}
+              <div className="text-center bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-3 border border-purple-200">
+                <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="font-semibold text-estore-dark text-sm mb-1">50,000+ Happy Customers</h3>
+                <p className="text-xs text-gray-600">Join thousands of satisfied customers nationwide</p>
+              </div>
+            </div>
+
+            {/* Company Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+              <div className="text-center bg-gray-50 rounded-lg p-3">
+                <div className="text-lg font-bold text-estore-dark">5+ Years</div>
+                <div className="text-xs text-gray-600">In Business</div>
+              </div>
+              <div className="text-center bg-gray-50 rounded-lg p-3">
+                <div className="text-lg font-bold text-estore-dark">50K+</div>
+                <div className="text-xs text-gray-600">Products Sold</div>
+              </div>
+              <div className="text-center bg-gray-50 rounded-lg p-3">
+                <div className="text-lg font-bold text-estore-dark">4.8★</div>
+                <div className="text-xs text-gray-600">Customer Rating</div>
+              </div>
+              <div className="text-center bg-gray-50 rounded-lg p-3">
+                <div className="text-lg font-bold text-estore-dark">24/7</div>
+                <div className="text-xs text-gray-600">Support</div>
+              </div>
+            </div>
+
+            {/* Trust Features */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="flex items-center gap-3 bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-3 border border-green-200">
+                <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-estore-dark text-sm">Authenticity Guaranteed</h4>
+                  <p className="text-xs text-gray-600">100% genuine products with authenticity certificate</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-3 border border-blue-200">
+                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                  <Truck className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-estore-dark text-sm">Fast & Free Delivery</h4>
+                  <p className="text-xs text-gray-600">Free shipping on orders above ₹999, delivered in 2-5 days</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-3 border border-purple-200">
+                <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                  <CreditCard className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-estore-dark text-sm">Secure Payments</h4>
+                  <p className="text-xs text-gray-600">Multiple payment options with bank-level security</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 bg-gradient-to-r from-orange-50 to-orange-100 rounded-lg p-3 border border-orange-200">
+                <div className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center">
+                  <Heart className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-estore-dark text-sm">Customer First</h4>
+                  <p className="text-xs text-gray-600">Dedicated support team for all your queries</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Certification Badges */}
+            <div className="mt-4 pt-3 border-t border-gray-200">
+              <p className="text-xs text-gray-500 text-center mb-2">Certified & Trusted</p>
+              <div className="flex justify-center items-center gap-4 flex-wrap">
+                <div className="bg-gray-100 px-3 py-1 rounded text-xs font-medium text-gray-700">ISO 9001:2015</div>
+                <div className="bg-gray-100 px-3 py-1 rounded text-xs font-medium text-gray-700">GST Registered</div>
+                <div className="bg-gray-100 px-3 py-1 rounded text-xs font-medium text-gray-700">MSME Certified</div>
+                <div className="bg-gray-100 px-3 py-1 rounded text-xs font-medium text-gray-700">BIS Approved</div>
               </div>
             </div>
           </div>
