@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Minus, Plus, Heart, Share2 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
@@ -18,8 +18,8 @@ const ProductDescription = () => {
   const { toast } = useToast();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState('gold');
-  const [selectedSize, setSelectedSize] = useState('8');
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedSize, setSelectedSize] = useState('');
 
   // Product data array (this would typically come from an API or context)
   const allProducts = [
@@ -133,14 +133,29 @@ const ProductDescription = () => {
   const currentProduct = allProducts.find(product => product.id === parseInt(id || '1')) || allProducts[0];
 
   // Initialize color and size based on current product
-  useState(() => {
+  useEffect(() => {
+    console.log('Product loaded:', currentProduct.id, currentProduct.title);
+    
+    // Set initial color
     if (currentProduct.colors.length > 0) {
       setSelectedColor(currentProduct.colors[0].name);
+      console.log('Initial color set to:', currentProduct.colors[0].name);
+    } else {
+      setSelectedColor('');
     }
+    
+    // Set initial size
     if (currentProduct.sizes.length > 0) {
       setSelectedSize(currentProduct.sizes[0]);
+      console.log('Initial size set to:', currentProduct.sizes[0]);
+    } else {
+      setSelectedSize('');
     }
-  });
+    
+    // Reset other states when product changes
+    setSelectedImage(0);
+    setQuantity(1);
+  }, [currentProduct.id]);
 
   // Check if product is in wishlist
   const isProductInWishlist = isInWishlist(currentProduct.id.toString());
@@ -183,6 +198,7 @@ const ProductDescription = () => {
   };
 
   const handleBuyNow = () => {
+    console.log('Buy Now clicked with data:', productData);
     // Navigate to address page with product data
     navigate('/address', { 
       state: { 
@@ -193,6 +209,7 @@ const ProductDescription = () => {
   };
 
   const handleAddToCart = () => {
+    console.log('Add to Cart clicked with data:', productData);
     // For now, navigate to address page with product data
     // In a real app, you'd add to cart state/context
     navigate('/address', { 
@@ -306,6 +323,7 @@ const ProductDescription = () => {
                     />
                   ))}
                 </div>
+                <p className="text-sm text-gray-600 mt-2">Selected: {selectedColor}</p>
               </div>
             )}
 
@@ -327,6 +345,7 @@ const ProductDescription = () => {
                   </button>
                 ))}
               </div>
+              <p className="text-sm text-gray-600 mt-2">Selected: {selectedSize}</p>
             </div>
 
             {/* Quantity */}
