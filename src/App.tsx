@@ -14,6 +14,7 @@ import Cart from "./pages/Cart";
 import Address from "./pages/Address";
 import Payment from "./pages/Payment";
 import Checkout from "./pages/Checkout";
+import RequestReturnLabel from "./pages/RequestReturnLabel";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/address" element={<Address />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/request-return-label" element={<RequestReturnLabel />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

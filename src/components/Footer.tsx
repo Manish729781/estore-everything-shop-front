@@ -5,7 +5,7 @@ const Footer = () => {
   const quickLinks = [
     { name: 'Shop All', href: '/products' },
     { name: 'Manage Subscription', href: '#' },
-    { name: 'Request Return Label', href: '#' },
+    { name: 'Request Return Label', href: '/request-return-label' },
     { name: 'Affiliate Program', href: '#' },
   ];
 
