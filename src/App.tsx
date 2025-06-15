@@ -17,6 +17,7 @@ import Checkout from "./pages/Checkout";
 import RequestReturnLabel from "./pages/RequestReturnLabel";
 import AffiliateProgram from "./pages/AffiliateProgram";
 import Wholesale from "./pages/Wholesale";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
