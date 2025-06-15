@@ -1,4 +1,3 @@
-
 import { ArrowRight } from 'lucide-react';
 
 const HeroSection = () => {
@@ -37,6 +36,31 @@ const HeroSection = () => {
 
   return (
     <div className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-amber-100 text-white overflow-hidden">
+      {/* Corner Color Overlays */}
+      {/* Top Left Corner */}
+      <div 
+        className="absolute top-0 left-0 w-64 h-64 rounded-br-full opacity-60"
+        style={{ backgroundColor: '#F5F1E8' }}
+      ></div>
+      
+      {/* Top Right Corner */}
+      <div 
+        className="absolute top-0 right-0 w-64 h-64 rounded-bl-full opacity-60"
+        style={{ backgroundColor: '#F5F1E8' }}
+      ></div>
+      
+      {/* Bottom Left Corner */}
+      <div 
+        className="absolute bottom-0 left-0 w-80 h-40 rounded-tr-full opacity-50"
+        style={{ backgroundColor: '#F5F1E8' }}
+      ></div>
+      
+      {/* Bottom Right Corner */}
+      <div 
+        className="absolute bottom-0 right-0 w-80 h-40 rounded-tl-full opacity-50"
+        style={{ backgroundColor: '#F5F1E8' }}
+      ></div>
+
       <div className="relative z-10 max-w-7xl mx-auto px-8 py-12">
         {/* Hero Content - Horizontal Layout */}
         <div className="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-8">
