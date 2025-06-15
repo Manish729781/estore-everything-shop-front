@@ -11,7 +11,7 @@ const Footer = () => {
 
   const secondColumn = [
     { name: 'Wholesale', href: '/wholesale' },
-    { name: 'Contact Us', href: '#' },
+    { name: 'Contact Us', href: '/contact' },
     { name: 'Terms & Conditions', href: '#' },
     { name: 'Privacy Policy', href: '#' },
     { name: 'Learn More', href: '#' },
