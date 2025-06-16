@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, LogOut, Image, User, Phone } from "lucide-react";
@@ -141,23 +140,27 @@ const ProfilePage = () => {
           {/* Profile box */}
           <div className="backdrop-blur-xl rounded-lg p-6 flex flex-col gap-5 items-center">
             <div className="relative">
-              <Avatar className="w-24 h-24 border-2 border-[#f6e7d8] shadow">
+              <Avatar className="w-32 h-32 border-2 border-[#f6e7d8] shadow-lg">
                 {avatarPreview ? (
-                  <AvatarImage src={avatarPreview} alt={profile.full_name || "Avatar"} />
+                  <AvatarImage 
+                    src={avatarPreview} 
+                    alt={profile.full_name || "Avatar"} 
+                    className="object-cover w-full h-full"
+                  />
                 ) : (
-                  <AvatarFallback>
-                    <User className="w-12 h-12 text-[#bb5b24]/60" />
+                  <AvatarFallback className="bg-gradient-to-br from-[#f6e7d8] to-[#fdeee8]">
+                    <User className="w-16 h-16 text-[#bb5b24]/60" />
                   </AvatarFallback>
                 )}
               </Avatar>
               <Button
                 type="button"
                 size="icon"
-                className="absolute -bottom-2 -right-2 bg-[#fdeee8]/80 border border-[#bb5b24] p-1"
+                className="absolute -bottom-2 -right-2 bg-[#fdeee8]/90 hover:bg-[#fdeee8] border border-[#bb5b24] p-2 rounded-full shadow-md"
                 onClick={() => avatarInputRef.current?.click()}
                 title="Change profile picture"
               >
-                <Image className="w-5 h-5 text-[#bb5b24]/70" />
+                <Image className="w-4 h-4 text-[#bb5b24]" />
               </Button>
               <input
                 type="file"
