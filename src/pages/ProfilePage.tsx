@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, LogOut, Image, User, Phone, Home, ShoppingBag, Heart } from "lucide-react";
@@ -5,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { toast } from "@/components/ui/sonner";
 
 type ProfileData = {
   full_name: string | null;
@@ -21,43 +23,69 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
-  // We'll still use this for local preview, but not persist to DB
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
+  // Check authentication and redirect if not logged in
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         navigate("/auth");
-      }
-    });
-  }, [navigate]);
-
-  useEffect(() => {
-    async function fetchProfile() {
-      setLoading(true);
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        setLoading(false);
         return;
       }
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("full_name, email, mobile_number")
-        .eq("id", user.id)
-        .maybeSingle();
+    };
+    checkAuth();
 
-      if (!error && data) {
-        setProfile({
-          full_name: data.full_name ?? "",
-          email: data.email ?? "",
-          mobile_number: data.mobile_number ?? "",
-        });
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (!session) {
+          navigate("/auth");
+        }
       }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  // Fetch profile data function
+  const fetchProfile = async () => {
+    console.log("Fetching profile data...");
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
       setLoading(false);
+      return;
     }
-    fetchProfile();
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("full_name, email, mobile_number")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error fetching profile:", error);
+      toast.error("Failed to load profile data");
+    } else if (data) {
+      console.log("Profile data loaded:", data);
+      setProfile({
+        full_name: data.full_name ?? "",
+        email: data.email ?? "",
+        mobile_number: data.mobile_number ?? "",
+      });
+    }
+  };
+
+  // Initial profile fetch
+  useEffect(() => {
+    const loadProfile = async () => {
+      setLoading(true);
+      await fetchProfile();
+      setLoading(false);
+    };
+    loadProfile();
   }, []);
 
   const handleLogout = async () => {
@@ -80,6 +108,8 @@ const ProfilePage = () => {
       setSaving(false);
       return;
     }
+
+    console.log("Saving profile data...");
     const { error } = await supabase
       .from("profiles")
       .update({
@@ -88,8 +118,17 @@ const ProfilePage = () => {
       })
       .eq("id", user.id);
 
+    if (error) {
+      console.error("Error saving profile:", error);
+      toast.error("Failed to save profile changes");
+    } else {
+      console.log("Profile saved successfully");
+      toast.success("Profile updated successfully!");
+      // Auto-refresh profile data after saving
+      await fetchProfile();
+    }
+
     setSaving(false);
-    // Optionally, show a toast
   };
 
   // Local avatar preview only (no DB persistence)
