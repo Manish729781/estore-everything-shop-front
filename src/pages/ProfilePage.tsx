@@ -116,11 +116,10 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#181c2b] via-[#f6e7d8] to-[#fdeee8] py-0 m-0">
       {/* Banner */}
-      <div className="w-full bg-[#fdeee8]/80 backdrop-blur-sm pb-6 md:pb-10 pt-7 px-4 md:px-16 border-b border-white/30 shadow-sm">
+      <div className="w-full pb-6 md:pb-10 pt-7 px-4 md:px-16">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between max-w-4xl mx-auto">
           <h1
             className="text-[2.3rem] md:text-5xl font-playfair mb-3 font-bold text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
-            // Removed text-transparent and gradient backgrounds for clarity
           >
             My Account
           </h1>
@@ -140,7 +139,7 @@ const ProfilePage = () => {
         {/* Left column: Profile Info */}
         <div className="w-full md:w-1/2 mb-10 md:mb-0 flex flex-col gap-8">
           {/* Profile box */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-lg shadow-md p-6 flex flex-col gap-5 items-center border border-white/30">
+          <div className="backdrop-blur-xl rounded-lg p-6 flex flex-col gap-5 items-center">
             <div className="relative">
               <Avatar className="w-24 h-24 border-2 border-[#f6e7d8] shadow">
                 {avatarPreview ? (
@@ -174,13 +173,13 @@ const ProfilePage = () => {
               autoComplete="off"
             >
               <div>
-                <label className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#884715] via-[#f6e7d8] to-[#23243a]">
+                <label className="text-sm font-medium text-[#23243a]">
                   Full Name
                 </label>
                 <Input
                   name="full_name"
                   type="text"
-                  className="mt-1 text-[#23243a]/90 bg-white/50 backdrop-blur px-3"
+                  className="mt-1 text-[#23243a]/90 bg-white/30 backdrop-blur px-3 border-white/40"
                   placeholder="Your name"
                   value={profile.full_name ?? ""}
                   onChange={handleChange}
@@ -188,13 +187,13 @@ const ProfilePage = () => {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#bb5b24] via-[#884715] to-[#23243a]">
+                <label className="text-sm font-medium text-[#23243a]">
                   Mobile Number
                 </label>
                 <Input
                   name="mobile_number"
                   type="text"
-                  className="mt-1 text-[#23243a]/90 bg-white/50 backdrop-blur px-3"
+                  className="mt-1 text-[#23243a]/90 bg-white/30 backdrop-blur px-3 border-white/40"
                   placeholder="Your mobile number"
                   value={profile.mobile_number ?? ""}
                   onChange={handleChange}
@@ -217,8 +216,8 @@ const ProfilePage = () => {
         {/* Right column: Order/Account */}
         <div className="w-full md:w-1/2 flex flex-col gap-8">
           {/* Order history */}
-          <div className="bg-white/60 backdrop-blur-xl rounded-lg shadow p-6 border border-white/30">
-            <h2 className="font-playfair text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#bb5b24] via-[#23243a] to-[#884715] mb-4">
+          <div className="backdrop-blur-xl rounded-lg p-6">
+            <h2 className="font-playfair text-2xl text-[#23243a] mb-4">
               Order history
             </h2>
             <div className="text-lg text-[#23243a]/60">
@@ -226,8 +225,8 @@ const ProfilePage = () => {
             </div>
           </div>
           {/* Account details/address */}
-          <div className="bg-white/60 backdrop-blur-xl rounded-lg shadow p-6 border border-white/30">
-            <h2 className="font-playfair text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#884715] via-[#f6e7d8] to-[#23243a] mb-4">
+          <div className="backdrop-blur-xl rounded-lg p-6">
+            <h2 className="font-playfair text-2xl text-[#23243a] mb-4">
               Account details
             </h2>
             <div className="text-base mb-1 text-[#23243a]/60">Default address</div>
@@ -249,4 +248,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
