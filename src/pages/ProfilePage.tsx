@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, LogOut, Image, User, Phone } from "lucide-react";
+import { Loader2, LogOut, Image, User, Phone, Home, ShoppingBag, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -122,17 +122,58 @@ const ProfilePage = () => {
           >
             My Account
           </h1>
+          <div className="flex gap-3 items-center mb-2">
+            <Button
+              variant="outline"
+              className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 flex gap-2 items-center"
+              onClick={() => navigate("/")}
+            >
+              <Home className="w-4 h-4" />
+              Home
+            </Button>
+            <Button
+              variant="link"
+              className="pl-0 underline text-[#884715] text-base font-medium flex gap-1 items-center"
+              onClick={handleLogout}
+              disabled={logoutLoading}
+            >
+              <LogOut className="w-5 h-5 mr-1" />
+              {logoutLoading ? "Logging out..." : "Log out"}
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation Section */}
+      <div className="max-w-4xl mx-auto w-full px-4 mb-8">
+        <div className="flex flex-wrap gap-4 justify-center md:justify-start">
           <Button
-            variant="link"
-            className="pl-0 underline text-[#884715] text-base font-medium flex gap-1 items-center mb-2"
-            onClick={handleLogout}
-            disabled={logoutLoading}
+            variant="outline"
+            className="bg-white/70 backdrop-blur-sm border-[#bb5b24]/30 text-[#bb5b24] hover:bg-white/90 flex gap-2 items-center"
+            onClick={() => navigate("/products")}
           >
-            <LogOut className="w-5 h-5 mr-1" />
-            {logoutLoading ? "Logging out..." : "Log out"}
+            <ShoppingBag className="w-4 h-4" />
+            Shop Products
+          </Button>
+          <Button
+            variant="outline"
+            className="bg-white/70 backdrop-blur-sm border-[#bb5b24]/30 text-[#bb5b24] hover:bg-white/90 flex gap-2 items-center"
+            onClick={() => navigate("/wishlist")}
+          >
+            <Heart className="w-4 h-4" />
+            Wishlist
+          </Button>
+          <Button
+            variant="outline"
+            className="bg-white/70 backdrop-blur-sm border-[#bb5b24]/30 text-[#bb5b24] hover:bg-white/90 flex gap-2 items-center"
+            onClick={() => navigate("/cart")}
+          >
+            <ShoppingBag className="w-4 h-4" />
+            Cart
           </Button>
         </div>
       </div>
+
       {/* Main content */}
       <div className="max-w-4xl mx-auto w-full px-4 py-10 md:py-14 flex flex-col md:flex-row md:gap-12 gap-8">
         {/* Left column: Profile Info */}
