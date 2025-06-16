@@ -163,11 +163,11 @@ const ProfilePage = () => {
           </h1>
           <div className="flex gap-3 items-center mb-2">
             <Button
-              variant="outline"
-              className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 flex gap-2 items-center"
+              variant="link"
+              className="pl-0 underline text-[#884715] text-base font-medium flex gap-1 items-center"
               onClick={() => navigate("/")}
             >
-              <Home className="w-4 h-4" />
+              <Home className="w-5 h-5 mr-1" />
               Home
             </Button>
             <Button
