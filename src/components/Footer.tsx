@@ -1,7 +1,14 @@
 
 import { Facebook, Linkedin, Twitter, Instagram } from 'lucide-react';
+import { useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+
   const quickLinks = [
     { name: 'Shop All', href: '/products' },
     { name: 'Manage Subscription', href: '#' },
@@ -20,6 +27,76 @@ const Footer = () => {
     { name: 'FAQs & Support', href: '/faqs-support' },
   ];
 
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // First check if email already exists
+      const { data: existingSubscription } = await supabase
+        .from('newsletter_subscriptions')
+        .select('email, is_active')
+        .eq('email', email)
+        .single();
+
+      if (existingSubscription) {
+        if (existingSubscription.is_active) {
+          toast({
+            title: "Already Subscribed",
+            description: "This email is already subscribed to our newsletter.",
+            variant: "destructive",
+          });
+        } else {
+          // Reactivate subscription
+          const { error } = await supabase
+            .from('newsletter_subscriptions')
+            .update({ is_active: true })
+            .eq('email', email);
+
+          if (error) throw error;
+
+          toast({
+            title: "Welcome Back!",
+            description: "Your newsletter subscription has been reactivated.",
+          });
+        }
+      } else {
+        // Create new subscription
+        const { error } = await supabase
+          .from('newsletter_subscriptions')
+          .insert([{ email }]);
+
+        if (error) throw error;
+
+        toast({
+          title: "Successfully Subscribed!",
+          description: "Thank you for subscribing to our newsletter.",
+        });
+      }
+
+      setEmail('');
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      toast({
+        title: "Subscription Failed",
+        description: "There was an error subscribing to the newsletter. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <footer className="bg-gray-200 rounded-b-3xl">
       <div className="max-w-7xl mx-auto px-8 py-12">
@@ -29,18 +106,22 @@ const Footer = () => {
             <h3 className="text-2xl font-playfair font-bold text-estore-dark mb-5">
               Newsletter
             </h3>
-            <form className="flex gap-2 mb-3">
+            <form onSubmit={handleNewsletterSubmit} className="flex gap-2 mb-3">
               <input
                 type="email"
                 placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
-                className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 text-base outline-none focus:border-estore-dark"
+                disabled={isSubmitting}
+                className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 text-base outline-none focus:border-estore-dark disabled:opacity-50"
               />
               <button
                 type="submit"
-                className="bg-gray-200 text-estore-dark rounded-2xl px-6 py-3 text-base font-medium hover:bg-estore-dark hover:text-white transition-colors duration-200"
+                disabled={isSubmitting}
+                className="bg-gray-200 text-estore-dark rounded-2xl px-6 py-3 text-base font-medium hover:bg-estore-dark hover:text-white transition-colors duration-200 disabled:opacity-50"
               >
-                Subscribe
+                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
               </button>
             </form>
             <p className="text-estore-dark text-base leading-relaxed">
