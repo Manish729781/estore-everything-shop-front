@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,9 +19,19 @@ const AuthPage = () => {
 
   const [loading, setLoading] = useState(false);
 
-  // Helper to get the user's mobile number from metadata (if signed up previously)
+  // Check if user is already logged in and redirect
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        window.location.href = "/";
+      }
+    };
+    checkUser();
+  }, []);
+
+  // Helper to get the user's mobile number from metadata
   async function getMobileNumberForUser(user_id: string): Promise<string | null> {
-    // Use Supabase auth.user() to get user with metadata
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error || !user) return null;
     const mobile =
@@ -33,67 +43,104 @@ const AuthPage = () => {
     return mobile ? String(mobile) : null;
   }
 
+  // Function to ensure profile exists for existing users
+  const ensureProfileExists = async (user: any) => {
+    console.log("Ensuring profile exists for user:", user.id);
+    
+    // Check if profile already exists
+    const { data: existingProfile } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (!existingProfile) {
+      console.log("Creating missing profile for existing user");
+      // Create profile if it doesn't exist
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .insert({
+          id: user.id,
+          full_name: user.user_metadata?.full_name || user.user_metadata?.name || "",
+          email: user.email,
+          mobile_number: user.user_metadata?.mobile_number || ""
+        });
+
+      if (profileError) {
+        console.error("Error creating profile:", profileError);
+      } else {
+        console.log("Profile created successfully");
+      }
+    }
+  };
+
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    
     const { data, error } = await supabase.auth.signInWithPassword({
       email: signInEmail,
       password: signInPassword,
     });
-    setLoading(false);
-
+    
     if (error) {
+      setLoading(false);
       toast.error(error.message || "Error signing in");
       return;
     }
 
-    // Save login history on successful login
-    const user_id = data?.user?.id;
-    let mobile_number = null;
-    if (user_id) {
-      mobile_number = await getMobileNumberForUser(user_id);
+    if (data.user) {
+      // Ensure profile exists for this user
+      await ensureProfileExists(data.user);
+
+      // Save login history
+      const mobile_number = await getMobileNumberForUser(data.user.id);
       await supabase.from("login_history").insert({
-        user_id,
+        user_id: data.user.id,
         email: signInEmail,
         mobile_number,
       });
     }
 
-    toast.success("Signed in!");
+    setLoading(false);
+    toast.success("Signed in successfully!");
     window.location.href = "/";
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    
+    const { data, error } = await supabase.auth.signUp({
       email: signUpEmail,
       password: signUpPassword,
       options: {
-        data: { full_name: signUpName, mobile_number: signUpMobile },
+        data: { 
+          full_name: signUpName, 
+          mobile_number: signUpMobile 
+        },
         emailRedirectTo: `${window.location.origin}/`,
       },
     });
+    
     setLoading(false);
 
     if (error) {
       toast.error(error.message || "Error signing up");
     } else {
+      console.log("User signed up:", data.user);
       toast.success("Account created! Please check your email to confirm.");
       setTab("sign-in");
     }
   };
 
-  // Removed Google sign-in button and icon - "Google" icon does not exist in lucide-react
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-slate-900 via-slate-800 to-amber-100">
       <div className="w-full max-w-md p-8 mt-8 rounded-lg shadow-xl bg-white/5">
         <div className="flex flex-col gap-4 mb-4">
-          {/* Removed Google sign-in button due to missing icon */}
           <div className="flex items-center gap-2 my-2">
             <hr className="flex-1 border-slate-400" />
-            <span className="text-xs text-slate-200">or</span>
+            <span className="text-xs text-slate-200">Welcome</span>
             <hr className="flex-1 border-slate-400" />
           </div>
         </div>

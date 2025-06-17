@@ -50,6 +50,29 @@ const ProfilePage = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  // Function to create profile if it doesn't exist
+  const createProfileIfMissing = async (user: any) => {
+    console.log("Creating missing profile for user:", user.id);
+    const { error } = await supabase
+      .from("profiles")
+      .insert({
+        id: user.id,
+        full_name: user.user_metadata?.full_name || user.user_metadata?.name || "",
+        email: user.email,
+        mobile_number: user.user_metadata?.mobile_number || ""
+      });
+
+    if (error) {
+      console.error("Error creating profile:", error);
+      toast.error("Failed to create profile");
+      return false;
+    } else {
+      console.log("Profile created successfully");
+      toast.success("Profile created successfully!");
+      return true;
+    }
+  };
+
   // Fetch profile data function
   const fetchProfile = async () => {
     console.log("Fetching profile data...");
@@ -75,6 +98,14 @@ const ProfilePage = () => {
         email: data.email ?? "",
         mobile_number: data.mobile_number ?? "",
       });
+    } else {
+      // Profile doesn't exist, create it
+      console.log("No profile found, creating one...");
+      const created = await createProfileIfMissing(user);
+      if (created) {
+        // Fetch the newly created profile
+        await fetchProfile();
+      }
     }
   };
 
