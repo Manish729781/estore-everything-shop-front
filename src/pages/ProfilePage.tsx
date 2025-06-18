@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "@/components/ui/use-toast";
 
 type ProfileData = {
   full_name: string | null;
@@ -68,11 +68,18 @@ const ProfilePage = () => {
 
     if (error) {
       console.error("Error creating profile:", error);
-      toast.error("Failed to create profile");
+      toast({
+        title: "Error",
+        description: "Failed to create profile",
+        variant: "destructive",
+      });
       return false;
     } else {
       console.log("Profile created successfully");
-      toast.success("Profile created successfully!");
+      toast({
+        title: "Success",
+        description: "Profile created successfully!",
+      });
       return true;
     }
   };
@@ -94,7 +101,11 @@ const ProfilePage = () => {
 
     if (error) {
       console.error("Error fetching profile:", error);
-      toast.error("Failed to load profile data");
+      toast({
+        title: "Error",
+        description: "Failed to load profile data",
+        variant: "destructive",
+      });
     } else if (data) {
       console.log("Profile data loaded:", data);
       setProfile({
@@ -146,7 +157,7 @@ const ProfilePage = () => {
 
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}-${Math.random()}.${fileExt}`;
-      const filePath = `avatars/${fileName}`;
+      const filePath = `${user.id}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
@@ -154,7 +165,11 @@ const ProfilePage = () => {
 
       if (uploadError) {
         console.error('Error uploading avatar:', uploadError);
-        toast.error('Failed to upload profile picture');
+        toast({
+          title: "Error",
+          description: "Failed to upload profile picture",
+          variant: "destructive",
+        });
         return null;
       }
 
@@ -165,7 +180,11 @@ const ProfilePage = () => {
       return publicUrl;
     } catch (error) {
       console.error('Error in uploadAvatar:', error);
-      toast.error('Failed to upload profile picture');
+      toast({
+        title: "Error",
+        description: "Failed to upload profile picture",
+        variant: "destructive",
+      });
       return null;
     } finally {
       setUploadingAvatar(false);
@@ -207,10 +226,17 @@ const ProfilePage = () => {
 
       if (error) {
         console.error("Error saving profile:", error);
-        toast.error("Failed to save profile changes");
+        toast({
+          title: "Error",
+          description: "Failed to save profile changes",
+          variant: "destructive",
+        });
       } else {
         console.log("Profile saved successfully");
-        toast.success("Profile updated successfully!");
+        toast({
+          title: "Success",
+          description: "Profile updated successfully!",
+        });
         // Refresh profile data after saving
         await fetchProfile();
         // Clear the file input
@@ -220,7 +246,11 @@ const ProfilePage = () => {
       }
     } catch (error) {
       console.error("Error in handleSave:", error);
-      toast.error("Failed to save profile changes");
+      toast({
+        title: "Error",
+        description: "Failed to save profile changes",
+        variant: "destructive",
+      });
     }
 
     setSaving(false);
@@ -232,13 +262,21 @@ const ProfilePage = () => {
     if (file) {
       // Validate file type
       if (!file.type.startsWith('image/')) {
-        toast.error('Please select an image file');
+        toast({
+          title: "Error",
+          description: "Please select an image file",
+          variant: "destructive",
+        });
         return;
       }
       
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        toast.error('Image size should be less than 5MB');
+        toast({
+          title: "Error",
+          description: "Image size should be less than 5MB",
+          variant: "destructive",
+        });
         return;
       }
 
