@@ -67,25 +67,25 @@ const Blog = () => {
     <div className="min-h-screen">
       <Navbar />
       
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-estore-dark to-estore-navy text-white py-20">
-        <div className="max-w-6xl mx-auto px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-playfair font-bold mb-6">
+      {/* Hero Section - Mobile Responsive */}
+      <section className="bg-gradient-to-r from-estore-dark to-estore-navy text-white py-12 sm:py-16 lg:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-playfair font-bold mb-4 sm:mb-6">
             Our Blog
           </h1>
-          <p className="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl opacity-90 max-w-3xl mx-auto px-4">
             Discover the latest trends, tips, and inspiration for fashion and lifestyle
           </p>
         </div>
       </section>
 
-      {/* Blog Categories */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-8">
-          <h2 className="text-3xl font-playfair font-bold text-center mb-12 text-estore-dark">
+      {/* Blog Categories - Mobile Grid */}
+      <section className="py-12 sm:py-16 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl font-playfair font-bold text-center mb-8 sm:mb-12 text-estore-dark">
             Browse by Category
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {blogCategories.map((category) => (
               <Link
                 key={category.id}
@@ -95,13 +95,13 @@ const Blog = () => {
                 <img
                   src={category.image}
                   alt={category.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="p-6">
-                  <h3 className="font-semibold text-xl text-estore-dark mb-2">
+                <div className="p-4 sm:p-6">
+                  <h3 className="font-semibold text-lg sm:text-xl text-estore-dark mb-2">
                     {category.title}
                   </h3>
-                  <p className="text-gray-600 mb-3">{category.description}</p>
+                  <p className="text-gray-600 mb-3 text-sm sm:text-base">{category.description}</p>
                   <span className="text-sm text-estore-dark font-medium">
                     {category.posts} posts
                   </span>
@@ -112,13 +112,13 @@ const Blog = () => {
         </div>
       </section>
 
-      {/* Featured Posts */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-8">
-          <h2 className="text-3xl font-playfair font-bold text-center mb-12 text-estore-dark">
+      {/* Featured Posts - Mobile Grid */}
+      <section className="py-12 sm:py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl font-playfair font-bold text-center mb-8 sm:mb-12 text-estore-dark">
             Featured Posts
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {featuredPosts.map((post) => (
               <Link
                 key={post.id}
@@ -128,16 +128,16 @@ const Blog = () => {
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   <span className="text-sm text-estore-dark font-medium capitalize">
                     {post.category}
                   </span>
-                  <h3 className="font-semibold text-lg text-estore-dark mb-2 mt-1">
+                  <h3 className="font-semibold text-base sm:text-lg text-estore-dark mb-2 mt-1">
                     {post.title}
                   </h3>
-                  <p className="text-gray-600 mb-3">{post.excerpt}</p>
+                  <p className="text-gray-600 mb-3 text-sm sm:text-base">{post.excerpt}</p>
                   <span className="text-sm text-gray-500">{post.date}</span>
                 </div>
               </Link>

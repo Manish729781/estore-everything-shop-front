@@ -84,26 +84,26 @@ const BlogCategory = () => {
     <div className="min-h-screen">
       <Navbar />
       
-      {/* Category Header */}
-      <section className="bg-gradient-to-r from-estore-dark to-estore-navy text-white py-16">
-        <div className="max-w-6xl mx-auto px-8">
-          <Link to="/blog" className="text-white/80 hover:text-white mb-4 inline-block">
+      {/* Category Header - Mobile Responsive */}
+      <section className="bg-gradient-to-r from-estore-dark to-estore-navy text-white py-12 sm:py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Link to="/blog" className="text-white/80 hover:text-white mb-4 inline-block text-sm sm:text-base">
             ← Back to Blog
           </Link>
-          <h1 className="text-4xl md:text-5xl font-playfair font-bold mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-playfair font-bold mb-4">
             {currentCategory.title}
           </h1>
-          <p className="text-xl opacity-90">
+          <p className="text-lg sm:text-xl opacity-90">
             {currentCategory.description}
           </p>
         </div>
       </section>
 
-      {/* Posts Grid */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-8">
+      {/* Posts Grid - Mobile Responsive */}
+      <section className="py-12 sm:py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {currentCategory.posts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {currentCategory.posts.map((post) => (
                 <Link
                   key={post.id}
@@ -113,13 +113,13 @@ const BlogCategory = () => {
                   <img
                     src={post.image}
                     alt={post.title}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="p-6">
-                    <h3 className="font-semibold text-lg text-estore-dark mb-2">
+                  <div className="p-4 sm:p-6">
+                    <h3 className="font-semibold text-base sm:text-lg text-estore-dark mb-2">
                       {post.title}
                     </h3>
-                    <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                    <p className="text-gray-600 mb-4 text-sm sm:text-base">{post.excerpt}</p>
                     <div className="flex justify-between items-center text-sm text-gray-500">
                       <span>{post.date}</span>
                       <span>{post.readTime}</span>
@@ -129,8 +129,8 @@ const BlogCategory = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-semibold text-gray-600 mb-4">
+            <div className="text-center py-12 sm:py-16">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-600 mb-4">
                 No posts found in this category
               </h2>
               <Link

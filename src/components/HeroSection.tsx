@@ -48,45 +48,45 @@ const HeroSection = () => {
         className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-amber-200/30 to-transparent"
       ></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-8 py-12">
-        {/* Hero Content - Horizontal Layout */}
-        <div className="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-8">
-          <div className="flex-1">
-            <h1 className="text-5xl md:text-6xl font-playfair font-bold mb-4 leading-tight tracking-wide text-white drop-shadow-lg">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Hero Content - Mobile First Design */}
+        <div className="mb-6 sm:mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+          <div className="flex-1 text-center lg:text-left">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-playfair font-bold mb-4 leading-tight tracking-wide text-white drop-shadow-lg">
               Your One-Stop Shop for Everything.
             </h1>
           </div>
-          <div className="flex-1 lg:max-w-md">
-            <p className="text-xl text-white/90 mb-8 leading-relaxed">
+          <div className="flex-1 lg:max-w-md text-center lg:text-left">
+            <p className="text-lg sm:text-xl text-white/90 mb-6 sm:mb-8 leading-relaxed px-4 lg:px-0">
               Find everything you need in one place—great deals, top quality, and
               ultimate convenience. Shop anytime, anywhere, hassle-free!
             </p>
-            <button className="inline-flex items-center bg-estore-light-gray text-estore-dark rounded-full px-7 py-3 text-lg font-medium hover:bg-estore-medium-gray transition-colors duration-200 shadow-lg">
+            <button className="inline-flex items-center bg-estore-light-gray text-estore-dark rounded-full px-6 sm:px-7 py-2.5 sm:py-3 text-base sm:text-lg font-medium hover:bg-estore-medium-gray transition-colors duration-200 shadow-lg">
               Try product
-              <ArrowRight className="ml-3 w-5 h-5" />
+              <ArrowRight className="ml-2 sm:ml-3 w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
 
-        {/* Product Carousel */}
-        <div className="flex gap-6 overflow-x-auto pb-8 carousel-scroll">
+        {/* Product Carousel - Mobile Optimized */}
+        <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-6 sm:pb-8 carousel-scroll">
           {products.map((product) => (
             <div
               key={product.id}
-              className="relative min-w-[200px] max-w-[220px] h-56 flex-shrink-0 rounded-t-[45%] rounded-b-lg overflow-hidden shadow-lg"
+              className="relative min-w-[160px] sm:min-w-[200px] max-w-[180px] sm:max-w-[220px] h-48 sm:h-56 flex-shrink-0 rounded-t-[35%] sm:rounded-t-[45%] rounded-b-lg overflow-hidden shadow-lg"
               style={{
                 backgroundImage: `url(${product.image})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
             >
-              <div className="absolute inset-0 bg-black bg-opacity-20 rounded-t-[45%] rounded-b-lg"></div>
-              <div className="absolute bottom-4 left-4 right-4">
-                <div className="bg-white bg-opacity-70 backdrop-blur-sm rounded-lg p-3">
-                  <div className="text-estore-dark font-semibold text-left">
+              <div className="absolute inset-0 bg-black bg-opacity-20 rounded-t-[35%] sm:rounded-t-[45%] rounded-b-lg"></div>
+              <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4">
+                <div className="bg-white bg-opacity-70 backdrop-blur-sm rounded-lg p-2 sm:p-3">
+                  <div className="text-estore-dark font-semibold text-left text-xs sm:text-sm">
                     {product.title}
                   </div>
-                  <div className="text-estore-dark text-sm text-left mt-1">
+                  <div className="text-estore-dark text-xs text-left mt-1">
                     {product.description}
                   </div>
                 </div>
@@ -100,4 +100,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-

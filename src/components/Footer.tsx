@@ -101,16 +101,16 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gray-50 py-16">
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-12">
+    <footer className="bg-gray-50 py-12 sm:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12 mb-8 sm:mb-12">
           {/* Newsletter Section */}
-          <div className="lg:col-span-1">
-            <h3 className="text-2xl font-playfair font-bold text-estore-dark mb-6">
+          <div className="sm:col-span-2 lg:col-span-1">
+            <h3 className="text-xl sm:text-2xl font-playfair font-bold text-estore-dark mb-4 sm:mb-6">
               Newsletter
             </h3>
-            <form onSubmit={handleNewsletterSubmit} className="mb-6">
-              <div className="flex gap-2 mb-4">
+            <form onSubmit={handleNewsletterSubmit} className="mb-4 sm:mb-6">
+              <div className="flex flex-col sm:flex-row gap-2 mb-4">
                 <input
                   type="email"
                   placeholder="Email address"
@@ -123,7 +123,7 @@ const Footer = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-estore-dark text-white rounded-lg px-6 py-3 text-sm font-medium hover:bg-estore-navy transition-colors duration-200 disabled:opacity-50"
+                  className="bg-estore-dark text-white rounded-lg px-6 py-3 text-sm font-medium hover:bg-estore-navy transition-colors duration-200 disabled:opacity-50 whitespace-nowrap"
                 >
                   {isSubmitting ? 'Subscribing...' : 'Subscribe'}
                 </button>
@@ -135,11 +135,11 @@ const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          <div className="lg:col-span-1">
-            <h4 className="font-semibold text-estore-dark mb-6 text-lg">
+          <div>
+            <h4 className="font-semibold text-estore-dark mb-4 sm:mb-6 text-base sm:text-lg">
               Quick Links
             </h4>
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {quickLinks.map((link) => (
                 <a
                   key={link.name}
@@ -153,11 +153,11 @@ const Footer = () => {
           </div>
 
           {/* Wholesale */}
-          <div className="lg:col-span-1">
-            <h4 className="font-semibold text-estore-dark mb-6 text-lg">
+          <div>
+            <h4 className="font-semibold text-estore-dark mb-4 sm:mb-6 text-base sm:text-lg">
               Wholesale
             </h4>
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {wholesaleLinks.map((link) => (
                 <a
                   key={link.name}
@@ -171,11 +171,11 @@ const Footer = () => {
           </div>
 
           {/* About Us */}
-          <div className="lg:col-span-1">
-            <h4 className="font-semibold text-estore-dark mb-6 text-lg">
+          <div>
+            <h4 className="font-semibold text-estore-dark mb-4 sm:mb-6 text-base sm:text-lg">
               About Us
             </h4>
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {aboutLinks.map((link) => (
                 <a
                   key={link.name}
@@ -190,11 +190,11 @@ const Footer = () => {
         </div>
 
         {/* Footer Bottom */}
-        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-200 gap-4">
-          <span className="text-gray-600 text-sm">
+        <div className="flex flex-col sm:flex-row justify-between items-center pt-6 sm:pt-8 border-t border-gray-200 gap-4">
+          <span className="text-gray-600 text-sm order-2 sm:order-1">
             2025 Estore Technologies, Inc©
           </span>
-          <div className="flex gap-3">
+          <div className="flex gap-3 order-1 sm:order-2">
             <a
               href="#"
               className="w-10 h-10 bg-white border border-gray-300 rounded-lg flex items-center justify-center hover:bg-estore-dark hover:border-estore-dark transition-colors duration-200 group"
