@@ -12,6 +12,7 @@ type ProfileData = {
   full_name: string | null;
   email: string | null;
   mobile_number: string | null;
+  avatar_url: string | null;
 };
 
 const ProfilePage = () => {
@@ -19,11 +20,13 @@ const ProfilePage = () => {
     full_name: "",
     email: "",
     mobile_number: "",
+    avatar_url: "",
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -59,7 +62,8 @@ const ProfilePage = () => {
         id: user.id,
         full_name: user.user_metadata?.full_name || user.user_metadata?.name || "",
         email: user.email,
-        mobile_number: user.user_metadata?.mobile_number || ""
+        mobile_number: user.user_metadata?.mobile_number || "",
+        avatar_url: null
       });
 
     if (error) {
@@ -84,7 +88,7 @@ const ProfilePage = () => {
 
     const { data, error } = await supabase
       .from("profiles")
-      .select("full_name, email, mobile_number")
+      .select("full_name, email, mobile_number, avatar_url")
       .eq("id", user.id)
       .maybeSingle();
 
@@ -97,7 +101,10 @@ const ProfilePage = () => {
         full_name: data.full_name ?? "",
         email: data.email ?? "",
         mobile_number: data.mobile_number ?? "",
+        avatar_url: data.avatar_url ?? "",
       });
+      // Set avatar preview from stored URL
+      setAvatarPreview(data.avatar_url);
     } else {
       // Profile doesn't exist, create it
       console.log("No profile found, creating one...");
@@ -130,6 +137,41 @@ const ProfilePage = () => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
+  // Upload avatar to Supabase storage
+  const uploadAvatar = async (file: File): Promise<string | null> => {
+    try {
+      setUploadingAvatar(true);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return null;
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}-${Math.random()}.${fileExt}`;
+      const filePath = `avatars/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        console.error('Error uploading avatar:', uploadError);
+        toast.error('Failed to upload profile picture');
+        return null;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error) {
+      console.error('Error in uploadAvatar:', error);
+      toast.error('Failed to upload profile picture');
+      return null;
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -140,32 +182,66 @@ const ProfilePage = () => {
       return;
     }
 
-    console.log("Saving profile data...");
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        full_name: profile.full_name,
-        mobile_number: profile.mobile_number,
-      })
-      .eq("id", user.id);
+    try {
+      console.log("Saving profile data...");
+      
+      // Prepare update data
+      const updateData: any = {
+        full_name: profile.full_name || null,
+        mobile_number: profile.mobile_number || null,
+      };
 
-    if (error) {
-      console.error("Error saving profile:", error);
+      // If there's a new avatar to upload
+      const avatarInput = avatarInputRef.current;
+      if (avatarInput?.files?.[0]) {
+        const uploadedUrl = await uploadAvatar(avatarInput.files[0]);
+        if (uploadedUrl) {
+          updateData.avatar_url = uploadedUrl;
+        }
+      }
+
+      const { error } = await supabase
+        .from("profiles")
+        .update(updateData)
+        .eq("id", user.id);
+
+      if (error) {
+        console.error("Error saving profile:", error);
+        toast.error("Failed to save profile changes");
+      } else {
+        console.log("Profile saved successfully");
+        toast.success("Profile updated successfully!");
+        // Refresh profile data after saving
+        await fetchProfile();
+        // Clear the file input
+        if (avatarInput) {
+          avatarInput.value = '';
+        }
+      }
+    } catch (error) {
+      console.error("Error in handleSave:", error);
       toast.error("Failed to save profile changes");
-    } else {
-      console.log("Profile saved successfully");
-      toast.success("Profile updated successfully!");
-      // Auto-refresh profile data after saving
-      await fetchProfile();
     }
 
     setSaving(false);
   };
 
-  // Local avatar preview only (no DB persistence)
+  // Handle avatar change with preview
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please select an image file');
+        return;
+      }
+      
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size should be less than 5MB');
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (ev) => {
         setAvatarPreview(ev.target?.result as string);
@@ -252,9 +328,9 @@ const ProfilePage = () => {
           <div className="backdrop-blur-xl rounded-lg p-6 flex flex-col gap-5 items-center">
             <div className="relative">
               <Avatar className="w-32 h-32 border-2 border-[#f6e7d8] shadow-lg">
-                {avatarPreview ? (
+                {avatarPreview || profile.avatar_url ? (
                   <AvatarImage 
-                    src={avatarPreview} 
+                    src={avatarPreview || profile.avatar_url || ""} 
                     alt={profile.full_name || "Avatar"} 
                     className="object-cover w-full h-full"
                   />
@@ -270,8 +346,13 @@ const ProfilePage = () => {
                 className="absolute -bottom-2 -right-2 bg-[#fdeee8]/90 hover:bg-[#fdeee8] border border-[#bb5b24] p-2 rounded-full shadow-md"
                 onClick={() => avatarInputRef.current?.click()}
                 title="Change profile picture"
+                disabled={uploadingAvatar}
               >
-                <Image className="w-4 h-4 text-[#bb5b24]" />
+                {uploadingAvatar ? (
+                  <Loader2 className="w-4 h-4 text-[#bb5b24] animate-spin" />
+                ) : (
+                  <Image className="w-4 h-4 text-[#bb5b24]" />
+                )}
               </Button>
               <input
                 type="file"
@@ -317,7 +398,7 @@ const ProfilePage = () => {
               <Button
                 type="submit"
                 className="mt-1 w-full bg-[#bb5b24]/90 hover:bg-[#884715]/90 text-white/90"
-                disabled={saving}
+                disabled={saving || uploadingAvatar}
               >
                 {saving ? (
                   <Loader2 className="animate-spin w-5 h-5 mr-2" />
