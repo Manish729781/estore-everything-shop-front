@@ -64,7 +64,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full bg-white dark:bg-estore-dark shadow z-50 relative">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-3 sm:px-6 h-16">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-14 sm:h-16">
         {/* Left: Logo + Main Links */}
         <div className="flex items-center gap-8">
           {/* Site Name */}
@@ -75,7 +75,7 @@ const Navbar = () => {
             Estore
           </Link>
           {/* Main Nav - Desktop */}
-          <div className="hidden md:flex gap-4 items-center">
+          <div className="hidden lg:flex gap-4 items-center">
             {navLinks.map((item) => (
               <Link
                 key={item.label}
@@ -150,12 +150,12 @@ const Navbar = () => {
         {/* Center/Right: Search, Language, Icons */}
         <div className="flex items-center gap-4">
           {/* Search Bar - Hidden on mobile */}
-          <form onSubmit={handleSearch} className="hidden sm:block">
+          <form onSubmit={handleSearch} className="hidden md:block">
             <div className="relative">
               <Input
                 type="text"
                 placeholder="Search product"
-                className="pl-9 pr-2 py-1.5 w-48 sm:w-64 rounded-full bg-gray-100 focus:bg-white text-black placeholder:text-gray-400 text-sm"
+                className="pl-9 pr-2 py-1.5 w-48 md:w-64 lg:w-80 rounded-full bg-gray-100 focus:bg-white text-black placeholder:text-gray-400 text-sm"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
@@ -164,13 +164,13 @@ const Navbar = () => {
           </form>
 
           {/* Language and flag - Hidden on mobile */}
-          <div className="hidden sm:flex items-center gap-1 rounded-full bg-gray-100 px-2">
+          <div className="hidden lg:flex items-center gap-1 rounded-full bg-gray-100 px-2">
             {FLAG_ICON}
             <LanguageSwitcher className="bg-transparent p-0 text-base text-black dark:text-white w-auto min-w-[2rem] border-0 shadow-none outline-none focus:ring-0 appearance-none pl-0 pr-1" />
           </div>
 
           {/* Desktop Icons */}
-          <div className="hidden sm:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2">
             <Link to="/profile" title="Profile">
               <User className="w-5 h-5 text-black/80 dark:text-white/80" />
             </Link>
@@ -195,7 +195,7 @@ const Navbar = () => {
           {/* Mobile Menu Trigger */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
-              <button className="md:hidden p-2">
+              <button className="lg:hidden p-2">
                 <Menu className="w-6 h-6 text-black/80 dark:text-white/80" />
               </button>
             </SheetTrigger>

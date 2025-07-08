@@ -168,33 +168,33 @@ const NewInSection = () => {
   return (
     <section
       id="new-in-section"
-      className="bg-white py-10 md:py-16"
+      className="bg-white py-8 sm:py-12 md:py-16"
     >
       {/* Header */}
       <div className="text-center pb-8 md:pb-12">
-        <h2 className="text-3xl xs:text-4xl md:text-5xl font-playfair font-bold text-estore-dark mb-3 md:mb-4">
+        <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-playfair font-bold text-estore-dark mb-3 md:mb-4">
           New in
         </h2>
-        <p className="text-base xs:text-lg md:text-xl text-estore-dark max-w-2xl mx-auto px-2 xs:px-4">
+        <p className="text-sm xs:text-base sm:text-lg md:text-xl text-estore-dark max-w-2xl mx-auto px-4 sm:px-6 md:px-8">
           Bringing You the Newest Trends, Hottest Deals, and Must-Have Essentials - All in One Place!
         </p>
       </div>
 
       {/* Category Filter */}
-      <div className="flex justify-center mb-6 md:mb-12 px-2 xs:px-4">
+      <div className="flex justify-center mb-6 md:mb-12 px-4 sm:px-6 md:px-8">
         <div className="relative w-full max-w-6xl rounded-xl md:rounded-2xl overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80"
             alt="Fashion Banner"
-            className="w-full h-40 xs:h-48 md:h-64 object-cover"
+            className="w-full h-32 xs:h-40 sm:h-48 md:h-64 object-cover"
           />
           <div
             className="
               absolute
-              -bottom-8 md:bottom-6
+              -bottom-6 sm:-bottom-8 md:bottom-6
               left-0 md:left-1/2 md:-translate-x-1/2
               w-full md:w-auto
-              px-2 md:px-0
+              px-4 md:px-0
               flex
               md:static
               justify-center
@@ -204,9 +204,9 @@ const NewInSection = () => {
           >
             <div
               className="
-                bg-white rounded-full shadow-lg flex flex-nowrap gap-1 xs:gap-2 p-1 xs:p-2
+                bg-white rounded-full shadow-lg flex flex-nowrap gap-1 xs:gap-2 p-1.5 xs:p-2
                 w-full overflow-x-auto max-w-full scrollbar-none
-                md:flex-wrap md:justify-center md:overflow-visible md:w-auto
+                sm:flex-wrap sm:justify-center sm:overflow-visible sm:w-auto
                 "
               style={{
                 WebkitOverflowScrolling: 'touch',
@@ -218,13 +218,13 @@ const NewInSection = () => {
                   type="button"
                   onClick={() => handleCategoryClick(category)}
                   className={`
-                    px-3 xs:px-4 py-2 rounded-full text-xs xs:text-sm font-medium whitespace-nowrap transition-all duration-200
+                    px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 rounded-full text-xs xs:text-sm font-medium whitespace-nowrap transition-all duration-200
                     ${activeCategory === category
                       ? 'bg-estore-dark text-white shadow'
                       : 'text-estore-dark hover:bg-estore-light-gray'}
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-estore-dark
                   `}
-                  style={{ minWidth: '80px' }}
+                  style={{ minWidth: '70px' }}
                 >
                   {category}
                 </button>
@@ -235,7 +235,7 @@ const NewInSection = () => {
       </div>
 
       {/* Mobile Carousel */}
-      <div className="sm:hidden bg-gray-50 pt-6 pb-8">
+      <div className="sm:hidden bg-gray-50 pt-4 pb-6">
         <MobileProductCarousel
           products={filteredProducts}
           onViewDescription={handleViewDescription}
@@ -267,7 +267,7 @@ const NewInSection = () => {
 
       {/* Desktop/Tablet Product Grid */}
       <div className="hidden sm:block bg-gray-50 py-6 md:py-12">
-        <div className="max-w-7xl mx-auto px-2 xs:px-4 md:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xs:gap-6 md:gap-8">
             {filteredProducts.map((product) => (
               <ProductCard

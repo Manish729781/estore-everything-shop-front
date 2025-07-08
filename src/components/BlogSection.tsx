@@ -45,13 +45,13 @@ const BlogSection = () => {
   const [openDialogId, setOpenDialogId] = useState<number | null>(null);
 
   return (
-    <section id="blog-section" className="py-16 bg-white">
-      <div className="max-w-6xl mx-auto px-8 text-center">
-        <h2 className="text-4xl md:text-5xl font-playfair font-bold text-estore-dark mb-12">
+    <section id="blog-section" className="py-8 sm:py-12 md:py-16 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 text-center">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-estore-dark mb-8 sm:mb-10 md:mb-12">
           Blog
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {blogs.map((blog) => (
             <Dialog
               key={blog.id}
@@ -72,14 +72,14 @@ const BlogSection = () => {
                   <img
                     src={blog.image}
                     alt={blog.title}
-                    className="w-full h-44 object-cover"
+                    className="w-full h-36 sm:h-40 md:h-44 object-cover"
                   />
-                  <div className="p-4 text-left">
-                    <h3 className="font-semibold text-estore-dark mb-2 leading-tight">
+                  <div className="p-3 sm:p-4 text-left">
+                    <h3 className="font-semibold text-sm sm:text-base text-estore-dark mb-2 leading-tight">
                       {blog.title}
                     </h3>
-                    <p className="text-gray-500 text-sm">• {blog.date}</p>
-                    <span className="inline-block text-estore-dark underline mt-2 text-sm">Read more &rarr;</span>
+                    <p className="text-gray-500 text-xs sm:text-sm">• {blog.date}</p>
+                    <span className="inline-block text-estore-dark underline mt-2 text-xs sm:text-sm">Read more &rarr;</span>
                   </div>
                 </div>
               </DialogTrigger>
@@ -94,11 +94,11 @@ const BlogSection = () => {
                   <img
                     src={blog.image}
                     alt={blog.title}
-                    className="w-full h-44 object-cover rounded-xl mb-4"
+                    className="w-full h-36 sm:h-40 md:h-44 object-cover rounded-xl mb-4"
                   />
-                  <p className="text-gray-700 mb-4">{blog.content}</p>
+                  <p className="text-sm sm:text-base text-gray-700 mb-4">{blog.content}</p>
                   <DialogClose asChild>
-                    <button className="px-4 py-2 bg-estore-dark text-white rounded-full float-right mt-2 hover:bg-estore-navy transition">
+                    <button className="px-3 sm:px-4 py-2 bg-estore-dark text-white rounded-full float-right mt-2 hover:bg-estore-navy transition text-sm">
                       Close
                     </button>
                   </DialogClose>
@@ -108,7 +108,7 @@ const BlogSection = () => {
           ))}
         </div>
 
-        <button className="bg-gray-200 text-estore-dark px-8 py-3 rounded-2xl font-medium hover:bg-estore-dark hover:text-white transition-colors">
+        <button className="bg-gray-200 text-estore-dark px-6 sm:px-8 py-2 sm:py-3 rounded-2xl font-medium hover:bg-estore-dark hover:text-white transition-colors text-sm sm:text-base">
           View all
         </button>
       </div>
