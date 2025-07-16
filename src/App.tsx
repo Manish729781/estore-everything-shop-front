@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { WishlistProvider } from "./contexts/WishlistContext";
 import { CartProvider } from "./contexts/CartContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import ProductDescription from "./pages/ProductDescription";
 import ProductList from "./pages/ProductList";
@@ -34,6 +35,8 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -42,41 +45,46 @@ const App = () => (
     <LanguageProvider>
       <WishlistProvider>
         <CartProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/products" element={<ProductList />} />
-                <Route path="/products/featured" element={<FeaturedProducts />} />
-                <Route path="/product/:id" element={<ProductDescription />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:category" element={<BlogCategory />} />
-                <Route path="/blog/:category/:id" element={<BlogPost />} />
-                <Route path="/wishlist" element={<Wishlist />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/address" element={<Address />} />
-                <Route path="/payment" element={<Payment />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/request-return-label" element={<RequestReturnLabel />} />
-                <Route path="/affiliate" element={<AffiliateProgram />} />
-                <Route path="/wholesale" element={<Wholesale />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/terms-conditions" element={<TermsConditions />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/learn-more" element={<LearnMore />} />
-                <Route path="/about-us" element={<AboutUs />} />
-                <Route path="/wash-learn" element={<WashLearn />} />
-                <Route path="/faqs-support" element={<FAQsSupport />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                {/* Combined Auth Page */}
-                <Route path="/auth" element={<AuthPage />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
+          <AuthProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/products" element={<ProductList />} />
+                  <Route path="/products/featured" element={<FeaturedProducts />} />
+                  <Route path="/product/:id" element={<ProductDescription />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:category" element={<BlogCategory />} />
+                  <Route path="/blog/:category/:id" element={<BlogPost />} />
+                  <Route path="/wishlist" element={<Wishlist />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/address" element={<Address />} />
+                  <Route path="/payment" element={<Payment />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/request-return-label" element={<RequestReturnLabel />} />
+                  <Route path="/affiliate" element={<AffiliateProgram />} />
+                  <Route path="/wholesale" element={<Wholesale />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/terms-conditions" element={<TermsConditions />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/learn-more" element={<LearnMore />} />
+                  <Route path="/about-us" element={<AboutUs />} />
+                  <Route path="/wash-learn" element={<WashLearn />} />
+                  <Route path="/faqs-support" element={<FAQsSupport />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                  {/* Combined Auth Page */}
+                  <Route path="/auth" element={<AuthPage />} />
+                  {/* Admin Routes */}
+                  <Route path="/admin/login" element={<AdminLogin />} />
+                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </TooltipProvider>
+          </AuthProvider>
         </CartProvider>
       </WishlistProvider>
     </LanguageProvider>
