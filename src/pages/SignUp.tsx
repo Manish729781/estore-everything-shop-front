@@ -1,19 +1,29 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { signUp } = useAuth();
+  const navigate = useNavigate();
 
-  // Dummy sign up handler, replace with real backend logic
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    // You can connect this to Supabase or Clerk for actual registration.
-    alert(`Account created for ${name || email}`);
+    setLoading(true);
+    
+    const { error } = await signUp(email, password, name);
+    
+    if (!error) {
+      navigate('/');
+    }
+    
+    setLoading(false);
   };
 
   return (
@@ -52,7 +62,9 @@ const SignUp = () => {
               onChange={e => setPassword(e.target.value)}
             />
           </div>
-          <Button type="submit" className="w-full">Sign Up</Button>
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? 'Creating account...' : 'Sign Up'}
+          </Button>
         </form>
         <p className="text-center text-sm mt-4">
           Already have an account?{" "}
