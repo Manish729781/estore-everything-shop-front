@@ -11,7 +11,7 @@ const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, user, profile } = useAuth();
+  const { signIn, signUp, user, profile } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,6 +24,14 @@ const AdminLogin: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     
+    // If trying to login with admin credentials, first try to create the account
+    if (email === 'gits22222@gmail.com' && password === 'Manish@321') {
+      // Try to sign up first (in case account doesn't exist)
+      await signUp(email, password, 'Admin User');
+      // Small delay to let the account creation process
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+    
     const { error } = await signIn(email, password);
     
     if (!error) {
@@ -32,10 +40,10 @@ const AdminLogin: React.FC = () => {
         if (profile?.role === 'admin') {
           navigate('/admin/dashboard');
         } else {
-          // Not an admin, sign out and show error
+          // Not an admin, redirect to home
           navigate('/');
         }
-      }, 1000);
+      }, 1500);
     }
     
     setLoading(false);
